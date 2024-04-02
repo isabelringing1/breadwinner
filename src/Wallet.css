@@ -1,0 +1,92 @@
+#wallet{
+    height: 45%;
+    font-size: 25px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#click-container{
+    height: 35px;
+    padding-top: 35px;
+}
+
+#bread-list-title{
+  padding-bottom: 10px;
+}
+
+#supply-list-title{
+  padding-top: 10px;
+}
+
+#convert-keys{
+  background-color: #c54141;
+}
+
+#convert-keys:after{
+  background-color: #ef5c5c;
+}
+
+.convert-button{
+    appearance: button;
+    background-color: #4c9d27;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    overflow: visible;
+    padding: 13px 16px;
+    text-align: center;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    transform: translateZ(0);
+    transition: filter .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 280px;
+    margin-top: 20px;
+}
+
+.convert-button:after {
+  background-clip: padding-box;
+  border: solid transparent;
+  background-color: #6EE835;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.convert-button:main,
+.convert-button:focus {
+  user-select: auto;
+}
+
+.convert-button:hover:not(:disabled) {
+  filter: brightness(1.1);
+  -webkit-filter: brightness(1.1);
+}
+
+.convert-button:disabled {
+  cursor: auto;
+}
+
+.convert-button:active {
+  border-width: 4px 0 0;
+  background: none;
+}

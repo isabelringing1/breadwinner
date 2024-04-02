@@ -1,0 +1,241 @@
+{
+    "mixing_bowl": 
+    {
+      "id": "mixing_bowl",
+      "display_name": "Mixing Bowl",
+      "desc": "Doubles Bread Coin conversion rate.",
+      "image_path": "/src/images/red_bowl.png",
+      "cost": 500,
+      "multiplier": 2.0,
+      "purchased": false,
+      "unlocked": false
+    },
+    "measuring_cup": {
+      "id": "measuring_cup",
+      "display_name": "Measuring Cup",
+      "desc": "Doubles Bread Coin conversion rate.",
+      "image_path": "/src/images/measuring_cup.png",
+      "previous": "mixing_bowl",
+      "cost": 2000,
+      "multiplier": 2.0,
+      "purchased": false,
+      "unlocked": false
+    },
+    "whisk": {
+      "id": "whisk",
+      "display_name": "Whisk",
+      "desc": "Doubles Bread Coin conversion rate.",
+      "image_path": "/src/images/whisk.png",
+      "previous": "measuring_cup",
+      "cost": 8000,
+      "multiplier": 2.0,
+      "purchased": false,
+      "unlocked": false
+    },
+    "stand_mixer": {
+      "id": "stand_mixer",
+      "display_name": "Stand Mixer",
+      "desc": "Doubles Bread Coin conversion rate.",
+      "image_path": "/src/images/stand_mixer.png",
+      "previous": "whisk",
+      "cost": 32000,
+      "multiplier": 2.0,
+      "purchased": false,
+      "unlocked": false
+    },
+    "dutch_oven": {
+      "id": "dutch_oven",
+      "display_name": "Dutch Oven",
+      "desc": "Doubles Bread Coin conversion rate.",
+      "image_path": "/src/images/dutch_oven.png",
+      "previous": "stand_mixer",
+      "cost": 128000,
+      "multiplier": 2.0,
+      "purchased": false,
+      "unlocked": false
+    },
+    "dough_whisk": {
+      "id": "dough_whisk",
+      "display_name": "Dough Whisk",
+      "desc": "Doubles Bread Coin conversion rate.",
+      "image_path": "/src/images/dough_whisk.png",
+      "previous": "dutch_oven",
+      "cost": 256000,
+      "multiplier": 2.0,
+      "purchased": false,
+      "unlocked": false
+    },
+    "bench_knife": {
+      "id": "bench_knife",
+      "display_name": "Bench Knife",
+      "desc": "Doubles Bread Coin conversion rate.",
+      "image_path": "/src/images/bench_knife.png",
+      "previous": "dough_whisk",
+      "cost": 1024000 ,
+      "multiplier": 2.0,
+      "purchased": false,
+      "unlocked": false
+    },
+    "bowl_scraper": {
+      "id": "bowl_scraper",
+      "display_name": "Bowl Scraper",
+      "desc": "Doubles Bread Coin conversion rate.",
+      "image_path": "/src/images/bowl_scraper.png",
+      "previous": "bench_knife",
+      "cost": 4096000,
+      "multiplier": 2.0,
+      "purchased": false
+    },
+    "proofing_basket": {
+      "id": "proofing_basket",
+      "display_name": "Proofing Basket",
+      "desc": "Doubles Bread Coin conversion rate.",
+      "image_path": "/src/images/proofing_basket.png",
+      "previous": "bowl_scraper",
+      "cost": 16384000,
+      "multiplier": 2.0,
+      "purchased": false,
+      "unlocked": false
+    },
+    "serrated_knife": {
+      "id": "serrated_knife",
+      "display_name": "Serrated Knife",
+      "desc": "Doubles Bread Coin conversion rate.",
+      "image_path": "/src/images/serrated_knife.png",
+      "previous": "proofing_basket",
+      "cost": 65536000,
+      "multiplier": 2.0,
+      "purchased": false,
+      "unlocked": false
+    },
+    "book_of_recipes": {
+      "id": "book_of_recipes",
+      "display_name": "Book of Recipes",
+      "desc": "Untapped primordial power. Unlocks the ability to convert your keystrokes into small additions to the multiplier.",
+      "image_path": "/src/images/default_supply.png",
+      "previous": "",
+      "cost": 1,
+      "keys": true,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_1":{
+      "id": "oven_slot_1",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 300,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_2":{
+      "id": "oven_slot_2",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 900,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_3":{
+      "id": "oven_slot_3",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 2700,
+      "oven_increase": 1,
+      "purchased": false
+    },
+    "oven_slot_4":{
+      "id": "oven_slot_4",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 8100,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_5":{
+      "id": "oven_slot_5",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 24300,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_6":{
+      "id": "oven_slot_6",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 72900,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_7":{
+      "id": "oven_slot_7",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 218700,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_8":{
+      "id": "oven_slot_8",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 656100,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_9":{
+      "id": "oven_slot_9",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 1968300,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_10":{
+      "id": "oven_slot_10",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 5904900,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_11":{
+      "id": "oven_slot_11",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 17714700,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    },
+    "oven_slot_12":{
+      "id": "oven_slot_12",
+      "display_name": "Oven Rack",
+      "desc": "Expands oven by 1 slot.",
+      "image_path": "/src/images/oven_slot.png",
+      "cost": 53144100,
+      "oven_increase": 1,
+      "purchased": false,
+      "unlocked": false
+    }
+}
