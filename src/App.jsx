@@ -13,8 +13,8 @@ import BlockingScreen from './BlockingScreen';
 import FloatingText from './FloatingText';
 import SpeechBubble from './SpeechBubble'
 
-import tile from '/src/images/tile.png'
-import shadow from '/src/images/shadow.png'
+import tile from '/images/tile.png'
+import shadow from '/images/shadow.png'
 
 import './App.css'
 
@@ -42,7 +42,9 @@ function App() {
   const [floatingTextPos, setFloatingTextPos] = useState("")
   const [speechBubbleText, setSpeechBubbleText] = useState("")
   const [speechBubbleDuration, setSpeechBubbleDuration] = useState(2000)
-  
+  const [extensionDetected, setExtensionDetected] = useState(false);
+  const isMobile = window.innerWidth <= 768;
+
   const convertForSave = () => {
     var player = {
       multiplier: multiplier ?? 1.0,
@@ -328,7 +330,7 @@ function App() {
   }
 
   useEffect(() => {
-    registerForMessages(setClicks, setKeys, setKeyUnlocked);
+    registerForMessages(setClicks, setKeys, setKeyUnlocked, extensionDetected, setExtensionDetected);
     document.addEventListener("visibilitychange", (event) => {
       if (document.visibilityState == "visible") {
         requestClickCount();
@@ -368,8 +370,6 @@ function App() {
       }
     }
 
-    setSpeechBubble("RETURN");
-
     return () => {
       document.removeEventListener("visibilitychange", (event) => {
         if (document.visibilityState == "visible") {
@@ -384,12 +384,18 @@ function App() {
     saveData(convertForSave())
   }, [breadCoin])
 
+  useEffect(() => {
+    if (extensionDetected){
+      setSpeechBubble("RETURN");
+    }
+  }, [extensionDetected])
+
   return (<div id="content">
     <Debug resetProgress={reset} setBreadCoin={setBreadCoin}/>
     <Tooltip show={showTooltip} text={tooltipText} textAfter={tooltipTextAfter} mousePos={tooltipPos}/>
     <FloatingText text={floatingText} setText={setFloatingText} mousePos={floatingTextPos} />
 
-    { clicks ? null : <BlockingScreen isMobile={false}/>}
+    { !extensionDetected || isMobile ? <BlockingScreen isMobile={isMobile} delay={1000}/> : null }
     
     <div id="column-one" className="column">
       <Wallet clicks={clicks} keys={keys} multiplier={multiplier} convertClicks={convertClicksToBreadCoin} convertKeys={convertKeysToMultiplier} toggleClicksTooltip={toggleConvertClicksTooltip} toggleKeysTooltip={toggleConvertKeysTooltip} keyUnlocked={keyUnlocked}/>

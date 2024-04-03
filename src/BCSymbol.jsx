@@ -1,5 +1,5 @@
-import bc_red from '/src/images/bc_red.png'
-import bc_black from '/src/images/bc_black.png'
+import bc_red from '/images/bc_red.png'
+import bc_black from '/images/bc_black.png'
 
 function BCSymbol(props){
     const { color, height, top } = props;

@@ -33,7 +33,7 @@
     align-items: center;
     height: 110px;
     width: 95%;
-    background-image: url('/src/images/oven-row-bg.svg');
+    background-image: url('/images/oven-row-bg.svg');
     background-position: center center;
     background-size: cover;
     margin-bottom: 20px;
@@ -61,7 +61,7 @@
 
 .baking{
     animation: glow 3s infinite ease-in-out;
-    background-image: url('/src/images/bread_shade1.png')
+    background-image: url('/images/bread_shade.png')
 }
 
 .loaf-button{
@@ -113,7 +113,7 @@
 
 .done{
     box-shadow: 0 0 16px #fff1a0;
-    background-image: url('/src/images/bread_shade1.png')
+    background-image: url('/images/bread_shade.png')
 }
 
 .done-anim{

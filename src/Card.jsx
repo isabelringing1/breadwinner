@@ -15,7 +15,7 @@ function Card(props){
             }}>
         <div className="card-title">{item.display_name}</div>
         <div className="card-price"><BCSymbol color="red"/>{formatNumber(item.cost)}</div>
-        <img className="card-img" src={item.image_path}/>
+        <img className="card-img" src={window.location.origin + item.image_path}/>
     </button>
 }
 

@@ -33,7 +33,7 @@ function Wallet(props){
 
     return (<div id="wallet">
             <div id="click-wallet">
-            <div id="click-container"><span id="click-num">{formatNumber(clicks) ?? "?"}</span> {clicks == 1 ? "click" : "clicks"}</div>
+            <div id="click-container"><span id="click-num">{clicks ? formatNumber(clicks) : "?"}</span> {clicks == 1 ? "click" : "clicks"}</div>
             <div id='multiplier-div'> <span id="multiplier-x">×</span>  <span id="multiplier-num">{String(formatNumber(multiplier, true)) ?? "?"}</span></div>
             <button className="convert-button button" id="convert-clicks" onClick={() => {convertClicks()}}
                 onMouseMove={(e) => { 
@@ -47,7 +47,7 @@ function Wallet(props){
             </div><br/>
             {keyUnlocked ? 
             <div id="key-wallet">
-            <div id="key-container"><span id="key-num">{formatNumber(keys) ?? "?"}</span> {keys == 1 ? "key" : "keys"}</div>
+            <div id="key-container"><span id="key-num">{formatNumber(keys)}</span> {keys == 1 ? "key" : "keys"}</div>
             <button className="convert-button button" id="convert-keys" onClick={() => { 
                 if (keys > 0) { punchMultiplier() }
                 convertKeys();
