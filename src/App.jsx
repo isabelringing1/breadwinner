@@ -409,6 +409,7 @@ function App() {
       </div>
       <Oven queue={OvenQueue} sellLoaf={sellLoaf} toggleTooltip={toggleLoafTooltip} updateTooltip={updateLoafTooltip} shouldShow={totalSpent > 0}/>
       <SpeechBubble text={speechBubbleText} setText={setSpeechBubbleText} duration={speechBubbleDuration}/>
+      <div id="title">bread winner</div>
     </div>
 
     <div id="column-three" className="column">

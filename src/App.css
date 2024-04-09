@@ -9,6 +9,11 @@ button{
     font-family: "Readex Pro", sans-serif;
 }
 
+#title{
+    font-size: 30px;
+    position: absolute;
+    bottom: 25px;
+}
 
 #content{
     width: 100vw;

@@ -33,8 +33,8 @@ function Wallet(props){
 
     return (<div id="wallet">
             <div id="click-wallet">
-            <div id="click-container"><span id="click-num">{clicks ? formatNumber(clicks) : "?"}</span> {clicks == 1 ? "click" : "clicks"}</div>
-            <div id='multiplier-div'> <span id="multiplier-x">×</span>  <span id="multiplier-num">{String(formatNumber(multiplier, true)) ?? "?"}</span></div>
+            <div id="click-container"><span id="click-num">{clicks ? formatNumber(clicks) : "0"}</span> {clicks == 1 ? "click" : "clicks"}</div>
+            <div id='multiplier-div'> <span id="multiplier-x">×</span>  <span id="multiplier-num">{String(formatNumber(multiplier, true)) ?? "1"}</span></div>
             <button className="convert-button button" id="convert-clicks" onClick={() => {convertClicks()}}
                 onMouseMove={(e) => { 
                     var x = e.clientX < window.innerWidth - 300 ? e.clientX + 30 : e.clientX - 240

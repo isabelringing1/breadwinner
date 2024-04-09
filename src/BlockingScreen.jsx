@@ -19,7 +19,7 @@ function BlockingScreen(props){
                     <div>
                         <div className='blocking-screen-text'>Hey! We noticed you don't have the Bank of Bread extension installed. You'll need that to play.</div>
                         <div className='blocking-screen-text'>Go ahead and install it and we'll be waiting for you when you get back!</div>
-                        <div className='blocking-screen-link'> Chrome&emsp;Firefox </div>
+                        <div className='blocking-screen-link'><a href="https://chromewebstore.google.com/detail/bread-winner-companion/mlfplmodeiemagcbcfofdmfcahjaafel" target="_blank" rel="noreferrer">Chrome</a>&emsp;Firefox </div>
                     </div>
                 : <div className="loader"></div>
             )
