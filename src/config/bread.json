@@ -49,7 +49,7 @@
     "challah": {
       "id": "challah",
       "display_name": "Challah",
-      "desc": "",
+      "desc": "Braids aren't just for hair.",
       "image_path": "/images/challah.png",
       "previous": "sourdough",
       "initial_cost": 172800,
@@ -63,7 +63,7 @@
     "cinnamon_raisin": {
       "id": "cinnamon_raisin",
       "display_name": "Cinnamon Raisin",
-      "desc": "description here",
+      "desc": "A twist in every slice.",
       "image_path": "/images/cinnamon_raisin.png",
       "previous": "challah",
       "initial_cost": 2073600,
@@ -77,7 +77,7 @@
     "pumpernickel": {
       "id": "pumpernickel",
       "display_name": "Pumpernickel",
-      "desc": "description here",
+      "desc": "Dark and mysterious.",
       "image_path": "/images/pumpernickel.png",
       "previous": "cinnamon_raisin",
       "initial_cost": 24883200,
@@ -91,7 +91,7 @@
     "potato": {
       "id": "potato",
       "display_name": "Potato",
-      "desc": "description here",
+      "desc": "It's like, double carbs.",
       "image_path": "/images/potato.png",
       "previous": "pumpernickel",
       "initial_cost": 298598400,
@@ -105,7 +105,7 @@
     "brioche": {
       "id": "brioche",
       "display_name": "Brioche",
-      "desc": "It's what Marie Antoinette told her peasants to eat.",
+      "desc": "What Marie Antoinette told her peasants to eat.",
       "image_path": "/images/brioche.png",
       "previous": "potato",
       "initial_cost": 3583180800,
@@ -119,7 +119,7 @@
     "banana": {
       "id": "banana",
       "display_name": "Banana",
-      "desc": "description here",
+      "desc": "What every overripe banana aspires to become.",
       "image_path": "/images/banana.png",
       "previous": "brioche",
       "initial_cost": 42998169600,

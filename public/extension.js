@@ -1,6 +1,4 @@
-function requestClickCount(){
-    console.log("requesting clicks")
-    window.postMessage({
+function requestClickCount(){    window.postMessage({
       id: "getClicks"
     });
 }
@@ -13,7 +11,6 @@ function spendClicks(clicks){
 }
 
 function broadcastBc(bc){
-  console.log("Broadcasting ", bc)
   window.postMessage({
     id: "broadcastBc",
     bc: bc
@@ -39,6 +36,12 @@ function unlockKeys(){
   });
 }
 
+function lockKeys(){
+  window.postMessage({
+    id: "lockKeys",
+  });
+}
+
 function registerForMessages(setClicks, setKeys, setKeyUnlocked, extensionDetected, setExtensionDetected){
     window.addEventListener("message", (event) => {
         if (event.data.id == "updatedClicks"){
@@ -57,4 +60,4 @@ function registerForMessages(setClicks, setKeys, setKeyUnlocked, extensionDetect
     });
 }
 
-export { requestClickCount, registerForMessages, spendClicks, broadcastBc, requestKeyCount, spendKeys, unlockKeys }
+export { requestClickCount, registerForMessages, spendClicks, broadcastBc, requestKeyCount, spendKeys, unlockKeys, lockKeys }

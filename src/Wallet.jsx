@@ -29,13 +29,11 @@ function Wallet(props){
         num.classList.add('punch'); 
     }
     
-    console.log(formatNumber(multiplier, true))
-
     return (<div id="wallet">
             <div id="click-wallet">
             <div id="click-container"><span id="click-num">{clicks ? formatNumber(clicks) : "0"}</span> {clicks == 1 ? "click" : "clicks"}</div>
             <div id='multiplier-div'> <span id="multiplier-x">×</span>  <span id="multiplier-num">{String(formatNumber(multiplier, true)) ?? "1"}</span></div>
-            <button className="convert-button button" id="convert-clicks" onClick={() => {convertClicks()}}
+            <button className="button" id="convert-clicks" onClick={() => {convertClicks()}}
                 onMouseMove={(e) => { 
                     var x = e.clientX < window.innerWidth - 300 ? e.clientX + 30 : e.clientX - 240
                     toggleClicksTooltip(true, [x, e.clientY + 30]);
@@ -44,11 +42,11 @@ function Wallet(props){
                     toggleClicksTooltip(false)
             }}>
             Convert</button>
-            </div><br/>
+            </div><div className='br'></div>
             {keyUnlocked ? 
             <div id="key-wallet">
             <div id="key-container"><span id="key-num">{formatNumber(keys)}</span> {keys == 1 ? "key" : "keys"}</div>
-            <button className="convert-button button" id="convert-keys" onClick={() => { 
+            <button className="button" id="convert-keys" onClick={() => { 
                 if (keys > 0) { punchMultiplier() }
                 convertKeys();
             }}

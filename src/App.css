@@ -294,6 +294,10 @@ button{
     -webkit-animation: float-up-tail 1.5s 1 ease-in-out;
 }
 
+.br{
+    padding: 10px 0;
+}
+
 
 @keyframes flash {
     0%{

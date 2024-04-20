@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { saveData, loadData } from '../public/account';
-import { requestClickCount, registerForMessages, spendClicks, broadcastBc, requestKeyCount, spendKeys, unlockKeys } from '../public/extension';
+import { requestClickCount, registerForMessages, spendClicks, broadcastBc, requestKeyCount, spendKeys, unlockKeys, lockKeys } from '../public/extension';
 import { formatNumber, formatPercent } from './Util'
 
 import Debug from './Debug'
@@ -12,6 +12,7 @@ import BCSymbol from './BCSymbol'
 import BlockingScreen from './BlockingScreen';
 import FloatingText from './FloatingText';
 import SpeechBubble from './SpeechBubble'
+import Ending from './Ending'
 
 import tile from '/images/tile.png'
 import shadow from '/images/shadow.png'
@@ -34,7 +35,7 @@ function App() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipText, setTooltipText] = useState("");
   const [tooltipTextAfter, setTooltipTextAfter] = useState("");
-  const [tooltipPos, setTooltipPos] = useState("");
+  const [tooltipPos, setTooltipPos] = useState([0,0]);
   const [totalSpent, setTotalSpent] = useState(0);
   const [totalEarned, setTotalEarned] = useState(0);
   const [totalClicks, setTotalClicks] = useState(0);
@@ -71,6 +72,7 @@ function App() {
     setTotalEarned(0);
     setTotalClicks(0);
     setKeyUnlocked(false);
+    lockKeys();
   }
 
   const isSupplyPurchased = (id) => {
@@ -136,7 +138,6 @@ function App() {
       }
     }
     if (nextOpen == -1){
-      console.log("Oven is full");
       setFloatingText("Oven full!")
       setFloatingTextPos(mousePos)
       return false;
@@ -145,8 +146,6 @@ function App() {
       console.log("Couldn't buy " + id);
       return false;
     }
-    console.log("Success buying " + id);
-
     var now = Date.now()
     var loaf = {
       id: id,
@@ -396,6 +395,7 @@ function App() {
     <FloatingText text={floatingText} setText={setFloatingText} mousePos={floatingTextPos} />
 
     { !extensionDetected || isMobile ? <BlockingScreen isMobile={isMobile} delay={1000}/> : null }
+    {/*<Ending/>*/}
     
     <div id="column-one" className="column">
       <Wallet clicks={clicks} keys={keys} multiplier={multiplier} convertClicks={convertClicksToBreadCoin} convertKeys={convertKeysToMultiplier} toggleClicksTooltip={toggleConvertClicksTooltip} toggleKeysTooltip={toggleConvertKeysTooltip} keyUnlocked={keyUnlocked}/>
@@ -409,7 +409,7 @@ function App() {
       </div>
       <Oven queue={OvenQueue} sellLoaf={sellLoaf} toggleTooltip={toggleLoafTooltip} updateTooltip={updateLoafTooltip} shouldShow={totalSpent > 0}/>
       <SpeechBubble text={speechBubbleText} setText={setSpeechBubbleText} duration={speechBubbleDuration}/>
-      <div id="title">bread winner</div>
+      {/*<div id="title">bread winner</div>*/}
     </div>
 
     <div id="column-three" className="column">

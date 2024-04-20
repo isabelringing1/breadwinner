@@ -108,13 +108,13 @@
       "purchased": false,
       "unlocked": false
     },
-    "book_of_recipes": {
-      "id": "book_of_recipes",
-      "display_name": "Book of Secrets",
-      "desc": "Untapped primordial power. Unlocks the ability to convert your keystrokes into small additions to the multiplier.",
-      "image_path": "/images/default_supply.png",
+    "secret_spread": {
+      "id": "secret_spread",
+      "display_name": "Secret Spread",
+      "desc": "Untapped primordial power in a jar. Unlocks the ability to convert your keystrokes into small additions to the multiplier.",
+      "image_path": "/images/secret_spread.png",
       "previous": "",
-      "cost": 10000,
+      "cost": 12345,
       "keys": true,
       "purchased": false,
       "unlocked": false

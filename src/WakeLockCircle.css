@@ -1,0 +1,106 @@
+:root {
+    --wait-seconds: 3s;
+
+}
+
+.wake-lock-container{
+    width: 50px;
+    height: 50px;
+    margin: 30px auto;
+    position: relative;
+    -webkit-animation: none;
+    -moz-animation: none;
+    animation: none;
+}
+
+.wake-lock-done{
+    border-radius: 100%;
+    width: 100%;
+    height: 100%;
+    background-color: #fff70a;
+}
+
+.wake-transition{
+    cursor: pointer;
+}
+
+.wake-activated{
+    cursor: none;
+    -webkit-animation: breathe 5s infinite ease-in-out;
+    -moz-animation: breathe 5s infinite ease-in-out;
+    animation: breathe 5s infinite ease-in-out;
+}
+
+.wake-lock-half{
+    background-color: #c2c2c2;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    clip: rect(0px, 50px, 50px, 25px);
+    border-radius: 100%;
+}
+
+#wake-lock-div{
+    display: flex;
+    width: 100%;
+    height: auto;
+    justify-content: space-around;
+}
+
+.right {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.fill{
+    background-color: #fff70a;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    clip: rect(0px, 25px, 50px, 0px);
+}
+
+.left .fill {
+    z-index: 1;
+    -webkit-animation: left var(--wait-seconds) linear;
+    -moz-animation: left var(--wait-seconds) linear;
+    animation: left var(--wait-seconds) linear both;
+}
+
+.right .fill {
+    -webkit-animation: right var(--wait-seconds) linear;
+    -moz-animation: right var(--wait-seconds) linear;
+    animation: right var(--wait-seconds) linear both;
+    -webkit-animation-delay: var(--wait-seconds);
+    -moz-animation-delay: var(--wait-seconds);
+    animation-delay: var(--wait-seconds);
+}
+
+@keyframes left {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(180deg);
+    }
+}
+
+@keyframes right {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(180deg);
+    }
+}
+
+@keyframes breathe {
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.5);
+    }
+}

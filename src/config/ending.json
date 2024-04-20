@@ -1,0 +1,54 @@
+{
+    "default_text": "Hover over the circle to start.",
+    "ending": [
+        {
+            "text": "Congrats! You’ve become the Bread God. You’ve bought every item, baked countless loaves, spent all your hard-earned clicks and keys. Seriously, good work."
+        },
+        {
+            "text": "Now there’s one last decision. You can keep clicking forever, garnering infinite money and baking infinite loaves. Or, you can try to win.",
+            "buttons": ["Keep Clicking Forever", "Win"],
+            "buttonColors": ["red", "green"]
+        },
+        {
+            "text": "Are you sure? You’ll lose all progress of your game.",
+            "buttons": ["No, Keep Clicking Forever", "Yes, I want to win"],
+            "buttonColors": ["red", "green"]
+        },
+        {
+            "text": "Are you really sure? This won't be easy.",
+            "buttons": ["No, Keep Clicking Forever", "Yes, really"],
+            "buttonColors": ["red", "green"]
+        },
+        {
+            "text": "Okay. So, here’s the deal."
+        },
+        {
+            "text": "You’ve built a definite Bread Empire. You’ve written odysseys and clicked to the center of the earth to get here.\n\nAnd you felt it, right? The giddiness in watching your multiplier double; the anticipation in watching a loaf tick down its final seconds; the urge to check the extension, switch back." 
+        },
+        {
+            "text": "But it’s also a bit weird, isn’t it? You baked 32,432 loaves of bread. And you didn’t get to eat any of them."
+        },
+        {
+            "text": "I’m going to propose one more challenge for you. You’ve mastered everything that this game has to offer. Now, can you do your best to do nothing?"
+        },
+        {
+            "text": "I want you to stop working. As much as you can.\nTricky, I know. But you wanted to win, right?"
+        },
+        {
+            "text": "To make it easier, the time is broken up into three sessions. As for what you do with your free time-- that’s up to you. You can stare into space if you’d like. Or go on a walk, play with your pet, take a nap. The sky’s the limit."
+        },
+        {
+            "text": "I’ll be enforcing this in the little ways that I can. You won’t be able to move your mouse while doing this, and switching to a different tab or window will reset your session."
+        },
+        {
+            "text": "Like most things in life, you can cheat if you’d like. I can’t stop you from scrolling on your phone, or gravitating towards the TV, or whatever else."
+        },
+        {
+            "text": "But since this is broken up into segments, the hope is that you’ll complete each one while you can, and do what you need to do in between.\n\nThere’s no time pressure, no deadline, no grade. Just a break."
+        },
+        {
+            "text": "You ready? Hover over the circle to start.",
+            "buttons": ["wake-lock"]
+        }
+    ]
+}
