@@ -1,9 +1,10 @@
 :root {
-    --wait-seconds: 3s;
+    --wait-seconds: 6s;
+    --wait-seconds-half: 3s;
 
 }
 
-.wake-lock-container{
+.wait-container{
     width: 50px;
     height: 50px;
     margin: 30px auto;
@@ -13,25 +14,25 @@
     animation: none;
 }
 
-.wake-lock-done{
+.wait-done{
     border-radius: 100%;
     width: 100%;
     height: 100%;
     background-color: #fff70a;
 }
 
-.wake-transition{
+.wait-transition{
     cursor: pointer;
 }
 
-.wake-activated{
+.wait-activated{
     cursor: none;
     -webkit-animation: breathe 5s infinite ease-in-out;
     -moz-animation: breathe 5s infinite ease-in-out;
     animation: breathe 5s infinite ease-in-out;
 }
 
-.wake-lock-half{
+.wait-half{
     background-color: #c2c2c2;
     position: absolute;
     width: 100%;
@@ -40,7 +41,7 @@
     border-radius: 100%;
 }
 
-#wake-lock-div{
+#wait-div{
     display: flex;
     width: 100%;
     height: auto;
@@ -64,18 +65,37 @@
 
 .left .fill {
     z-index: 1;
-    -webkit-animation: left var(--wait-seconds) linear;
-    -moz-animation: left var(--wait-seconds) linear;
-    animation: left var(--wait-seconds) linear both;
+    -webkit-animation: left var(--wait-seconds-half) linear;
+    -moz-animation: left var(--wait-seconds-half) linear;
+    animation: left var(--wait-seconds-half) linear both;
 }
 
 .right .fill {
-    -webkit-animation: right var(--wait-seconds) linear;
-    -moz-animation: right var(--wait-seconds) linear;
-    animation: right var(--wait-seconds) linear both;
-    -webkit-animation-delay: var(--wait-seconds);
-    -moz-animation-delay: var(--wait-seconds);
-    animation-delay: var(--wait-seconds);
+    -webkit-animation: right var(--wait-seconds-half) linear;
+    -moz-animation: right var(--wait-seconds-half) linear;
+    animation: right var(--wait-seconds-half) linear both;
+    -webkit-animation-delay: var(--wait-seconds-half);
+    -moz-animation-delay: var(--wait-seconds-half);
+    animation-delay: var(--wait-seconds-half);
+}
+
+.hand-container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hand{
+    z-index: 10;
+}
+
+.slow-fade{
+    -webkit-animation: slow-fade var(--wait-seconds) linear;
+    -moz-animation: slow-fade var(--wait-seconds) linear;
+    animation: slow-fade var(--wait-seconds) linear both;
 }
 
 @keyframes left {
@@ -102,5 +122,14 @@
     }
     50%{
         transform: scale(1.5);
+    }
+}
+
+@keyframes slow-fade{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
     }
 }

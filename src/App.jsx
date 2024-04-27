@@ -44,6 +44,8 @@ function App() {
   const [speechBubbleText, setSpeechBubbleText] = useState("")
   const [speechBubbleDuration, setSpeechBubbleDuration] = useState(2000)
   const [extensionDetected, setExtensionDetected] = useState(false);
+  const [endingState, setEndingState] = useState("NOT_READY") //NOT_READY, READY, WAIT, FINISHED
+  const [waitCircleStates, setWaitCircleStates] = useState([false, false, false])
   const isMobile = window.innerWidth <= 768;
 
   const convertForSave = () => {
@@ -56,7 +58,9 @@ function App() {
       total_spent: totalSpent,
       total_earned: totalEarned,
       total_clicks: totalClicks,
-      key_unlocked: keyUnlocked
+      key_unlocked: keyUnlocked,
+      ending_state: endingState,
+      wait_circle_states: waitCircleStates
     }
     return player;
   }
@@ -73,6 +77,8 @@ function App() {
     setTotalClicks(0);
     setKeyUnlocked(false);
     lockKeys();
+    setEndingState("NOT_READY")
+    setWaitCircleStates([false, false, false])
   }
 
   const isSupplyPurchased = (id) => {
@@ -106,9 +112,6 @@ function App() {
 
     var supply = SupplyObject[id];
     if (id == "mixing_bowl"){
-      return !isSupplyPurchased(id);
-    }
-    else if (supply.keys){
       return !isSupplyPurchased(id);
     }
     else if (supply.oven_increase){
@@ -174,6 +177,7 @@ function App() {
   }
 
   const TryBuySupply = (id, mousePos) => {
+    setEndingState("READY")
     console.log("Trying to buy supply " + id);
     var supply = SupplyObject[id];
     if (!supply || supply.cost > breadCoin){
@@ -328,6 +332,14 @@ function App() {
     setSpeechBubbleDuration(time == -1 ? 2000 : time);
   }
 
+  const getBreadTotal = () => {
+    var total = 0;
+    for (var bread in BreadObject){
+      total += BreadObject[bread].purchase_count
+    }
+    return total
+  }
+
   useEffect(() => {
     registerForMessages(setClicks, setKeys, setKeyUnlocked, extensionDetected, setExtensionDetected);
     document.addEventListener("visibilitychange", (event) => {
@@ -367,6 +379,12 @@ function App() {
       if (playerData.key_unlocked){
         setKeyUnlocked(playerData.key_unlocked);
       }
+      if (playerData.ending_state){
+        setEndingState(playerData.ending_state)
+      }
+      if (playerData.wait_circle_states){
+        setWaitCircleStates(playerData.wait_circle_states)
+      }
     }
 
     return () => {
@@ -380,8 +398,9 @@ function App() {
   }, []);
 
   useEffect(() => {
+    console.log("Saving, " + endingState)
     saveData(convertForSave())
-  }, [breadCoin])
+  }, [breadCoin, endingState, waitCircleStates])
 
   useEffect(() => {
     if (extensionDetected){
@@ -395,15 +414,15 @@ function App() {
     <FloatingText text={floatingText} setText={setFloatingText} mousePos={floatingTextPos} />
 
     { !extensionDetected || isMobile ? <BlockingScreen isMobile={isMobile} delay={1000}/> : null }
-    {/*<Ending/>*/}
+    {/*{ endingState != "NOT_READY" ? <Ending breadTotal={getBreadTotal()} endingState={endingState} setEndingState={setEndingState} waitCircleStates={waitCircleStates} setWaitCircleStates={setWaitCircleStates}/> : null}*/}
     
-    <div id="column-one" className="column">
+    <div id="column-1" className="column">
       <Wallet clicks={clicks} keys={keys} multiplier={multiplier} convertClicks={convertClicksToBreadCoin} convertKeys={convertKeysToMultiplier} toggleClicksTooltip={toggleConvertClicksTooltip} toggleKeysTooltip={toggleConvertKeysTooltip} keyUnlocked={keyUnlocked}/>
     
       { SupplyObject ? <CardList id="supply-list" title="Kitchen Supplies" items={Object.values(SupplyObject)} onCardClicked={TryBuySupply} shouldShow={shouldShowSupply} toggleTooltip={toggleTooltip} shouldDisable={isSupplyDisabled} maxItems={4}/> : null }
     </div>
 
-    <div id="column-two" className="column">
+    <div id="column-2" className="column">
       <div id="bc-container">
         <div id="bread-coin"><BCSymbol color="black"/><span id="bc-num"><span id="bc-anim">100</span>{formatNumber(breadCoin) ?? "?"} </span></div>
       </div>
@@ -412,7 +431,7 @@ function App() {
       {/*<div id="title">bread winner</div>*/}
     </div>
 
-    <div id="column-three" className="column">
+    <div id="column-3" className="column">
       { BreadObject ? <CardList id="bread-list" title="Recipe Book" items={Object.values(BreadObject)} onCardClicked={TryBuyBread} shouldShow={shouldShowBread} toggleTooltip={toggleBreadTooltip} shouldDisable={isBreadDisabled} maxItems={9}/> : null }
     </div>
     <div id="background">

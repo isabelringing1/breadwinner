@@ -56,6 +56,10 @@
     opacity: 1;
 }
 
+#wake-lock-error{
+    color: red;
+}
+
 .fade-out{
     transition: opacity 10s linear;
     opacity: 0;

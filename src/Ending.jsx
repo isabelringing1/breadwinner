@@ -1,19 +1,22 @@
 import { useState, useEffect, useRef } from 'react'
-import WakeLockCircle from './WakeLockCircle'
+import WaitCircle from './WaitCircle'
 
 import './BlockingScreen.css'
 import './Wallet.css'
-import './WakeLockCircle.css'
+import './WaitCircle.css'
 import endingData from './config/ending.json';
 
 function Ending(props){
+    const { breadTotal, endingState, setEndingState, waitCircleStates, setWaitCircleStates } = props
     const [endingText, setEndingText] = useState("")
     const [endingIndex, setEndingIndex] = useState(0)
     const [buttons, setButtons] = useState([])
     const [buttonColors, setButtonColors] = useState([])
-    const [wakeLockShow, setWakeLockShow] = useState([false, false, false])
-    const [inWaitLock, setInWakeLock] = useState(null)
-    const [wakeLockStates, setWakeLockStates] = useState([false, false, false])
+    const [waitCircleShow, setWaitCircleShow] = useState([false, false, false])
+    const [wakeLockError, setWakeLockError] = useState(null)
+
+    const inWait = useRef(null)
+   
 
     const loadPart = (index) => {
         var part = endingData.ending[index]
@@ -21,14 +24,16 @@ function Ending(props){
             console.log("Can't get ending at index " + index)
             return
         }
+        if (part.replace){
+            if (part.replace == "TOTAL"){
+                part.text = part.text.replace("TOTAL", breadTotal)
+            }
+        }
         var paragraph_text = part.text.split('\n').map((str, i) => <p key={"p-"+index+"-"+i}>{str}</p>);
-        console.log(paragraph_text)
         setEndingText(paragraph_text)
         if (part.buttons){
-            if (part.buttons[0] == "wake-lock"){
-                setWakeLockShow([false, true, false])
-                setButtons([])
-                setButtonColors([])
+            if (part.buttons[0] == "wait-circle"){
+                setEndingState("WAIT")
             }
             else{
                 setButtons(part.buttons)
@@ -42,49 +47,69 @@ function Ending(props){
     }
 
     const onEndingButtonClicked = (buttonId) => {
-        console.log("Clicked " + buttonId)
         setEndingIndex(endingIndex + 1)
         loadPart(endingIndex + 1)
     }
 
-    const showWakeLockDiv = () => {
-        for (var i = 0; i < wakeLockShow.length; i++){
-            if (wakeLockShow[i]){
+    const onDeclineButtonClicked = () => {
+        setEndingState("NOT_READY");
+    }
+
+    const showWaitCircleDiv = () => {
+        for (var i = 0; i < waitCircleShow.length; i++){
+            if (waitCircleShow[i]){
                 return true
             }
         }
         return false
     }
 
-    const onWakeLockFinished = (index) => {
-        const newWakeLockStates = wakeLockStates.map((state, i) => {
+    const onWaitCircleFinished = (index) => {
+        var finished = true;
+        const newWaitCircleStates = waitCircleStates.map((state, i) => {
             if (i == index){
                 return true;
             }
+            if (!state){
+                finished = false;
+            }
             return state;
-        })
-        setWakeLockStates(newWakeLockStates);
-        setWakeLockShow([true, true, true]);
+        });
+        setWaitCircleStates(newWaitCircleStates);
+        setWaitCircleShow([true, true, true]);
+        
+        console.log(newWaitCircleStates)
+        if (finished){
+            setEndingState("FINISHED")
+        }
     }
 
     useEffect(() => {
-        loadPart(endingIndex)
-    }, [])
-
-    useEffect(() => {
-        if (inWaitLock == null){
-            return
+        if (endingState == "READY"){
+            loadPart(endingIndex)
         }
-        else if (inWaitLock){
-            setEndingText(<p>Good!</p>)
-            document.getElementById("ending-text").className = "ending-text fade-out"
-        }
-        else{
+        else if (endingState == "WAIT"){ // set up wait circles
             setEndingText(<p>{endingData.default_text}</p>)
-            document.getElementById("ending-text").className = "ending-text"
+            if (!waitCircleStates[1]){
+                setWaitCircleShow([false, true, false])
+            }
+            else{
+                setWaitCircleShow([true, true, true])
+            }
+            setButtons([])
+            setButtonColors([])
+            for (var i = 0; i < waitCircleStates.length; i++){
+                if (waitCircleStates[i]){
+                    document.getElementById("column-" + (i + 1)).className = "column transparent"
+                }
+            }
         }
-    }, [inWaitLock])
-    
+        else if (endingState == "FINISHED"){
+            console.log("ending state is finished")
+        }
+        
+    }, [endingState])
+
     return (
     <div className="blocking-screen">
         <div className="blocking-div ending-div">
@@ -93,10 +118,10 @@ function Ending(props){
                     {endingText}
                 </div>
                 {
-                    showWakeLockDiv() ? <div id="wake-lock-div">
-                        {wakeLockShow[0] ? <WakeLockCircle id={0} setInWakeLock={setInWakeLock} finished={wakeLockStates[0]} onFinished={() => {onWakeLockFinished(0)}}/> : null}
-                        {wakeLockShow[1] ? <WakeLockCircle id={1} setInWakeLock={setInWakeLock} finished={wakeLockStates[1]} onFinished={() => {onWakeLockFinished(1)}}/> : null}
-                        {wakeLockShow[2] ? <WakeLockCircle id={2} setInWakeLock={setInWakeLock} finished={wakeLockStates[2]} onFinished={() => {onWakeLockFinished(2)}}/> : null}
+                    showWaitCircleDiv() ? <div id="wait-div">
+                        {waitCircleShow[0] ? <WaitCircle id={0} inWait={inWait} setWakeLockError={setWakeLockError} finished={waitCircleStates[0]} onFinished={() => {onWaitCircleFinished(0)}} setEndingText={setEndingText} defaultText={endingData.default_text}/> : null}
+                        {waitCircleShow[1] ? <WaitCircle id={1} inWait={inWait} setWakeLockError={setWakeLockError} finished={waitCircleStates[1]} onFinished={() => {onWaitCircleFinished(1)}} setEndingText={setEndingText} defaultText={endingData.default_text}/> : null}
+                        {waitCircleShow[2] ? <WaitCircle id={2} inWait={inWait} setWakeLockError={setWakeLockError} finished={waitCircleStates[2]} onFinished={() => {onWaitCircleFinished(2)}} setEndingText={setEndingText} defaultText={endingData.default_text}/> : null}
                     </div> : null
                 }
                 
@@ -105,10 +130,18 @@ function Ending(props){
                         buttons.map((buttonText, index) => {
                             var buttonClass = "button ending-button " + buttonColors[index]
                             var buttonId = "button-" + endingIndex + "-" + index
-                            return <button className={buttonClass} id={buttonId} key={buttonId} onClick={() => {onEndingButtonClicked(buttonId)}}>{buttonText}</button>
+                            return <button className={buttonClass} id={buttonId} key={buttonId} onClick={() => {
+                                if (buttonColors[index] == "red"){
+                                    onDeclineButtonClicked()
+                                }
+                                else{
+                                    onEndingButtonClicked(buttonId)
+                                }
+                            }}>{buttonText}</button>
                         })
                     }
                 </div>
+                { wakeLockError ? <div id="wake-lock-error">{wakeLockError}</div> : null}
             </div>
         </div>
     </div>)

@@ -113,7 +113,7 @@
       "display_name": "Secret Spread",
       "desc": "Untapped primordial power in a jar. Unlocks the ability to convert your keystrokes into small additions to the multiplier.",
       "image_path": "/images/secret_spread.png",
-      "previous": "",
+      "previous": "whisk",
       "cost": 12345,
       "keys": true,
       "purchased": false,

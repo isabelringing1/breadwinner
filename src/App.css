@@ -26,22 +26,27 @@ button{
     height: 98%;
 }
 
-#column-one{
+#column-1{
     width: 25%;
     padding-left: 50px;
 }
 
-#column-two{
+#column-2{
     width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#column-three{
+#column-3{
     width: 25%;
     padding-right: 50px;
     text-align: right;
+    overflow-y: auto;
+}
+
+.transparent{
+    opacity: 0;
 }
 
 #supply-list{
@@ -59,7 +64,7 @@ button{
     text-align: right;
     right: 0;
     bottom: 0;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .card-section-title{
