@@ -1,4 +1,5 @@
-function requestClickCount(){    window.postMessage({
+function requestClickCount(){   
+   window.postMessage({
       id: "getClicks"
     });
 }

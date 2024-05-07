@@ -27,7 +27,7 @@ function App() {
   const [clicks, setClicks] = useState(null);
   const [keys, setKeys] = useState(null);
   const [keyUnlocked, setKeyUnlocked] = useState(false);
-  const [multiplier, setMultiplier] = useState(null);
+  const [multiplier, setMultiplier] = useState(1);
   const [breadCoin, setBreadCoin] = useState(0);
   const [SupplyObject, setSupplyObject] = useState(suppliesJson);
   const [BreadObject, setBreadObject] = useState(breadJson);
@@ -46,6 +46,8 @@ function App() {
   const [extensionDetected, setExtensionDetected] = useState(false);
   const [endingState, setEndingState] = useState("NOT_READY") //NOT_READY, READY, WAIT, FINISHED
   const [waitCircleStates, setWaitCircleStates] = useState([false, false, false])
+  const [visited, setVisited] = useState(false)
+  const [showInfo, setShowInfo] = useState(false)
   const isMobile = window.innerWidth <= 768;
 
   const convertForSave = () => {
@@ -66,7 +68,10 @@ function App() {
   }
 
   const reset = () => {
-    setSupplyObject(suppliesJson);
+    lockKeys();
+    localStorage.clear();
+    location.reload();
+   /* setSupplyObject(suppliesJson);
     setBreadObject(breadJson);
     setOvenQueue([null, null, null, null]);
     setMultiplier(1);
@@ -78,7 +83,7 @@ function App() {
     setKeyUnlocked(false);
     lockKeys();
     setEndingState("NOT_READY")
-    setWaitCircleStates([false, false, false])
+    setWaitCircleStates([false, false, false])*/
   }
 
   const isSupplyPurchased = (id) => {
@@ -177,7 +182,6 @@ function App() {
   }
 
   const TryBuySupply = (id, mousePos) => {
-    setEndingState("READY")
     console.log("Trying to buy supply " + id);
     var supply = SupplyObject[id];
     if (!supply || supply.cost > breadCoin){
@@ -204,6 +208,10 @@ function App() {
         null
       ];
       setOvenQueue(newOvenQueue);
+    }
+    else if (supply.id == "bread_god"){
+      setEndingState("READY");
+      setShowTooltip(false)
     }
   }
 
@@ -306,7 +314,8 @@ function App() {
         ]);
         broadcastBc(breadCoin + loaf.sell_value)
         setBreadCoin(breadCoin + loaf.sell_value)
-        animateGainOrLoss(loaf.sell_value)
+        animateGainOrLoss(loaf.sell_value);
+        setShowTooltip(false);
         return;
       }
     }
@@ -385,6 +394,7 @@ function App() {
       if (playerData.wait_circle_states){
         setWaitCircleStates(playerData.wait_circle_states)
       }
+      setVisited(true)
     }
 
     return () => {
@@ -413,8 +423,8 @@ function App() {
     <Tooltip show={showTooltip} text={tooltipText} textAfter={tooltipTextAfter} mousePos={tooltipPos}/>
     <FloatingText text={floatingText} setText={setFloatingText} mousePos={floatingTextPos} />
 
-    { !extensionDetected || isMobile ? <BlockingScreen isMobile={isMobile} delay={1000}/> : null }
-    {/*{ endingState != "NOT_READY" ? <Ending breadTotal={getBreadTotal()} endingState={endingState} setEndingState={setEndingState} waitCircleStates={waitCircleStates} setWaitCircleStates={setWaitCircleStates}/> : null}*/}
+    { !extensionDetected || isMobile || showInfo ? <BlockingScreen visited={visited} isMobile={isMobile} delay={1000} showInfo={showInfo} setShowInfo={setShowInfo}/> : null }
+    { endingState != "NOT_READY" ? <Ending breadTotal={getBreadTotal()} endingState={endingState} setEndingState={setEndingState} waitCircleStates={waitCircleStates} setWaitCircleStates={setWaitCircleStates}/> : null}
     
     <div id="column-1" className="column">
       <Wallet clicks={clicks} keys={keys} multiplier={multiplier} convertClicks={convertClicksToBreadCoin} convertKeys={convertKeysToMultiplier} toggleClicksTooltip={toggleConvertClicksTooltip} toggleKeysTooltip={toggleConvertKeysTooltip} keyUnlocked={keyUnlocked}/>
@@ -427,16 +437,18 @@ function App() {
         <div id="bread-coin"><BCSymbol color="black"/><span id="bc-num"><span id="bc-anim">100</span>{formatNumber(breadCoin) ?? "?"} </span></div>
       </div>
       <Oven queue={OvenQueue} sellLoaf={sellLoaf} toggleTooltip={toggleLoafTooltip} updateTooltip={updateLoafTooltip} shouldShow={totalSpent > 0}/>
-      <SpeechBubble text={speechBubbleText} setText={setSpeechBubbleText} duration={speechBubbleDuration}/>
-      {/*<div id="title">bread winner</div>*/}
+      <SpeechBubble text={speechBubbleText} setText={setSpeechBubbleText} duration={speechBubbleDuration} show={visited && endingState == "NOT_READY"}/>
+      <div id="version">bread winner v1.0.0b <span id='info' onClick={() => {
+        setShowInfo(true);
+        }}>?</span></div>
     </div>
 
     <div id="column-3" className="column">
       { BreadObject ? <CardList id="bread-list" title="Recipe Book" items={Object.values(BreadObject)} onCardClicked={TryBuyBread} shouldShow={shouldShowBread} toggleTooltip={toggleBreadTooltip} shouldDisable={isBreadDisabled} maxItems={9}/> : null }
     </div>
     <div id="background">
-      <img src={tile} className='tile-bg' id='tile-left'/>
-      <img src={tile} className='tile-bg' id='tile-right'/>
+      <img src={tile} className='tile-bg' id='tile-1'/>
+      <img src={tile} className='tile-bg' id='tile-3'/>
       <img src={shadow} id='shadow'/>
     </div>
   </div>

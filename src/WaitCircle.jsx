@@ -28,6 +28,9 @@ function WaitCircle(props) {
             inWait.current = true;
             setEndingText(<p>Good.</p>)
             setTimeout(() => {
+                if (!inWait.current){
+                    return
+                }
                 setEndingText(<p>Now go!</p>)
                 document.getElementById("ending-text").className = "ending-text fade-out"
             }, 2000)
@@ -36,6 +39,9 @@ function WaitCircle(props) {
             document.getElementById("fill-right-" + id).className = "fill";
             document.getElementById("wait-container-" + id).className = "wait-container wait-transition"
             document.getElementById("column-" + (id + 1)).className = "column slow-fade"
+            if (id == 0 || id == 2){
+                document.getElementById("tile-" + (id + 1)).className = "tile-bg slow-fade"
+            }
             setHand(hand1)
             setTimeout(() => {
                 document.getElementById("wait-container-" + id).className = "wait-container wait-activated"
@@ -49,6 +55,9 @@ function WaitCircle(props) {
                 onFinished();
                 breakWait();
                 document.getElementById("column-" + (id+ 1)).className = "column transparent"
+                if (id == 0 || id == 2){
+                    document.getElementById("tile-" + (id + 1)).className = "tile-bg transparent"
+                }
             }, 6000);
 
         } catch (err) {
@@ -64,6 +73,9 @@ function WaitCircle(props) {
             setEndingText(<p>{defaultText}</p>)
             document.getElementById("ending-text").className = "ending-text"
             document.getElementById("column-" + (id+ 1)).className = "column"
+            if (id == 0 || id == 2){
+                document.getElementById("tile-" + (id + 1)).className = "tile-bg"
+            }
             return;
         }
 
@@ -79,6 +91,9 @@ function WaitCircle(props) {
         document.getElementById("wait-container-" + id).className = "wait-container"
         document.getElementById("ending-text").className = "ending-text"
         document.getElementById("column-" + (id+ 1)).className = "column"
+        if (id == 0 || id == 2){
+            document.getElementById("tile-" + (id + 1)).className = "tile-bg"
+        }
     }
 
     return (finished ? 

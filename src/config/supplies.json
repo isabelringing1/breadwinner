@@ -119,6 +119,36 @@
       "purchased": false,
       "unlocked": false
     },
+    "bread_aficionado": {
+      "id": "bread_aficionado",
+      "display_name": "Bread Aficionado",
+      "desc": "Untapped primordial power in a jar. Unlocks the ability to convert your keystrokes into small additions to the multiplier.",
+      "image_path": "/images/bronze.png",
+      "previous": "serrated_knife",
+      "cost": 100000000,
+      "purchased": false,
+      "unlocked": false
+    },
+    "bread_master": {
+      "id": "bread_master",
+      "display_name": "Bread Master",
+      "desc": "Untapped primordial power in a jar. Unlocks the ability to convert your keystrokes into small additions to the multiplier.",
+      "image_path": "/images/silver.png",
+      "previous": "bread_aficionado",
+      "cost": 500000000,
+      "purchased": false,
+      "unlocked": false
+    },
+    "bread_god": {
+      "id": "bread_god",
+      "display_name": "Bread God",
+      "desc": "Untapped primordial power in a jar. Unlocks the ability to convert your keystrokes into small additions to the multiplier.",
+      "image_path": "/images/gold.png",
+      "previous": "bread_master",
+      "cost": 1000000000,
+      "purchased": false,
+      "unlocked": false
+    },
     "oven_slot_1":{
       "id": "oven_slot_1",
       "display_name": "Oven Rack",

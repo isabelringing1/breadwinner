@@ -28,7 +28,10 @@ function Timer(props){
         }
     }, [])
 
-    return (<div className="timer"> { status === 'done' ? "Done!" : msToTime(timeLeft, true, true) } </div>)
+    var timeLeftString = timeLeft != null ? msToTime(timeLeft, true, true) : "";
+    var timerClassName = timeLeft != null && timeLeftString.length > 8 ? "timer small-timer" : "timer";
+
+    return (<div className={timerClassName}> { status === 'done' ? "Done!" : timeLeftString } </div>)
 
 }
 

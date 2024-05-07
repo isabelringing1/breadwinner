@@ -1,10 +1,10 @@
 import { useEffect} from "react"
 
 function SpeechBubble(props){
-    var { text, setText, duration } = props
+    var { text, setText, duration, show } = props
 
     useEffect(() => {
-        if (text == ""){
+        if (text == "" || !show){
             return;
         }
 
@@ -20,10 +20,10 @@ function SpeechBubble(props){
         
     }, [text])
 
-    return <div id="speech-bubble-container">
+    return show ? <div id="speech-bubble-container">
         <div id="speech-bubble">{text}</div>
         <div id="speech-bubble-tail"></div>
-    </div>
+    </div> : null
 }
 
 export default SpeechBubble
