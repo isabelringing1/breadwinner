@@ -58,7 +58,7 @@ function WaitCircle(props) {
                 if (id == 0 || id == 2){
                     document.getElementById("tile-" + (id + 1)).className = "tile-bg transparent"
                 }
-            }, 6000);
+            }, 1800000);
 
         } catch (err) {
             // The Wake Lock request has failed - usually system related, such as battery.

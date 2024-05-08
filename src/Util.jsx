@@ -42,7 +42,6 @@ function msToTime(duration, round = false, clipZeroes = false) {
 function formatNumber(num, isDecimal = false){
   if (num == null) return false
   if (isDecimal){
-    console.log()
     return (num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 8 }))
   }
   return num.toLocaleString();

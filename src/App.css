@@ -72,9 +72,8 @@ button{
 
 .debug-menu{
     position: absolute;
-    width: 300px;
-    height: 200px;
-    background-color: rgb(0, 0, 0, 0.2);
+    width: 150px;
+    height: 100px;
     padding: 20px;
     text-align: right;
     right: 0;

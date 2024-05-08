@@ -108,6 +108,26 @@ a:hover{
     font-size: 17px;
     color:rgb(97, 97, 97)
 }
+
+.true-ending{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 200px;
+}
+
+.ending-img{
+    width: 70%;
+}
+
+.reset-button{
+    background-color:  rgb(57, 151, 202);
+}
+
+.reset-button:after{
+    background-color: rgb(127, 199, 238);
+}
   
   
 @keyframes load8 {

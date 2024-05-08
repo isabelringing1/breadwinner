@@ -1,6 +1,6 @@
 :root {
-    --wait-seconds: 6s;
-    --wait-seconds-half: 3s;
+    --wait-seconds: 1800s;
+    --wait-seconds-half: 900s;
 
 }
 

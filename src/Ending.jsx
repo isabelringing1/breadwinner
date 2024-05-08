@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { resetCheat } from '../public/debug';
 import WaitCircle from './WaitCircle'
 
 import './BlockingScreen.css'
@@ -6,8 +7,10 @@ import './Wallet.css'
 import './WaitCircle.css'
 import endingData from './config/ending.json';
 
+import endingImg from '/images/ending.png'
+
 function Ending(props){
-    const { breadTotal, endingState, setEndingState, waitCircleStates, setWaitCircleStates } = props
+    const { breadTotal, endingState, setEndingState, waitCircleStates, setWaitCircleStates, resetProgress } = props
     const [endingText, setEndingText] = useState("")
     const [endingIndex, setEndingIndex] = useState(0)
     const [buttons, setButtons] = useState([])
@@ -78,7 +81,6 @@ function Ending(props){
         setWaitCircleStates(newWaitCircleStates);
         setWaitCircleShow([true, true, true]);
         
-        console.log(newWaitCircleStates)
         if (finished){
             setEndingState("FINISHED")
         }
@@ -101,11 +103,25 @@ function Ending(props){
             for (var i = 0; i < waitCircleStates.length; i++){
                 if (waitCircleStates[i]){
                     document.getElementById("column-" + (i + 1)).className = "column transparent"
+                    if (i == 0 || i == 2){
+                        document.getElementById("tile-" + (i + 1)).className = "tile-bg transparent"
+                    }
                 }
             }
         }
         else if (endingState == "FINISHED"){
-            console.log("ending state is finished")
+            for (var i = 0; i < waitCircleStates.length; i++){
+                document.getElementById("column-" + (i + 1)).className = "column transparent"
+                if (i == 0 || i == 2){
+                    document.getElementById("tile-" + (i + 1)).className = "tile-bg transparent"
+                }
+            }
+            document.getElementsByClassName("true-ending")[0].style.display = "flex";
+            document.getElementsByClassName("ending-text")[0].style.display = "none";
+            document.getElementsByClassName("ending-buttons")[0].style.display = "none";
+            if (document.getElementById("wait-div")){
+                document.getElementById("wait-div").style.display = "none";
+            }
         }
         
     }, [endingState])
@@ -114,6 +130,10 @@ function Ending(props){
     <div className="blocking-screen">
         <div className="blocking-div ending-div">
             <div className='inner-border'>
+                <div className='true-ending'>
+                    <img className="ending-img" src={endingImg}/>
+                    <button className="button reset-button"  onClick={() => {resetProgress(); resetCheat();}}>Reset?</button>
+                </div>
                 <div className="ending-text" id="ending-text">
                     {endingText}
                 </div>

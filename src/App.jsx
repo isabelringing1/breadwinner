@@ -424,7 +424,7 @@ function App() {
     <FloatingText text={floatingText} setText={setFloatingText} mousePos={floatingTextPos} />
 
     { !extensionDetected || isMobile || showInfo ? <BlockingScreen visited={visited} isMobile={isMobile} delay={1000} showInfo={showInfo} setShowInfo={setShowInfo}/> : null }
-    { endingState != "NOT_READY" ? <Ending breadTotal={getBreadTotal()} endingState={endingState} setEndingState={setEndingState} waitCircleStates={waitCircleStates} setWaitCircleStates={setWaitCircleStates}/> : null}
+    { endingState != "NOT_READY" ? <Ending breadTotal={getBreadTotal()} endingState={endingState} setEndingState={setEndingState} waitCircleStates={waitCircleStates} setWaitCircleStates={setWaitCircleStates} resetProgress={reset}/> : null}
     
     <div id="column-1" className="column">
       <Wallet clicks={clicks} keys={keys} multiplier={multiplier} convertClicks={convertClicksToBreadCoin} convertKeys={convertKeysToMultiplier} toggleClicksTooltip={toggleConvertClicksTooltip} toggleKeysTooltip={toggleConvertKeysTooltip} keyUnlocked={keyUnlocked}/>
