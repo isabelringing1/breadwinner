@@ -100,7 +100,7 @@ function App() {
       return true;
     }
     if (!bread.unlocked && BreadObject[bread.previous].purchase_count > 0){
-      console.log("Unlocking " + id)
+      //console.log("Unlocking " + id)
       bread.unlocked = true;
     }
     return bread.unlocked;
@@ -136,7 +136,7 @@ function App() {
   }
 
   const TryBuyBread = (id, mousePos) => {
-    console.log("Trying to buy bread " + id);
+    //console.log("Trying to buy bread " + id);
     var bread = BreadObject[id];
     var nextOpen = -1;
     for (var i = 0; i < OvenQueue.length; i++){
@@ -151,7 +151,7 @@ function App() {
       return false;
     }
     else if (!bread || bread.cost > breadCoin){
-      console.log("Couldn't buy " + id);
+      //console.log("Couldn't buy " + id);
       return false;
     }
     var now = Date.now()
@@ -182,14 +182,14 @@ function App() {
   }
 
   const TryBuySupply = (id, mousePos) => {
-    console.log("Trying to buy supply " + id);
+    //console.log("Trying to buy supply " + id);
     var supply = SupplyObject[id];
     if (!supply || supply.cost > breadCoin){
-      console.log("Couldn't buy " + id);
+      //console.log("Couldn't buy " + id);
       return false;
     }
 
-    console.log("Success buying " + id);
+    //console.log("Success buying " + id);
     spendBreadCoin(supply.cost)
     setTotalSpent(totalSpent + supply.cost)
     var newSupply = { ...SupplyObject }
@@ -232,7 +232,7 @@ function App() {
   }
 
   const convertKeysToMultiplier = () => {
-    setMultiplier(multiplier + (keys * .000001))
+    setMultiplier(multiplier + (keys * .0001))
     spendKeys(keys)
   }
 
@@ -295,7 +295,7 @@ function App() {
 
   const toggleConvertKeysTooltip = (show, mousePos = [0, 0]) => {
     if (show){
-      var text = "Increase your multiplier by tiny amount with every key. Convert for +" + (keys * .000001) + "."
+      var text = "Increase your multiplier by tiny amount with every key. Convert for +" + (keys * .0001) + "."
       setTooltipText(text);
       setTooltipTextAfter("")
     }
@@ -333,7 +333,7 @@ function App() {
 
   const setSpeechBubble = (category, time = -1) => {
     if (messagesJson[category] == null){
-      console.log("Could not find a message in category " + id);
+      //console.log("Could not find a message in category " + id);
       return;
     }
     var message = messagesJson[category][Math.floor(Math.random() * messagesJson[category].length)]
@@ -408,7 +408,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log("Saving, " + endingState)
+    //console.log("Saving, " + endingState)
     saveData(convertForSave())
   }, [breadCoin, endingState, waitCircleStates])
 
