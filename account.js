@@ -11,8 +11,8 @@ function loadData(){
     var saveData = localStorage.getItem("bread_data");
     if (saveData != null){
         try{
-            console.log("Loaded Save Data: ");
-            console.log(JSON.parse(saveData))
+           //("Loaded Save Data: ");
+            //console.log(JSON.parse(saveData))
             return JSON.parse(saveData)
            //var player = bison.decode(saveData);
         }
