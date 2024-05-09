@@ -16,6 +16,7 @@ import Ending from './Ending'
 
 import tile from '/images/tile.png'
 import shadow from '/images/shadow.png'
+import trophy from '/images/trophy.png'
 
 import './App.css'
 
@@ -438,7 +439,7 @@ function App() {
       </div>
       <Oven queue={OvenQueue} sellLoaf={sellLoaf} toggleTooltip={toggleLoafTooltip} updateTooltip={updateLoafTooltip} shouldShow={totalSpent > 0}/>
       <SpeechBubble text={speechBubbleText} setText={setSpeechBubbleText} duration={speechBubbleDuration} show={visited && endingState == "NOT_READY"}/>
-      <div id="version">bread winner v1.0.0b <span id='info' onClick={() => {
+      <div id="version">{isSupplyPurchased("bread_god") ? <img id="trophy" src={trophy} onClick={() => {setEndingState("READY");}}/> : null}bread winner v1.0.0b <span id='info' onClick={() => {
         setShowInfo(true);
         }}>?</span></div>
     </div>

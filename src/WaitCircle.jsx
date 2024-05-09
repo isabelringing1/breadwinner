@@ -12,14 +12,12 @@ function WaitCircle(props) {
 
     useEffect(() => {
         document.addEventListener("visibilitychange", async () => {
-            console.log("You switched screens!")
             breakWait();
         });
     }, []);
 
     const trySetWait = async () => {
         if (finished){
-            console.log("Already done")
             return;
         }
         try {

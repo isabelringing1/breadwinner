@@ -321,6 +321,10 @@ button{
     padding: 10px 0;
 }
 
+#trophy{
+    height: 25px;
+    padding-right: 5px;
+}
 
 @keyframes flash {
     0%{
