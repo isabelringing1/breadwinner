@@ -296,6 +296,7 @@ button{
     background-color: #9CCFFF;
     line-height: 1.7;
     border-radius: 30px;
+    text-align: center;
 }
 
 #speech-bubble-tail{
@@ -308,13 +309,13 @@ button{
 }
 
 .float-up{
-    animation: float-up 1.5s 1 ease-in-out;
-    -webkit-animation: float-up 1.5s 1 ease-in-out;
+    animation: float-up 1s 1 ease-out;
+    -webkit-animation: float-up 1s 1 ease-out;
 }
 
 .float-up-tail{
-    animation: float-up-tail 1.5s 1 ease-in-out;
-    -webkit-animation: float-up-tail 1.5s 1 ease-in-out;
+    animation: float-up-tail 1s 1 ease-out;
+    -webkit-animation: float-up-tail 1s 1 ease-out;
 }
 
 .br{
@@ -341,21 +342,21 @@ button{
 @keyframes float-up {
     0%{
         opacity: 1;
-        margin-top: 40px;
+        margin-top: 30px;
     }
     10%{
         opacity: 1;
     }
-    40%{
-        margin-top: 20px;
+    60%{
+        margin-top: 15px;
     }
     80%{
         opacity: 1;
-        margin-top: 20px;
+        margin-top: 15px;
     }
     100%{
         opacity: 0;
-        margin-top: 20px;
+        margin-top: 15px;
     }
 }
 

@@ -1,5 +1,26 @@
 {
     "RETURN": [
-        "Welcome back! Let's get baking."
+        "Welcome back! Let's get baking.",
+        "It smells amazing in here.",
+        "It’s so crazy we keep meeting like this.",
+        "We get it, you’re procrastinating.",
+        "Let’s get this bread!"
+    ],
+    "CLICK": [
+        "Cha-ching!"
+    ],
+    "SELL": [
+        "I can’t wait to eat this.",
+        "Finally!",
+        "Good things come to those who wait.",
+        "God, that smells amazing."
+    ],
+    "MULTIPLIER": [
+        "We're going to need more shelf space.",
+        "New stuff is so exciting.",
+        "You got a receipt for that, right?"
+    ],
+    "OVEN-ROW": [
+        "New row unlocked!"
     ]
 }

@@ -27,12 +27,12 @@ function Debug(props) {
 
     return (showDebug ? <div className="debug-menu">
         <button className="button reset-button" onClick={() => {resetProgress(); resetCheat();}}>Reset?</button><br/>
-        {/*<input type="number" ref={clickInputRef}/> <button id="set-clicks-button" onClick={() => setClicksCheat(parseInt(clickInputRef.current.value))}> Set Click Count </button>
+        <input type="number" ref={clickInputRef}/> <button id="set-clicks-button" onClick={() => setClicksCheat(parseInt(clickInputRef.current.value))}> Set Click Count </button>
         <input type="number" ref={BCInputRef}/> <button id="set-bread-coin-button" onClick={() => {
             broadcastBc(parseInt(BCInputRef.current.value))
             setBreadCoin(parseInt(BCInputRef.current.value))
             }}> Set Bread Coin </button>
-        */}</div>: null
+        </div>: null
     )
 }
 

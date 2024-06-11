@@ -43,7 +43,8 @@ function App() {
   const [floatingText, setFloatingText] = useState("");
   const [floatingTextPos, setFloatingTextPos] = useState("")
   const [speechBubbleText, setSpeechBubbleText] = useState("")
-  const [speechBubbleDuration, setSpeechBubbleDuration] = useState(2000)
+  const [speechBubbleDuration, setSpeechBubbleDuration] = useState(1200)
+  const [speechBubbleCount, setSpeechBubbleCount] = useState(0)
   const [extensionDetected, setExtensionDetected] = useState(false);
   const [endingState, setEndingState] = useState("NOT_READY") //NOT_READY, READY, WAIT, FINISHED
   const [waitCircleStates, setWaitCircleStates] = useState([false, false, false])
@@ -72,19 +73,6 @@ function App() {
     lockKeys();
     localStorage.clear();
     location.reload();
-   /* setSupplyObject(suppliesJson);
-    setBreadObject(breadJson);
-    setOvenQueue([null, null, null, null]);
-    setMultiplier(1);
-    setBreadCoin(0);
-    broadcastBc(0);
-    setTotalSpent(0);
-    setTotalEarned(0);
-    setTotalClicks(0);
-    setKeyUnlocked(false);
-    lockKeys();
-    setEndingState("NOT_READY")
-    setWaitCircleStates([false, false, false])*/
   }
 
   const isSupplyPurchased = (id) => {
@@ -101,7 +89,6 @@ function App() {
       return true;
     }
     if (!bread.unlocked && BreadObject[bread.previous].purchase_count > 0){
-      //console.log("Unlocking " + id)
       bread.unlocked = true;
     }
     return bread.unlocked;
@@ -183,14 +170,11 @@ function App() {
   }
 
   const TryBuySupply = (id, mousePos) => {
-    //console.log("Trying to buy supply " + id);
     var supply = SupplyObject[id];
     if (!supply || supply.cost > breadCoin){
-      //console.log("Couldn't buy " + id);
       return false;
     }
 
-    //console.log("Success buying " + id);
     spendBreadCoin(supply.cost)
     setTotalSpent(totalSpent + supply.cost)
     var newSupply = { ...SupplyObject }
@@ -202,6 +186,7 @@ function App() {
     }
     else if (supply.multiplier){
       setMultiplier(multiplier * supply.multiplier)
+      setSpeechBubble("MULTIPLIER")
     }
     else if (supply.oven_increase){
       var newOvenQueue = [
@@ -209,6 +194,9 @@ function App() {
         null
       ];
       setOvenQueue(newOvenQueue);
+      if (newOvenQueue.length % 4 == 1){
+        setSpeechBubble("OVEN-ROW")
+      }
     }
     else if (supply.id == "bread_god"){
       setEndingState("READY");
@@ -224,6 +212,7 @@ function App() {
     animateGainOrLoss(earnedCoin)
     setTotalClicks(totalClicks + clicks)
     spendClicks(clicks);
+    setSpeechBubble("CLICK");
   }
 
   const spendBreadCoin = (amount) => {
@@ -317,6 +306,7 @@ function App() {
         setBreadCoin(breadCoin + loaf.sell_value)
         animateGainOrLoss(loaf.sell_value);
         setShowTooltip(false);
+        setSpeechBubble("SELL");
         return;
       }
     }
@@ -334,12 +324,12 @@ function App() {
 
   const setSpeechBubble = (category, time = -1) => {
     if (messagesJson[category] == null){
-      //console.log("Could not find a message in category " + id);
       return;
     }
     var message = messagesJson[category][Math.floor(Math.random() * messagesJson[category].length)]
     setSpeechBubbleText(message);
     setSpeechBubbleDuration(time == -1 ? 2000 : time);
+    setSpeechBubbleCount(speechBubbleCount + 1);
   }
 
   const getBreadTotal = () => {
@@ -409,12 +399,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    //console.log("Saving, " + endingState)
     saveData(convertForSave())
   }, [breadCoin, endingState, waitCircleStates])
 
   useEffect(() => {
-    if (extensionDetected){
+    if (extensionDetected && visited){
       setSpeechBubble("RETURN");
     }
   }, [extensionDetected])
@@ -438,7 +427,7 @@ function App() {
         <div id="bread-coin"><BCSymbol color="black"/><span id="bc-num"><span id="bc-anim">100</span>{formatNumber(breadCoin) ?? "?"} </span></div>
       </div>
       <Oven queue={OvenQueue} sellLoaf={sellLoaf} toggleTooltip={toggleLoafTooltip} updateTooltip={updateLoafTooltip} shouldShow={totalSpent > 0}/>
-      <SpeechBubble text={speechBubbleText} setText={setSpeechBubbleText} duration={speechBubbleDuration} show={visited && endingState == "NOT_READY"}/>
+      <SpeechBubble text={speechBubbleText} setText={setSpeechBubbleText} duration={speechBubbleDuration} show={endingState == "NOT_READY"} count={speechBubbleCount}/>
       <div id="version">{isSupplyPurchased("bread_god") ? <img id="trophy" src={trophy} onClick={() => {setEndingState("READY");}}/> : null}bread winner v1.0.0b <span id='info' onClick={() => {
         setShowInfo(true);
         }}>?</span></div>
