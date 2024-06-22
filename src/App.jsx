@@ -246,7 +246,7 @@ function App() {
   const updateBreadTooltip = (item) => {
     var sell_price = Math.floor(item.cost * item.markup)
     var times = item.purchase_count == 1 ? " time." : " times."
-    var text = item.desc + "\nSell for " + formatPercent(item.markup) + " of the original price ("
+    var text = item.desc + "\nSells for " + formatPercent(item.markup) + " of the original price ("
     var textAfter = formatNumber(sell_price) + ").\nYou've baked this " + item.purchase_count + times
     setTooltipText(text);
     setTooltipTextAfter(textAfter)
