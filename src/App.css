@@ -9,15 +9,19 @@ button{
     font-family: "Readex Pro", sans-serif;
 }
 
+p{
+    display: inline;
+}
+
 #version{
-    font-size: 20px;
+    font-size: 2.1vh;
     position: absolute;
-    bottom: 25px;
+    bottom: 2.615vh;
 }
 
 #info{
-    height: 25px;
-    width: 25px;
+    height: 2.615vh;
+    width: 2.615vh;
     border-radius: 100%;
     background-color:rgba(34, 148, 230, 0.706);
     color: white;
@@ -43,7 +47,7 @@ button{
 
 #column-1{
     width: 25%;
-    padding-left: 50px;
+    padding-left: 5.23vh;
 }
 
 #column-2{
@@ -55,7 +59,7 @@ button{
 
 #column-3{
     width: 25%;
-    padding-right: 50px;
+    padding-right: 5.23vh;
     text-align: right;
     overflow-y: auto;
 }
@@ -82,15 +86,15 @@ button{
 }
 
 .card-section-title{
-    font-size: 32px;
+    font-size: 3.7vh;
 }
 
 .card-container{
-    padding: 10px;
-    margin: 9px 0;
+    padding: 1.046vh;
+    margin: 0.941vh 0;
     text-align: left;
-    width: 280px;
-    height: 85px;
+    width: 29.19vh;
+    height: 8.86vh;
     filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.45));
     background-color: white;
     border: none;
@@ -98,14 +102,14 @@ button{
 }
 
 .card-title{
-    font-size: 25px;
+    font-size: 2.6vh;
     filter: none;
     z-index: 2;
     font-family: "Kiwi Maru", serif;
 }
 
 .card-price{
-    font-size: 20px;
+    font-size: 2.1vh;
     color: red;
     filter: none;
     z-index: 2;
@@ -143,11 +147,11 @@ button{
     min-width: 150px;
     min-height: 20px;
     max-width: 350px;
-    padding: 20px;
+    padding: 2.09vh;
     background-color: #9CCFFF;
     z-index: 50;
     line-height: 1.7;
-    border-radius: 30px;
+    border-radius: 3.138vh;
     filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.45));
 }
 
@@ -196,17 +200,17 @@ button{
 }
 
 #bread-coin{
-    font-size: 60px;
-    height: 60px;
+    font-size: 6.3vh;
+    height: 6.27vh;
     display: flex;
 }
 
 #bc-container{
-    height: 100px;
+    height: 9.56vh;
     display: flex;
     justify-content: center;
     align-items: end;
-    padding-bottom: 20px;
+    padding-bottom: 2.09vh;
     z-index: 10;
 }
 

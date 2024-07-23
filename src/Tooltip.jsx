@@ -1,4 +1,5 @@
 import BCSymbol from './BCSymbol'
+import Markdown from 'react-markdown'
 
 function Tooltip(props){
     const { show, text, textAfter, mousePos } = props;
@@ -9,8 +10,7 @@ function Tooltip(props){
     }
 
     return (<div id="tooltip" style={{opacity: show ? 1 : 0, top: mousePos[1] + "px", left: (mousePos[0] - 80) + "px"}}>
-        <div id="tooltip-text">{text} {textAfter ? <BCSymbol color="black" height={15} top={1}/> : null}{textAfter}</div>
-        
+        <div id="tooltip-text"><Markdown>{text}</Markdown> {textAfter ? <BCSymbol color="black" height={15} top={1}/> : null}{textAfter}</div>
     </div>)
 }
 

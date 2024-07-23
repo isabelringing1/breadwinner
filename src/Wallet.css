@@ -1,26 +1,26 @@
 #wallet{
-    height: 45%;
-    font-size: 25px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 45%;
+  font-size: 2.6vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 #click-container{
-    height: 35px;
-    padding-top: 35px;
+    height: 3.66vh;
+    padding-top: 3.66vh;
 }
 
 #bread-list-title{
-  padding-bottom: 10px;
+  padding-bottom: 1.04vh;
 }
 
 #supply-list-title{
-  padding-top: 10px;
+  padding-top: 1.04vh;
 }
 
 #convert-keys{
-  width: 280px;
+  width: 29.28vh;
   background-color: #c54141;
 }
 
@@ -29,7 +29,7 @@
 }
 
 #convert-clicks{
-  width: 280px;
+  width: 29.28vh;
   background-color: #4c9d27;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .green{
-  max-width: 210px;
+  max-width: 21.97vh;
   white-space: wrap;
   background-color: #4c9d27;
 }
@@ -48,7 +48,7 @@
 }
 
 .red{
-  max-width: 210px;
+  max-width: 21.97vh;
   word-wrap: break-word;
   background-color: #c54141;
 }
@@ -65,10 +65,10 @@
     box-sizing: border-box;
     cursor: pointer;
     display: inline-block;
-    font-size: 15px;
+    font-size: 1.6vh;
     font-weight: 700;
     letter-spacing: .8px;
-    line-height: 20px;
+    line-height: 2.09vh;
     margin: 0;
     outline: none;
     overflow: visible;
@@ -81,10 +81,10 @@
     user-select: none;
     -webkit-user-select: none;
     vertical-align: middle;
-    margin-top: 20px;
+    margin-top: 2.09vh;
     height: fit-content;
-    min-height: 50px;
-  }
+    min-height: 5.23vh;
+}
 
 .button:after {
   background-clip: padding-box;

@@ -1,0 +1,164 @@
+{
+    "productivity": [
+        {
+            "id": "productivity_1",
+            "category": "productivity",
+            "display_name": "Productive",
+            "desc": "Convert 100 Clicks to Bread Coin.",
+            "progress": 0,
+            "amount": 100,
+            "image_path": "/images/red_bowl.png",
+            "reward": 100,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false
+        },
+        {
+            "id": "productivity_2",
+            "category": "productivity",
+            "display_name": "So Productive",
+            "desc": "Convert 1,000 Clicks to Bread Coin.",
+            "progress": 0,
+            "amount": 1000,
+            "image_path": "/images/red_bowl.png",
+            "reward": 1500,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false
+        },
+        {
+            "id": "productivity_3",
+            "category": "productivity",
+            "display_name": "Adderall-Level Productive",
+            "desc": "Convert 10,000 Clicks to Bread Coin.",
+            "progress": 0,
+            "amount": 10000,
+            "image_path": "/images/red_bowl.png",
+            "reward": 2000,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false
+        },
+        {
+            "id": "productivity_4",
+            "category": "productivity",
+            "display_name": "Actually Productive",
+            "desc": "Complete a chore you've been procrastinating.",
+            "image_path": "/images/red_bowl.png",
+            "reward": 3000,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false,
+            "manual": true
+        },
+        {
+            "id": "productivity_5",
+            "category": "productivity",
+            "display_name": "Socially Productive",
+            "desc": "Reply to a message that you've been neglecting.",
+            "image_path": "/images/red_bowl.png",
+            "reward": 4000,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false,
+            "manual": true
+        },
+        {
+            "id": "productivity_6",
+            "category": "productivity",
+            "display_name": "Grass-Touchingly Productive",
+            "desc": "Go outside for half an hour while keeping your mouse here. Yes, seriously. We'll keep track.",
+            "image_path": "/images/red_bowl.png",
+            "reward": 5000,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false,
+            "manual": true,
+            "timer": 1800
+        }
+    ],
+    "keys": [
+        {
+            "id": "keys_1",
+            "category": "keys",
+            "display_name": "Butter Knife",
+            "desc": "Unlock Secret Spread.",
+            "image_path": "/images/red_bowl.png",
+            "reward": 100,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false
+        },
+        {
+            "id": "keys_2",
+            "category": "keys",
+            "display_name": "Essayist",
+            "desc": "Convert 10,000 keystrokes to Bread Coin.",
+            "image_path": "/images/red_bowl.png",
+            "amount": 10000,
+            "reward": 1000,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false
+        },
+        {
+            "id": "keys_3",
+            "category": "keys",
+            "display_name": "Novelist",
+            "desc": "Convert 262,270 keystrokes, the equivalent of the Great Gatsby.",
+            "image_path": "/images/red_bowl.png",
+            "amount": 262270,
+            "reward": 1000,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false
+        },
+        {
+            "id": "keys_4",
+            "category": "keys",
+            "display_name": "Epicist",
+            "desc": "Convert 600,067 keystrokes, the equivalent of Homer's Odyssey.",
+            "image_path": "/images/red_bowl.png",
+            "amount": 600067,
+            "reward": 1000,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false
+        }
+    ],
+    "unlocking": [
+        {
+            "id": "unlocking_1",
+            "category": "unlocking",
+            "display_name": "Threading",
+            "desc": "Unlock all oven expansions.",
+            "image_path": "/images/red_bowl.png",
+            "reward": 1000,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false
+        },
+        {
+            "id": "unlocking_2",
+            "category": "unlocking",
+            "display_name": "Masterchef",
+            "desc": "Buy every kitchen supply.",
+            "image_path": "/images/red_bowl.png",
+            "reward": 2000,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false
+        },
+        {
+            "id": "unlocking_3",
+            "category": "unlocking",
+            "display_name": "Carb Loader",
+            "desc": "Unlock all bread types.",
+            "image_path": "/images/red_bowl.png",
+            "reward": 3000,
+            "revealed": false,
+            "achieved": false,
+            "claimed": false
+        }
+    ]
+}

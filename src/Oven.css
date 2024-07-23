@@ -8,14 +8,16 @@
 
 .oven-row-container{
     background-color: #D9D9D9;
-    height: 150px;
+    height: 14.08vh;
+    max-height: 150px;
     display: flex;
     justify-content: center;
     align-items: end;
 }
 
 #oven-row-container-0{
-    height: 225px;
+    height: 21.1vh;
+    max-height: 225px;
     clip-path: polygon(
         0 25%,
         13% 0,
@@ -31,12 +33,13 @@
     display: flex;
     justify-content: start;
     align-items: center;
-    height: 110px;
+    height: 10.32vh;
+    max-height: 110px;
     width: 95%;
     background-image: url('/images/oven-row-bg.svg');
     background-position: center center;
     background-size: cover;
-    margin-bottom: 20px;
+    margin-bottom: 2.092vh;
 }
 
 .loaf-container{
@@ -48,33 +51,34 @@
 }
 
 .loaf{
-    width: 130px;
-    height: 80px;
-    border-radius: 70px 70px 25px 25px;
+    width: 13.5vh;
+    height: 8vh;
+    border-radius: 7.32vh 7.32vh 2.615vh 2.615vh;
     background-color: #FFE7B7;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 1.046vh;
 }
 
 .baking{
     animation: glow 3s infinite ease-in-out;
-    background-image: url('/images/bread_shade.png')
+    background-image: url('/images/bread_shade.png');
+    background-size: 100%
 }
 
 .loaf-button{
     appearance: button;
     background-color: #4c9d27;
     border: solid transparent;
-    border-radius: 16px;
-    border-width: 0 0 4px;
+    border-radius: 1.67vh;
+    border-width: 0 0 0.418vh;
     box-sizing: border-box;
     cursor: pointer;
     display: inline-block;
-    font-size: 25px;
-    margin-bottom: 15px;
+    font-size: 2.6vh;
+    margin-bottom: 1.56vh;
     outline: none;
     overflow: visible;
     text-align: center;
@@ -86,8 +90,8 @@
     -webkit-user-select: none;
     vertical-align: middle;
     white-space: nowrap;
-    width: 90px;
-    height: 40ox;
+    width: 8.45vh;
+    height: 3.75vh;
 }
 
 .loaf-button:after {
@@ -113,7 +117,8 @@
 
 .done{
     box-shadow: 0 0 16px #fff1a0;
-    background-image: url('/images/bread_shade.png')
+    background-image: url('/images/bread_shade.png');
+    background-size: 100%
 }
 
 .done-anim{
@@ -129,7 +134,7 @@
     padding: 2%;
     margin: 1%;
     background-color: rgb(0, 0, 0, 0.2);
-    height: 40px;
+    height: 3.76vh;
 }
 
 @keyframes shake {
