@@ -61,6 +61,14 @@
     background-color: #75AEE4;
     filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.2));
     border: .4vh solid white;
+    aspect-ratio: 1 / 1;
+}
+
+.achievement-img{
+    object-fit: contain;
+    max-width: 100%;
+    height: 100%;
+    position: absolute;
 }
 
 .productivity-category{
@@ -73,6 +81,14 @@
 
 .unlocking-category{
     background-color: #5ce56a;
+}
+
+.loaves-category{
+    background-color: #FFAA5C;
+}
+
+.medals-category{
+    background-color: #FFDDF1;
 }
 
 .locked{
@@ -100,11 +116,12 @@
 .shadow{
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, .25);
+    background-color: rgba(0, 0, 0, .45);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10%;
+    z-index: 1;
 }
 
 .lock{

@@ -65,7 +65,8 @@
 .baking{
     animation: glow 3s infinite ease-in-out;
     background-image: url('/images/bread_shade.png');
-    background-size: 100%
+    background-size: 100%;
+    background-repeat: round;
 }
 
 .loaf-button{

@@ -20,7 +20,9 @@ function Achievements(props) {
     events,
     breadCoin,
     setBreadCoin,
+    totalEarned,
     setTotalEarned,
+    loaded
   } = props;
 
   const animating = useRef(false);
@@ -69,7 +71,7 @@ function Achievements(props) {
           var keyAchievements = AchievementsObject["keys"].slice(1);
           keyAchievements.forEach((a, i) => {
             newAchievements["keys"][i].progress = event.amount;
-            if (event.amount >= a.amouont) {
+            if (event.amount >= a.amount) {
               achieve("keys", i, newAchievements);
             }
           });
@@ -83,17 +85,42 @@ function Achievements(props) {
         case "supply-finished":
           achieve("unlocking", 1, newAchievements);
           break;
+        case "bread-baked":
+          var loafAchievements = AchievementsObject["loaves"];
+          loafAchievements.forEach((a, i) => {
+            newAchievements["loaves"][i].progress = event.amount;
+            if (event.amount >= a.amount) {
+              achieve("loaves", i, newAchievements);
+            }
+          });
+        case "current-balance":
+            var medalAchievements = AchievementsObject["medals"];
+            if (
+                !medalAchievements[0].revealed &&
+                event.amount >= medalAchievements[0].amount / 2
+              ) {
+                newAchievements["medals"][0].revealed = true;
+            }
+            medalAchievements.forEach((a, i) => {
+                newAchievements["medals"][i].progress = event.amount;
+                if (event.amount >= a.amount) {
+                    achieve("medals", i, newAchievements);
+                }
+            });
+
       }
     }
     setAchievementsObject(newAchievements);
   }, [events]);
 
   const achieve = (category, index, newAchievements, revealNext = true) => {
+    if (newAchievements[category][index].achieved){
+        return;
+    }
     newAchievements[category][index].revealed = true;
     newAchievements[category][index].achieved = true;
-    console.log(category, index, newAchievements[category][index], newAchievements[category].length)
-    if (revealNext && newAchievements[category].length + 1 < index) {
-      newAchievements[category][index + 1].revealed = true;
+    if (revealNext && newAchievements[category].length > index + 1) {
+        newAchievements[category][index + 1].revealed = true;
     }
     show_alert(newAchievements[category][index]);
   };
@@ -114,7 +141,7 @@ function Achievements(props) {
     }
     setAchievementsObject(newAchievements);
     setBreadCoin(breadCoin + achievement.reward);
-    setTotalEarned(breadCoin + achievement.reward);
+    setTotalEarned(totalEarned + achievement.reward);
     animateReward(achievement.reward, achievement.id);
   };
 
@@ -140,20 +167,15 @@ function Achievements(props) {
 
   useEffect(() => {
     if (
-      AchievementsObject != null &&
-      !AchievementsObject["productivity"][0].revealed
+      loaded &&!AchievementsObject["productivity"][0].revealed
     ) {
+        console.log("hi 2")
       document.getElementById("bookmark-div-1").style.transform =
         "translateY(20vh)";
       document.getElementById("bookmark-div-2").style.transform =
         "translateY(20vh)";
-    } else {
-      document.getElementById("bookmark-div-1").style.transform =
-        "translateY(0vh)";
-      document.getElementById("bookmark-div-2").style.transform =
-        "translateY(0vh)";
     }
-  }, [AchievementsObject]);
+  }, [loaded]);
 
   var peek_in = () => {
     document.getElementById("bookmark-div-1").classList.add("peek-in-bookmark");
