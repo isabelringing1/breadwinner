@@ -9,7 +9,6 @@
 .oven-row-container{
     background-color: #D9D9D9;
     height: 14.08vh;
-    max-height: 150px;
     display: flex;
     justify-content: center;
     align-items: end;
@@ -17,7 +16,7 @@
 
 #oven-row-container-0{
     height: 21.1vh;
-    max-height: 225px;
+    max-height: 255px;
     clip-path: polygon(
         0 25%,
         13% 0,
@@ -34,7 +33,6 @@
     justify-content: start;
     align-items: center;
     height: 10.32vh;
-    max-height: 110px;
     width: 95%;
     background-image: url('/images/oven-row-bg.svg');
     background-position: center center;

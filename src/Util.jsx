@@ -18,7 +18,7 @@ function useInterval(callback, delay) {
 }
 
 //https://stackoverflow.com/a/19700358
-function msToTime(duration, round = false, clipZeroes = false) {
+function msToTime(duration, round = false, clipZeroes = false, noSeconds = false) {
     var milliseconds = Math.floor((duration % 1000) / 100),
       seconds = Math.floor((duration / 1000) % 60),
       minutes = Math.floor((duration / (1000 * 60)) % 60),
@@ -34,7 +34,9 @@ function msToTime(duration, round = false, clipZeroes = false) {
     if (!clipZeroes || minutes != 0){
         strtime += strminutes + "m "
     }
-    strtime += strseconds + "s "
+    if (!noSeconds || strtime == ""){
+        strtime += strseconds + "s "
+    }
   
     return strtime;
 }
@@ -69,4 +71,11 @@ function interpolateColor(hex1, hex2, percent) {
   return "rgb(" + colorVal('r') + ", " + colorVal('g') + ", " + colorVal('b') + ")"
 }
 
-export { useInterval, msToTime, formatNumber, formatPercent, interpolateColor }
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+export { useInterval, msToTime, formatNumber, formatPercent, interpolateColor, shuffleArray }

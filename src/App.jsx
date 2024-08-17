@@ -66,7 +66,19 @@ function App() {
     const [showAchievements, setShowAchievements] = useState(false);
     const [AchievementsObject, setAchievementsObject] =
         useState(achievementsJson);
+    const [showDailyOrder, setShowDailyOrder] = useState(false);
     const [events, setEvents] = useState([]);
+    const [dailyOrderNextRefreshTime, setDailyOrderNextRefreshTime] = useState(null);
+    const [dailyOrderArray, setDailyOrderArray] = useState([]);
+    const [dailyOrderEvent, setDailyOrderEvent] = useState(null);
+    const [totalDailyOrders, setTotalDailyOrders] = useState(0);
+    const [totalTimelyDailyOrders, setTotalTimelyDailyOrders] = useState(0);
+    const [convertPresses, setConvertPresses] = useState(0);
+    const [allLoavesDone, setAllLoavesDone] = useState(false);
+    const [inSellAllSequence, setInSellAllSequence] = useState(false);
+
+    const hourTimeout = useRef(null);
+
     const isMobile = window.innerWidth <= 768;
 
     const convertForSave = () => {
@@ -81,7 +93,12 @@ function App() {
             total_earned: totalEarned,
             total_clicks: totalClicks,
             key_unlocked: keyUnlocked,
-            bread_baked: breadBaked
+            bread_baked: breadBaked,
+            daily_order_next_refresh_time: dailyOrderNextRefreshTime,
+            daily_order: dailyOrderArray,
+            total_daily_orders: totalDailyOrders,
+            total_timely_daily_orders: totalTimelyDailyOrders,
+            convert_presses: convertPresses
         };
         return player;
     };
@@ -139,6 +156,7 @@ function App() {
     };
 
     const TryBuyBread = (id, mousePos) => {
+        setInSellAllSequence(false)
         var bread = BreadObject[id];
         var nextOpen = -1;
         for (var i = 0; i < OvenQueue.length; i++) {
@@ -181,12 +199,14 @@ function App() {
         updateBreadTooltip(newBread[id]);
         setBreadBaked(breadBaked + 1);
         emitEvent("bread-baked", null, breadBaked + 1);
+        tryUnlockDailyOrder(loaf.id, newBread);
         if (id == "banana" && newBread[id].purchase_count == 1) {
             emitEvent("bread-finished", null, null);
         }
     };
 
     const TryBuySupply = (id, mousePos) => {
+        setInSellAllSequence(false)
         var supply = SupplyObject[id];
         if (!supply || supply.cost > breadCoin) {
             return false;
@@ -226,13 +246,24 @@ function App() {
     };
 
     const convertClicksToBreadCoin = () => {
+        setInSellAllSequence(false)
         var earnedCoin = Math.round(clicks * multiplier);
         broadcastBc(breadCoin + earnedCoin);
         setBreadCoin(breadCoin + earnedCoin);
         setTotalEarned(totalEarned + earnedCoin);
         animateGainOrLoss(earnedCoin);
         setTotalClicks(totalClicks + clicks);
-        emitEvent("total-conversions", null, totalClicks + clicks);
+        setConvertPresses(convertPresses + 1)
+        var conversionEvent = {
+            "id": "total-conversions",
+            "amount": totalClicks + clicks,
+            "value": convertPresses + 1
+        }
+        var breadCoinEvent = {
+            "id": "breadcoin-gain",
+            "value": earnedCoin
+        }
+        emitEvents([conversionEvent, breadCoinEvent])
         spendClicks(clicks);
         setSpeechBubble("CLICK");
     };
@@ -244,6 +275,7 @@ function App() {
     };
 
     const convertKeysToMultiplier = () => {
+        setInSellAllSequence(false)
         setMultiplier(multiplier + keys * 0.0001);
         spendKeys(keys);
         setTotalKeys(totalKeys + keys);
@@ -401,17 +433,27 @@ function App() {
         if (index < OvenQueue.length) {
             var loaf = OvenQueue[index];
             if (loaf.end_time < Date.now()) {
-                setOvenQueue([
+                var newOvenQueue = [
                     ...OvenQueue.slice(0, index),
                     null,
                     ...OvenQueue.slice(index + 1),
-                ]);
+                ];
+                setOvenQueue(newOvenQueue);
                 broadcastBc(breadCoin + loaf.sell_value);
                 setBreadCoin(breadCoin + loaf.sell_value);
+                emitEvent("breadcoin-gain", loaf.sell_value, null);
                 setTotalEarned(totalEarned + loaf.sell_value)
                 animateGainOrLoss(loaf.sell_value);
                 setShowTooltip(false);
+                updateDailyOrder(loaf.id);
                 setSpeechBubble("SELL");
+                if (allLoavesDone && !inSellAllSequence){
+                    setInSellAllSequence(true)
+                }
+                setAllLoavesDone(false);
+                if (inSellAllSequence && newOvenQueue.every(e => e === null)){ //Check if oven is empty now
+                    emitEvent("sell-oven");
+                }
                 return;
             }
         }
@@ -449,11 +491,44 @@ function App() {
     };
 
     const emitEvent = (id, value = null, amount = null) => {
-        var newEvents = events.slice(0);
+        var newEvents = events.slice(0); //copies
         var newEvent = { id: id, value: value, amount: amount };
         newEvents.push(newEvent);
         setEvents(newEvents);
     };
+
+    const emitEvents = (events) => {
+        var newEvents = events.slice(0); //copies
+        newEvents.push.apply(newEvents, events);
+        setEvents(newEvents);
+    }
+
+    const updateDailyOrder = (id) => {
+        var newDailyOrderArray = [ ...dailyOrderArray ]
+        var changed = false;
+        newDailyOrderArray.forEach((entry) => {
+            if (entry[0] == id){
+                entry[2]++;
+                changed = true;
+            }
+        });
+        if (changed){
+            setDailyOrderArray(newDailyOrderArray);
+        }
+    }
+
+    const tryUnlockDailyOrder = (id, breadObject) => {
+        if (id == "cinnamon_raisin" && breadObject[id].purchase_count == 1){
+            setDailyOrderEvent(true);
+            return;
+        }
+    }
+
+    useEffect(() => {
+        if ((keys == 420 && clicks == 69)|| (keys == 69 && clicks == 420)){
+            emitEvent("mature");
+        }
+    }, [keys, clicks]);
 
     useEffect(() => {
         registerForMessages(
@@ -506,9 +581,36 @@ function App() {
             if (playerData.bread_baked) {
                 setBreadBaked(playerData.bread_baked);
             }
+            if (playerData.daily_order_next_refresh_time) {
+                setDailyOrderNextRefreshTime(playerData.daily_order_next_refresh_time);
+            }
+            if (playerData.daily_order) {
+                setDailyOrderArray(playerData.daily_order);
+            }
+            if (playerData.total_daily_orders){
+                setTotalTimelyDailyOrders(playerData.total_daily_orders)
+            }
+            if (playerData.total_timely_daily_orders){
+                setTotalTimelyDailyOrders(playerData.total_timely_daily_orders)
+            }
+            if (playerData.convert_presses){
+                setConvertPresses(playerData.convert_presses)
+            }
             setVisited(true);
         }
         setLoaded(true);
+
+        hourTimeout.current = setTimeout(() => {
+            emitEvent("hour-timeout");
+        }, 3600000)
+
+        window.onblur = function(e) {
+            console.log("onblur")
+            clearTimeout(hourTimeout.current);
+            hourTimeout.current = setTimeout(() => {
+                emitEvent("hour-timeout");
+            }, 3600000)
+        };
 
         return () => {
             document.removeEventListener("visibilitychange", (event) => {
@@ -536,8 +638,12 @@ function App() {
 
     return (
         <div id="content">
-            <DailyOrder />
-            <Debug resetProgress={reset} setBreadCoin={setBreadCoin} />
+            <Debug 
+                resetProgress={reset}
+                setBreadCoin={setBreadCoin}
+                ovenQueue={OvenQueue}
+                setOvenQueue={setOvenQueue}
+            />
             <Tooltip
                 show={showTooltip}
                 text={tooltipText}
@@ -551,12 +657,33 @@ function App() {
                 AchievementsObject={AchievementsObject}
                 setAchievementsObject={setAchievementsObject}
                 toggleTooltip={toggleAchievementsTooltip}
+                emitEvent={emitEvent}
                 events={events}
                 breadCoin={breadCoin}
                 setBreadCoin={setBreadCoin}
                 totalEarned={totalEarned}
                 setTotalEarned={setTotalEarned}
                 loaded={loaded}
+            />
+            <DailyOrder
+                showDailyOrder={showDailyOrder}
+                setShowDailyOrder={setShowDailyOrder}
+                dailyOrderNextRefreshTime={dailyOrderNextRefreshTime}
+                setDailyOrderNextRefreshTime={setDailyOrderNextRefreshTime}
+                dailyOrderArray={dailyOrderArray}
+                setDailyOrderArray={setDailyOrderArray}
+                loaded={loaded}
+                breadCoin={breadCoin}
+                setBreadCoin={setBreadCoin}
+                totalEarned={totalEarned}
+                setTotalEarned={setTotalEarned}
+                BreadObject={BreadObject}
+                unlockEvent={dailyOrderEvent}
+                emitEvent={emitEvent}
+                totalDailyOrders={totalDailyOrders}
+                setTotalDailyOrders={setTotalDailyOrders}
+                totalTimelyDailyOrders={totalTimelyDailyOrders}
+                setTotalTimelyDailyOrders={setTotalTimelyDailyOrders}
             />
             <FloatingText
                 text={floatingText}
@@ -584,6 +711,9 @@ function App() {
                     toggleClicksTooltip={toggleConvertClicksTooltip}
                     toggleKeysTooltip={toggleConvertKeysTooltip}
                     keyUnlocked={keyUnlocked}
+                    convertPresses={convertPresses}
+                    setConvertPresses={setConvertPresses}
+                    emitEvent={emitEvent}
                 />
 
                 {SupplyObject ? (
@@ -616,6 +746,7 @@ function App() {
                     toggleTooltip={toggleLoafTooltip}
                     updateTooltip={updateLoafTooltip}
                     shouldShow={totalSpent > 0}
+                    setAllDone={setAllLoavesDone}
                 />
                 <SpeechBubble
                     text={speechBubbleText}

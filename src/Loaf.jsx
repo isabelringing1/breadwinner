@@ -3,7 +3,7 @@ import { interpolateColor, useInterval } from './Util';
 import Timer from './Timer'
 
 function Loaf(props){
-    const { loaf, index, sellLoaf, toggleTooltip, updateTooltip } = props;
+    const { loaf, index, sellLoaf, toggleTooltip, updateTooltip, loafDone } = props;
     
     const [ready, setReady] = useState(false)
     const [hovered, setHovered] = useState(false)
@@ -20,6 +20,7 @@ function Loaf(props){
 
     const [color, setColor] = useState(get_color())
     const onLoafDone = () =>{
+        loafDone(index);
         setReady(true);
     }
 
