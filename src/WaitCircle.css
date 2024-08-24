@@ -1,6 +1,6 @@
 :root {
-    --wait-seconds: 1800s;
-    --wait-seconds-half: 900s;
+    --wait-seconds: 4s;
+    --wait-seconds-half: 2s;
 
 }
 
@@ -8,7 +8,8 @@
     width: 50px;
     height: 50px;
     margin: 30px auto;
-    position: relative;
+    position: absolute;
+    z-index: 1;
     -webkit-animation: none;
     -moz-animation: none;
     animation: none;

@@ -4,11 +4,11 @@
             "id": "productivity_1",
             "category": "productivity",
             "display_name": "Productive",
-            "desc": "Convert 100 Clicks to Bread Coin.",
+            "desc": "Convert 500 Clicks to Bread Coin.",
             "progress": 0,
-            "amount": 100,
+            "amount": 500,
             "image_path": "/images/measuring_cup.png",
-            "reward": 100,
+            "reward": 500,
             "revealed": false,
             "achieved": false,
             "claimed": false
@@ -85,8 +85,8 @@
             "revealed": false,
             "achieved": false,
             "claimed": false,
-            "manual": true,
-            "timer": 1800
+            "timer": 1800,
+            "amount": 1800
         },
         {
             "id": "productivity_8",
@@ -98,7 +98,8 @@
             "revealed": false,
             "achieved": false,
             "claimed": false,
-            "manual": true
+            "timer": 3600,
+            "amount": 3600
         }
         
     ],

@@ -2,7 +2,7 @@ import { useState } from "react";
 import './BlockingScreen.css'
 
 function BlockingScreen(props){
-    const { visited, isMobile, showInfo, setShowInfo, delay } = props
+    const { visited, isMobile, showBlocking, setShowBlocking, delay } = props
 
     const [delayPassed, setDelayPassed] = useState(false)
 
@@ -11,8 +11,8 @@ function BlockingScreen(props){
     }, delay)
 
     const onBGClicked = () => {
-        if (showInfo){
-            setShowInfo(false)
+        if (showBlocking){
+            setShowBlocking(false)
         }
     }
 
@@ -22,7 +22,7 @@ function BlockingScreen(props){
                 { isMobile ?
                 "Sorry, but Bread Winner does not work on mobile!\nPlease visit on Desktop to play." :
                 (
-                    showInfo ? 
+                    showBlocking ? 
                         <div>
                         <div className='blocking-screen-title'>Welcome to Bread Winner!</div>
                             <div className='blocking-screen-text'>

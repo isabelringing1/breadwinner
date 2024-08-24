@@ -128,7 +128,12 @@ a:hover{
 .reset-button:after{
     background-color: rgb(127, 199, 238);
 }
-  
+
+.info-button-div{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}  
   
 @keyframes load8 {
     0% {

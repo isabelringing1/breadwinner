@@ -22,6 +22,10 @@ function Wallet(props){
         num.classList.add('punch'); 
     }, [keys])
 
+    useEffect(() => {
+        punchMultiplier();
+    }, [multiplier])
+
     const punchMultiplier = () => {
         const num = document.getElementById('multiplier-num');
         num.classList.remove('punch');
@@ -47,7 +51,6 @@ function Wallet(props){
             <div id="key-wallet">
             <div id="key-container"><span id="key-num">{formatNumber(keys)}</span> {keys == 1 ? "key" : "keys"}</div>
             <button className="button" id="convert-keys" onClick={() => { 
-                if (keys > 0) { punchMultiplier() }
                 convertKeys();
             }}
                 onMouseMove={(e) => { 

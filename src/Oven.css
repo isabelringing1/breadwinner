@@ -117,7 +117,7 @@
 .done{
     box-shadow: 0 0 16px #fff1a0;
     background-image: url('/images/bread_shade.png');
-    background-size: 100%
+    background-size: cover;
 }
 
 .done-anim{

@@ -5,10 +5,16 @@ import hand1 from '/images/hand1.svg'
 import hand2 from '/images/hand2.svg'
 
 function WaitCircle(props) {
-    const { id, inWait, setWakeLockError, finished, onFinished, setEndingText, defaultText } = props
+    const { id, inWait, setInWait, onCancel, onFinished, seconds, emitEvent } = props
     const [hand, setHand] = useState(null)
 
+    document.getElementById("root").style.setProperty("--wait-seconds", seconds + "s");
+    document.getElementById("root").style.setProperty("--wait-seconds-half", (seconds/2) + "s");
+
     const wakeLock = useRef(null)
+    const finished = useRef(false)
+    const eventInterval = useRef(null)
+    const counter = useRef(0);
 
     useEffect(() => {
         document.addEventListener("visibilitychange", async () => {
@@ -17,84 +23,78 @@ function WaitCircle(props) {
     }, []);
 
     const trySetWait = async () => {
-        if (finished){
+        console.log("try set wait")
+        if (finished.current){
             return;
         }
         try {
             var wl = await navigator.wakeLock.request("screen");
             wakeLock.current = wl;
-            inWait.current = true;
-            setEndingText(<p>Good.</p>)
+            //setEndingText(<p>Good.</p>)
             setTimeout(() => {
-                if (!inWait.current){
+                if (!inWait){
                     return
                 }
-                setEndingText(<p>Now go!</p>)
-                document.getElementById("ending-text").className = "ending-text fade-out"
+                //setEndingText(<p>Now go!</p>)
+                //document.getElementById("ending-text").className = "ending-text fade-out"
             }, 2000)
 
             document.getElementById("fill-left-" + id).className = "fill";
             document.getElementById("fill-right-" + id).className = "fill";
             document.getElementById("wait-container-" + id).className = "wait-container wait-transition"
-            document.getElementById("column-" + (id + 1)).className = "column slow-fade"
-            if (id == 0 || id == 2){
-                document.getElementById("tile-" + (id + 1)).className = "tile-bg slow-fade"
-            }
             setHand(hand1)
             setTimeout(() => {
                 document.getElementById("wait-container-" + id).className = "wait-container wait-activated"
                 setHand(hand2)
-            }, 400);
+            }, 600);
+
+            eventInterval.current = setInterval(() => {
+                counter.current += 1;
+                emitEvent("productivity", Number(id.slice(-1)), counter.current);
+            }, 1000)
 
             setTimeout(() => {
-                if (!inWait.current){
+                if (!inWait){
                     return
                 }
                 onFinished();
                 breakWait();
-                document.getElementById("column-" + (id+ 1)).className = "column transparent"
-                if (id == 0 || id == 2){
-                    document.getElementById("tile-" + (id + 1)).className = "tile-bg transparent"
-                }
-            }, 1800000);
+                clearInterval(eventInterval.current);
+            }, seconds * 1000);
 
         } catch (err) {
             // The Wake Lock request has failed - usually system related, such as battery.
             console.log(`${err.name}, ${err.message}`)
-            setWakeLockError("We aren't able to keep the screen awake for you. Please make sure low battery mode is off or change your settings manually to keep the screen awake.")
+            //setWakeLockError("We aren't able to keep the screen awake for you. Please make sure low battery mode is off or change your settings manually to keep the screen awake.")
         }
     }
 
     const breakWait = () => {
-        if (wakeLock.current == null || finished){
-            inWait.current = false;
-            setEndingText(<p>{defaultText}</p>)
-            document.getElementById("ending-text").className = "ending-text"
-            document.getElementById("column-" + (id+ 1)).className = "column"
-            if (id == 0 || id == 2){
-                document.getElementById("tile-" + (id + 1)).className = "tile-bg"
-            }
+        if (wakeLock.current == null || finished.current){
+            setInWait(false);
+            clearInterval(eventInterval.current);
+            emitEvent("productivity", Number(id.slice(-1)), 0);
+            onCancel()
             return;
         }
 
+        onCancel();
         setHand(null)
         wakeLock.current.release().then(() => {
             wakeLock.current = null
-            inWait.current = false;
-            setEndingText(<p>{defaultText}</p>)
-            document.getElementById("ending-text").className = "ending-text"
+            setInWait(false);
+            clearInterval(eventInterval.current);
+            emitEvent("productivity", Number(id.slice(-1)), 0);
+            //setEndingText(<p>{defaultText}</p>)
+            //document.getElementById("ending-text").className = "ending-text"
         });
         document.getElementById("fill-left-" + id).className = "";
         document.getElementById("fill-right-" + id).className = "";
         document.getElementById("wait-container-" + id).className = "wait-container"
-        document.getElementById("ending-text").className = "ending-text"
-        document.getElementById("column-" + (id+ 1)).className = "column"
-        if (id == 0 || id == 2){
-            document.getElementById("tile-" + (id + 1)).className = "tile-bg"
-        }
+        //document.getElementById("ending-text").className = "ending-text"
     }
 
-    return (finished ? 
+    return (finished.current ? 
     <div className={"wait-container"} id={"wait-container-" + id }>
         <div className="wait-done"></div> 
     </div>

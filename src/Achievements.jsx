@@ -23,7 +23,8 @@ function Achievements(props) {
     setBreadCoin,
     totalEarned,
     setTotalEarned,
-    loaded
+    loaded,
+    claimButtonPressed
   } = props;
 
   const animating = useRef(false);
@@ -58,13 +59,13 @@ function Achievements(props) {
             }
 
             productivityAchievements.forEach((a, i) => {
-                if (!a.achieved && a.amount != null) {
+              if (i < 3 && !a.achieved && a.amount != null) {
                 var newAchievements = { ...AchievementsObject };
                 newAchievements["productivity"][i].progress = event.amount;
                 if (event.amount >= a.amount) {
                     achieve("productivity", i, newAchievements);
                 }
-                }
+              }
             });
 
             var convertAchievement = AchievementsObject["misc"][1]
@@ -146,6 +147,20 @@ function Achievements(props) {
             break;
         case "hour-timeout":
             achieve("misc", 0, newAchievements, false);
+            break;
+        case "productivity":
+            if (event.value >= 4 && event.value <= 6){
+              achieve("productivity", event.value - 1, newAchievements);
+              claimAchievement(AchievementsObject["productivity"][event.value - 1]);
+            }
+            else if (event.value >= 7 && event.value <= 8){
+              if (event.amount < AchievementsObject["productivity"][event.value - 1].amount){
+                AchievementsObject["productivity"][event.value - 1].progress = event.amount;
+              }
+              else{
+                achieve("productivity", event.value - 1, newAchievements);
+              }
+            }
             break;
       }
     }
@@ -354,6 +369,8 @@ function Achievements(props) {
                 achievement={a}
                 toggleTooltip={toggleTooltip}
                 claimAchievement={claimAchievement}
+                claimButtonPressed={claimButtonPressed}
+                emitEvent={emitEvent}
               />
             );
           })}

@@ -61,7 +61,6 @@ p{
     width: 25%;
     padding-right: 5.23vh;
     text-align: right;
-    overflow-y: auto;
 }
 
 .transparent{
@@ -156,6 +155,10 @@ p{
 
 #tooltip-text{
     white-space: pre-line;
+}
+
+#tooltip-button{
+    margin-top: 1vh;
 }
 
 #bread-list{

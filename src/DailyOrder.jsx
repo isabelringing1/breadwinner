@@ -329,7 +329,7 @@ function DailyOrder(props) {
                     <button className="do-button" disabled={!canClaim()} onClick={(e) => tryClaimReward(e)}>CLAIM</button>
                 </div>
                 <div id="daily-order-time-info">
-                    Refreshes in {msToTime(timeLeft, true, true, true)}
+                    Refreshes in {msToTime(timeLeft, true, true)}
                 </div>
             </div>
         </div>

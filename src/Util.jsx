@@ -18,7 +18,7 @@ function useInterval(callback, delay) {
 }
 
 //https://stackoverflow.com/a/19700358
-function msToTime(duration, round = false, clipZeroes = false, noSeconds = false) {
+function msToTime(duration, clipZeroes = false, noSeconds = false) {
     var milliseconds = Math.floor((duration % 1000) / 100),
       seconds = Math.floor((duration / 1000) % 60),
       minutes = Math.floor((duration / (1000 * 60)) % 60),

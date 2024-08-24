@@ -10,7 +10,7 @@ import {
     unlockKeys,
     lockKeys,
 } from "../public/extension";
-import { formatNumber, formatPercent } from "./Util";
+import { formatNumber, formatPercent, msToTime } from "./Util";
 
 import Debug from "./Debug";
 import Tooltip from "./Tooltip";
@@ -19,6 +19,7 @@ import Wallet from "./Wallet";
 import Oven from "./Oven";
 import BCSymbol from "./BCSymbol";
 import BlockingScreen from "./BlockingScreen";
+import InfoScreen from "./InfoScreen";
 import FloatingText from "./FloatingText";
 import SpeechBubble from "./SpeechBubble";
 import Achievements from "./Achievements";
@@ -49,7 +50,6 @@ function App() {
     const [tooltipTextAfter, setTooltipTextAfter] = useState("");
     const [tooltipTextAfterAfter, setTooltipTextAfterAfter] = useState("");
     const [tooltipPos, setTooltipPos] = useState([0, 0]);
-    const [showTooltipClaimButton, setShowTooltipClaimButton] = useState(true);
     const [totalSpent, setTotalSpent] = useState(0);
     const [totalEarned, setTotalEarned] = useState(0);
     const [totalClicks, setTotalClicks] = useState(0);
@@ -61,7 +61,10 @@ function App() {
     const [speechBubbleCount, setSpeechBubbleCount] = useState(0);
     const [extensionDetected, setExtensionDetected] = useState(false);
     const [visited, setVisited] = useState(false);
+    const [showBlocking, setShowBlocking] = useState(false);
     const [showInfo, setShowInfo] = useState(false);
+    const [infoScreenTitle, setInfoScreenTitle] = useState("");
+    const [infoScreenBody, setInfoScreenBody] = useState("");
     const [breadBaked, setBreadBaked] = useState(0);
     const [showAchievements, setShowAchievements] = useState(false);
     const [AchievementsObject, setAchievementsObject] =
@@ -78,6 +81,8 @@ function App() {
     const [inSellAllSequence, setInSellAllSequence] = useState(false);
 
     const hourTimeout = useRef(null);
+    const onInfoScreenButtonPressed = useRef(null);
+    const onAchievementClaimButtonPressed = useRef(null);
 
     const isMobile = window.innerWidth <= 768;
 
@@ -282,22 +287,26 @@ function App() {
         emitEvent("keys-converted", null, totalKeys + keys);
     };
 
-    const toggleTooltip = (show, item = null, mousePos = [0, 0]) => {
-        if (item != null) {
-            setTooltipText(item.desc);
-            setTooltipTextAfter("");
-            setTooltipTextAfterAfter("");
-        }
+    // Does stuff to set the default tooltip
+    const setupTooltip = (show, mousePos = [0, 0]) => {
+        setTooltipTextAfter("");
+        setTooltipTextAfterAfter("");
         setTooltipPos(mousePos);
         setShowTooltip(show);
     };
 
+    const toggleTooltip = (show, item = null, mousePos = [0, 0]) => {
+        setupTooltip(show, mousePos);
+        if (item != null) {
+            setTooltipText(item.desc);
+        }
+    };
+
     const toggleBreadTooltip = (show, item = null, mousePos = [0, 0]) => {
+        setupTooltip(show, mousePos);
         if (item != null) {
             updateBreadTooltip(item);
         }
-        setTooltipPos(mousePos);
-        setShowTooltip(show);
     };
 
     const updateBreadTooltip = (item) => {
@@ -324,11 +333,10 @@ function App() {
         mousePos = [0, 0],
         percent_done = -1
     ) => {
+        setupTooltip(show, mousePos);
         if (item != null) {
             updateLoafTooltip(item, percent_done);
         }
-        setTooltipPos(mousePos);
-        setShowTooltip(show);
     };
 
     const updateLoafTooltip = (item, percent_done) => {
@@ -341,32 +349,27 @@ function App() {
         var textAfter = formatNumber(item.sell_value);
         setTooltipText(text);
         setTooltipTextAfter(textAfter);
-        setTooltipTextAfterAfter("");
     };
 
     const toggleConvertClicksTooltip = (show, mousePos = [0, 0]) => {
+        setupTooltip(show, mousePos);
         if (show) {
             var text = "Convert for +";
             var textAfter = Math.round(clicks * multiplier);
             setTooltipText(text);
             setTooltipTextAfter(textAfter);
-            setTooltipTextAfterAfter("");
         }
-        setTooltipPos(mousePos);
-        setShowTooltip(show);
     };
 
     const toggleConvertKeysTooltip = (show, mousePos = [0, 0]) => {
+        setupTooltip(show, mousePos);
         if (show) {
             var text =
                 "Increase your multiplier by tiny amount with every key. Convert for +" +
                 keys * 0.0001 +
                 ".";
             setTooltipText(text);
-            setTooltipTextAfter("");
         }
-        setTooltipPos(mousePos);
-        setShowTooltip(show);
     };
 
     const toggleAchievementsTooltip = (
@@ -374,6 +377,7 @@ function App() {
         mousePos = [0, 0],
         achievement = null
     ) => {
+        setupTooltip(show, mousePos);
         if (show) {
             var text = "???";
             var inbetweenAfter = ""
@@ -412,22 +416,43 @@ function App() {
                 }
                 else if (achievement.revealed) {
                     if (achievement.progress != null) {
-                        after +=
+                        if (achievement.timer){
+                            if (achievement.progress > 0){
+                                after += "\nTime Remaining: " +
+                                msToTime((achievement.timer - achievement.progress) * 1000, true);
+                            }
+                        }
+                        else{
+                            after +=
                             "\nProgress: " +
                             formatNumber(achievement.progress) +
                             "/" +
                             formatNumber(achievement.amount);
+                        }
                     }
                 }
+            }
+
+            if (achievement.manual && !achievement.claimed){
+                onAchievementClaimButtonPressed.current = () => {
+                    showAchievementInfoDialog(achievement);
+                };
+                after += "\nClick to complete now!"
             }
             setTooltipText(text);
             setTooltipTextAfter(inbetweenAfter);
             setTooltipTextAfterAfter(after);
-
         }
-        setTooltipPos(mousePos);
-        setShowTooltip(show);
     };
+
+    const showAchievementInfoDialog = (a) => {
+        setShowInfo(true);
+        setInfoScreenTitle("Are you sure?");
+        setInfoScreenBody("We're going off the honor system for this one. Are you sure you want to mark this as done?");
+        onInfoScreenButtonPressed.current = () => {
+            emitEvent(a.category, Number(a.id.slice(-1)));
+        };
+    }
 
     const sellLoaf = (index) => {
         if (index < OvenQueue.length) {
@@ -447,7 +472,7 @@ function App() {
                 setShowTooltip(false);
                 updateDailyOrder(loaf.id);
                 setSpeechBubble("SELL");
-                if (allLoavesDone && !inSellAllSequence){
+                if (allLoavesDone && OvenQueue.length == 16 && !inSellAllSequence){
                     setInSellAllSequence(true)
                 }
                 setAllLoavesDone(false);
@@ -664,6 +689,7 @@ function App() {
                 totalEarned={totalEarned}
                 setTotalEarned={setTotalEarned}
                 loaded={loaded}
+                claimButtonPressed={onAchievementClaimButtonPressed.current}
             />
             <DailyOrder
                 showDailyOrder={showDailyOrder}
@@ -691,15 +717,23 @@ function App() {
                 mousePos={floatingTextPos}
             />
 
-            {!extensionDetected || isMobile || showInfo ? (
+            {!extensionDetected || isMobile || showBlocking ? (
                 <BlockingScreen
                     visited={visited}
                     isMobile={isMobile}
                     delay={1000}
-                    showInfo={showInfo}
-                    setShowInfo={setShowInfo}
+                    showBlocking={showBlocking}
+                    setShowBlocking={setShowBlocking}
                 />
             ) : null}
+            { showInfo ? 
+                <InfoScreen 
+                    setShowInfo={setShowInfo}
+                    title={infoScreenTitle}
+                    body={infoScreenBody}
+                    onConfirmButtonClicked={onInfoScreenButtonPressed.current}
+                /> 
+            : null}
 
             <div id="column-1" className="column">
                 <Wallet
@@ -760,7 +794,7 @@ function App() {
                     <span
                         id="info"
                         onClick={() => {
-                            setShowInfo(true);
+                            setShowBlocking(true);
                         }}
                     >
                         ?

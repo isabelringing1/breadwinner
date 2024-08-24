@@ -128,6 +128,26 @@
     width: 35%
 }
 
+.claim-achievement-div{
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.1s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.claim-achievement-div:hover{
+    opacity: 1;
+}
+
+.claim-achievement{
+    margin-top: 0;
+}
+
 .bounce-in {
     animation: bounce-in 1s ease-in-out;
 }
@@ -168,6 +188,7 @@
     justify-content: space-between;
     filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.45));
     transform: translateX(50vh);
+    z-index: 22;
 }
 
 #alert-img{
