@@ -14,7 +14,7 @@ function Card(props){
                 toggleTooltip(false)
             }}>
         <div className="card-title">{item.display_name}</div>
-        <div className="card-price"><BCSymbol color="red"/>{formatNumber(item.cost)}</div>
+        <div className="card-price"><BCSymbol color="red"/>{formatNumber(item.save.cost ?? item.cost)}</div>
         <img className="card-img" src={window.location.origin + item.image_path}/>
     </button>
 }

@@ -23,8 +23,9 @@ function Achievements(props) {
     setBreadCoin,
     totalEarned,
     setTotalEarned,
+    claimButtonPressed,
     loaded,
-    claimButtonPressed
+    peekInEnvelope
   } = props;
 
   const animating = useRef(false);
@@ -51,15 +52,15 @@ function Achievements(props) {
             var productivityAchievements = AchievementsObject["productivity"];
             // if we've reached half of 1st goal, show the bookmark for the first time.
             if (
-                !productivityAchievements[0].revealed &&
+                !productivityAchievements[0].save.revealed &&
                 event.amount >= productivityAchievements[0].amount / 2
             ) {
-                newAchievements["productivity"][0].revealed = true;
+                newAchievements["productivity"][0].save.revealed = true;
                 peek_in();
             }
 
             productivityAchievements.forEach((a, i) => {
-              if (i < 3 && !a.achieved && a.amount != null) {
+              if (i < 3 && !a.save.achieved && a.amount != null) {
                 var newAchievements = { ...AchievementsObject };
                 newAchievements["productivity"][i].progress = event.amount;
                 if (event.amount >= a.amount) {
@@ -71,6 +72,9 @@ function Achievements(props) {
             var convertAchievement = AchievementsObject["misc"][1]
             if (event.value == convertAchievement.amount){ //Overload value to be the total times convert has been pressed
                 achieve("misc", 1, newAchievements, false);
+            }
+            else if (event.value >= convertAchievement.amount/2){
+                convertAchievement.save.revealed = true;
             }
             break;
         case "keys-unlocked":
@@ -106,10 +110,10 @@ function Achievements(props) {
         case "current-balance":
             var medalAchievements = AchievementsObject["medals"];
             if (
-                !medalAchievements[0].revealed &&
+                !medalAchievements[0].save.revealed &&
                 event.amount >= medalAchievements[0].amount / 2
               ) {
-                newAchievements["medals"][0].revealed = true;
+                newAchievements["medals"][0].save.revealed = true;
             }
             medalAchievements.forEach((a, i) => {
                 newAchievements["medals"][i].progress = event.amount;
@@ -122,7 +126,7 @@ function Achievements(props) {
             var dailyOrderAchievements = AchievementsObject["daily_orders"]
             var [total, totalTimely] = event.value;
             if (total == 1){
-                newAchievements["daily_orders"][0].revealed = true;
+                newAchievements["daily_orders"][0].save.revealed = true;
             }
             dailyOrderAchievements.forEach((a, i) => {
                 if (a.id != "daily_order_2" && total >= a.amount){
@@ -162,35 +166,44 @@ function Achievements(props) {
               }
             }
             break;
+        case "reveal-epilogue":
+            var achievements = AchievementsObject["ending"];
+            achievements.forEach((a, i) => {
+                newAchievements["ending"][i].save.epilogue = false;
+                newAchievements["ending"][i].save.revealed = true;
+          });
+          break;
       }
     }
     setAchievementsObject(newAchievements);
   }, [events]);
 
   const achieve = (category, index, newAchievements, revealNext = true) => {
-    if (newAchievements[category][index].achieved){
+    if (newAchievements[category][index].save.achieved){
         return;
     }
-    newAchievements[category][index].revealed = true;
-    newAchievements[category][index].achieved = true;
+    newAchievements[category][index].save.revealed = true;
+    newAchievements[category][index].save.achieved = true;
     if (revealNext && newAchievements[category].length > index + 1) {
-        newAchievements[category][index + 1].revealed = true;
+        newAchievements[category][index + 1].save.revealed = true;
     }
     queue_alert(newAchievements[category][index]);
   };
 
   const claimAchievement = (achievement) => {
-    if (!achievement.achieved || achievement.claimed) {
+    if (!achievement.save.achieved || achievement.save.claimed) {
       return;
     }
     var newAchievements = { ...AchievementsObject };
+    var numAchievements = 0
     for (var categoryName in newAchievements) {
       var category = newAchievements[categoryName];
       for (var i in category) {
         if (category[i].id == achievement.id) {
-          category[i].claimed = true;
+          category[i].save.claimed = true;
           console.log("Claiming ", achievement);
         }
+        numAchievements += category[i].save.claimed ? 1 : 0
       }
     }
     setAchievementsObject(newAchievements);
@@ -198,6 +211,10 @@ function Achievements(props) {
     emitEvent("breadcoin-gain", achievement.reward, null);
     setTotalEarned(totalEarned + achievement.reward);
     animateReward(achievement.reward, achievement.id);
+    console.log(numAchievements)
+    if (numAchievements == 30){
+        peekInEnvelope("ending");
+    }
   };
 
   const animateReward = (amount, id) => {
@@ -223,7 +240,7 @@ function Achievements(props) {
 
   useEffect(() => {
     if (
-      loaded &&!AchievementsObject["productivity"][0].revealed
+      loaded && !AchievementsObject["productivity"][0].save.revealed
     ) {
       document.getElementById("bookmark-div-1").style.transform =
         "translateY(20vh)";

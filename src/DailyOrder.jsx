@@ -99,7 +99,7 @@ function DailyOrder(props) {
     
 
     const dailyOrderUnlocked = () => {
-        return BreadObject["cinnamon_raisin"].purchase_count > 0;
+        return BreadObject["cinnamon_raisin"].save.purchase_count > 0;
     }
 
     /* Daily orders refresh at 3 p.m. est */
@@ -138,12 +138,12 @@ function DailyOrder(props) {
         var lowerWeights = { ...lowerBreadWeights }
         var higherWeights = { ...higherBreadWeights }
         for (const [id, _] of Object.entries(lowerWeights)) {
-            if (BreadObject[id].purchase_count == 0){
+            if (BreadObject[id].save.purchase_count == 0){
                 lowerWeights[id] = 0;
             }
         }
         for (const [id, _] of Object.entries(higherWeights)) {
-            if (BreadObject[id].purchase_count == 0){
+            if (BreadObject[id].save.purchase_count == 0){
                 higherWeights[id] = 0;
             }
         }
@@ -182,7 +182,7 @@ function DailyOrder(props) {
             sum += weight;
             if (sum >= roll) {
                 weights[id] = 0
-                var reward = Math.floor(BreadObject[id].cost * BreadObject[id].markup);
+                var reward = Math.floor(BreadObject[id].save.cost * BreadObject[id].markup);
                 return [id, numLoaves, 0, reward];
             }
         }

@@ -12,18 +12,21 @@ function Achievement(props) {
     const lastTooltipPos = useRef([0, 0])
     const updateTooltipInterval = useRef(null);
     var state = "locked"
-    if (achievement.claimed) {
+    if (achievement.save.claimed) {
         state = "claimed";
     }
-    else if (achievement.achieved) {
+    else if (achievement.save.achieved) {
         state = "achieved"
     }
-    else if (achievement.revealed) {
+    else if (achievement.save.revealed) {
         state = "revealed"
+    }
+    if (achievement.save.epilogue){
+        state += " epilogue"
     }
 
     const onHover = () => {
-        if (!achievement.achieved || achievement.claimed) {
+        if (!achievement.save.achieved || achievement.save.claimed) {
             return;
         }
         document.getElementById(achievement.id).classList.add("ready-to-claim")
@@ -37,7 +40,7 @@ function Achievement(props) {
 
     const onClick = (e) => {
         e.stopPropagation();
-        if (achievement.achieved && !achievement.claimed) {
+        if (achievement.save.achieved && !achievement.save.claimed) {
             claimAchievement(achievement);
         }
     }
@@ -71,16 +74,16 @@ function Achievement(props) {
             toggleTooltip(false);
         }}
         onClick={onClick}>
-        {achievement.revealed ? <img src={achievement.image_path} className="achievement-img" /> : null}
-        {!achievement.revealed ? <div className="question-mark">?</div> : null}
-        {achievement.revealed && !achievement.achieved ? <div className='shadow'><img src={lock} className="lock" /></div> : null}
-        {achievement.achieved && !achievement.claimed ? <img src={corner} className="corner" /> : null}
+        {achievement.save.revealed ? <img src={achievement.image_path} className="achievement-img" /> : null}
+        {!achievement.save.revealed && !achievement.save.epilogue ? <div className="question-mark">?</div> : null}
+        {achievement.save.revealed && !achievement.save.achieved ? <div className='shadow'><img src={lock} className="lock" /></div> : null}
+        {achievement.save.achieved && !achievement.save.claimed ? <img src={corner} className="corner" /> : null}
 
-        {achievement.manual && !achievement.claimed && achievement.revealed ?<div className='claim-achievement-div'> <button className="claim-achievement green button" 
+        {achievement.manual && !achievement.save.claimed && achievement.save.revealed ?<div className='claim-achievement-div'> <button className="claim-achievement green button" 
         onClick={claimButtonPressed}
         >Claim</button></div> : null}
 
-        {achievement.timer && !achievement.achieved && achievement.revealed && !inWait ?<div className='claim-achievement-div'> <button className="claim-achievement green button" 
+        {achievement.timer && !achievement.save.achieved && achievement.save.revealed && !inWait ?<div className='claim-achievement-div'> <button className="claim-achievement green button" 
         onClick={startButtonPressed}
         >Start</button></div> : null}
 

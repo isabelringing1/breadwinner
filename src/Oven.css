@@ -136,6 +136,24 @@
     height: 3.76vh;
 }
 
+#oven-engravement{
+    position: absolute;
+    height: 2.1vh;
+    width: 100%;
+    bottom: 0vh;
+    z-index: 1;
+    font-size: 1.3vh;
+    color: rgb(147, 147, 147);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.oven-engravement-img{
+    height: 1.3vh;
+    margin-left: .5vh;
+}
+
 @keyframes shake {
     0% { transform: translate(0, 0) rotate(0deg); }
     25% { transform: translate(5px, 5px) rotate(5deg); }

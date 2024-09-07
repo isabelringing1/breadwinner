@@ -7,8 +7,10 @@
       "image_path": "/images/red_bowl.png",
       "cost": 500,
       "multiplier": 2.0,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "measuring_cup": {
       "id": "measuring_cup",
@@ -18,8 +20,10 @@
       "previous": "mixing_bowl",
       "cost": 2000,
       "multiplier": 2.0,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "whisk": {
       "id": "whisk",
@@ -29,8 +33,10 @@
       "previous": "measuring_cup",
       "cost": 8000,
       "multiplier": 2.0,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "stand_mixer": {
       "id": "stand_mixer",
@@ -40,8 +46,10 @@
       "previous": "whisk",
       "cost": 32000,
       "multiplier": 2.0,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "dutch_oven": {
       "id": "dutch_oven",
@@ -51,8 +59,10 @@
       "previous": "stand_mixer",
       "cost": 128000,
       "multiplier": 2.0,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "dough_whisk": {
       "id": "dough_whisk",
@@ -62,8 +72,10 @@
       "previous": "dutch_oven",
       "cost": 256000,
       "multiplier": 2.0,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "bench_knife": {
       "id": "bench_knife",
@@ -73,8 +85,10 @@
       "previous": "dough_whisk",
       "cost": 1024000 ,
       "multiplier": 2.0,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "bowl_scraper": {
       "id": "bowl_scraper",
@@ -84,7 +98,10 @@
       "previous": "bench_knife",
       "cost": 4096000,
       "multiplier": 2.0,
-      "purchased": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "proofing_basket": {
       "id": "proofing_basket",
@@ -94,8 +111,10 @@
       "previous": "bowl_scraper",
       "cost": 16384000,
       "multiplier": 2.0,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "serrated_knife": {
       "id": "serrated_knife",
@@ -105,19 +124,23 @@
       "previous": "proofing_basket",
       "cost": 65536000,
       "multiplier": 2.0,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "secret_spread": {
       "id": "secret_spread",
       "display_name": "Secret Spread",
-      "desc": "Untapped primordial power in a jar. Unlocks the ability to convert your keystrokes into small additions to the multiplier.",
+      "desc": "Proprietary Dough & Co technology. Unlocks the ability to convert your keystrokes into small additions to the multiplier.",
       "image_path": "/images/secret_spread.png",
       "previous": "whisk",
       "cost": 4321,
       "keys": true,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_1":{
       "id": "oven_slot_1",
@@ -126,8 +149,10 @@
       "image_path": "/images/oven_slot.png",
       "cost": 300,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_2":{
       "id": "oven_slot_2",
@@ -136,8 +161,10 @@
       "image_path": "/images/oven_slot.png",
       "cost": 900,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_3":{
       "id": "oven_slot_3",
@@ -146,7 +173,10 @@
       "image_path": "/images/oven_slot.png",
       "cost": 2700,
       "oven_increase": 1,
-      "purchased": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_4":{
       "id": "oven_slot_4",
@@ -155,8 +185,10 @@
       "image_path": "/images/oven_slot.png",
       "cost": 8100,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_5":{
       "id": "oven_slot_5",
@@ -165,8 +197,10 @@
       "image_path": "/images/oven_slot.png",
       "cost": 24300,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_6":{
       "id": "oven_slot_6",
@@ -175,8 +209,10 @@
       "image_path": "/images/oven_slot.png",
       "cost": 72900,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_7":{
       "id": "oven_slot_7",
@@ -185,8 +221,10 @@
       "image_path": "/images/oven_slot.png",
       "cost": 218700,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_8":{
       "id": "oven_slot_8",
@@ -195,8 +233,10 @@
       "image_path": "/images/oven_slot.png",
       "cost": 656100,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_9":{
       "id": "oven_slot_9",
@@ -205,8 +245,10 @@
       "image_path": "/images/oven_slot.png",
       "cost": 1968300,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_10":{
       "id": "oven_slot_10",
@@ -215,8 +257,10 @@
       "image_path": "/images/oven_slot.png",
       "cost": 5904900,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_11":{
       "id": "oven_slot_11",
@@ -225,17 +269,21 @@
       "image_path": "/images/oven_slot.png",
       "cost": 17714700,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     },
     "oven_slot_12":{
       "id": "oven_slot_12",
       "display_name": "Oven Rack",
       "desc": "Expands oven by 1 slot.",
-      "image_path": "/images/oven_slot.png",
+      "image_path": "/images/oven_slot.png", 
       "cost": 53144100,
       "oven_increase": 1,
-      "purchased": false,
-      "unlocked": false
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
     }
 }

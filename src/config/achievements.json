@@ -7,11 +7,13 @@
             "desc": "Convert 500 Clicks to Bread Coin.",
             "progress": 0,
             "amount": 500,
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/headband.png",
             "reward": 500,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "productivity_2",
@@ -20,11 +22,13 @@
             "desc": "Convert 1,000 Clicks to Bread Coin.",
             "progress": 0,
             "amount": 1000,
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/water.png",
             "reward": 1500,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "productivity_3",
@@ -32,23 +36,27 @@
             "display_name": "Adderall-Level Productive",
             "desc": "Convert 10,000 Clicks to Bread Coin.",
             "progress": 0,
-            "amount": 1000,
-            "image_path": "/images/measuring_cup.png",
+            "amount": 10000,
+            "image_path": "/images/dumbell.png",
             "reward": 2000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "productivity_4",
             "category": "productivity",
             "display_name": "Actually Productive",
             "desc": "Complete a chore you've been procrastinating.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/plate.png",
             "reward": 3000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            },
             "manual": true
         },
         {
@@ -56,11 +64,13 @@
             "category": "productivity",
             "display_name": "Socially Productive",
             "desc": "Reply to a message that you've been neglecting.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/bubble.png",
             "reward": 4000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            },
             "manual": true
         },
         {
@@ -68,11 +78,13 @@
             "category": "productivity",
             "display_name": "Self-Improvingly Productive",
             "desc": "Say something nice to yourself in the mirror.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/mirror.png",
             "reward": 5000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            },
             "manual": true
         },
         {
@@ -80,11 +92,13 @@
             "category": "productivity",
             "display_name": "Grass-Touchingly Productive",
             "desc": "Go outside for half an hour while keeping your mouse here. Yes, seriously. We'll keep track.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/grass.png",
             "reward": 6000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            },
             "timer": 1800,
             "amount": 1800
         },
@@ -93,11 +107,13 @@
             "category": "productivity",
             "display_name": "Unpluggedly Productive",
             "desc": "Don’t look at a screen for an hour while keeping your mouse here.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/plug.png",
             "reward": 7000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            },
             "timer": 3600,
             "amount": 3600
         }
@@ -109,47 +125,55 @@
             "category": "keys",
             "display_name": "Butter Knife",
             "desc": "Unlock Secret Spread.",
-            "image_path": "/images/measuring_cup.png",
-            "reward": 100,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "image_path": "/images/butter.png",
+            "reward": 1000,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "keys_2",
             "category": "keys",
             "display_name": "Essayist",
             "desc": "Convert 10,000 keystrokes to Bread Coin.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/page.png",
             "amount": 10000,
-            "reward": 1000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "reward": 10000,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "keys_3",
             "category": "keys",
             "display_name": "Novelist",
             "desc": "Convert 262,270 keystrokes, the equivalent of the Great Gatsby.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/book.png",
             "amount": 262270,
-            "reward": 1000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "reward": 262270,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "keys_4",
             "category": "keys",
             "display_name": "Epicist",
             "desc": "Convert 600,067 keystrokes, the equivalent of Homer's Odyssey.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/books.png",
             "amount": 600067,
-            "reward": 1000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "reward": 600067,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         }
     ],
     "unlocking": [
@@ -158,33 +182,39 @@
             "category": "unlocking",
             "display_name": "Threading",
             "desc": "Unlock all oven expansions.",
-            "image_path": "/images/measuring_cup.png",
-            "reward": 1000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "image_path": "/images/spool.png",
+            "reward": 10000000,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "unlocking_2",
             "category": "unlocking",
             "display_name": "Masterchef",
             "desc": "Buy every kitchen supply.",
-            "image_path": "/images/measuring_cup.png",
-            "reward": 2000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "image_path": "/images/chef.png",
+            "reward": 20000000,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "unlocking_3",
             "category": "unlocking",
             "display_name": "Carb Loader",
             "desc": "Unlock all bread types.",
-            "image_path": "/images/measuring_cup.png",
-            "reward": 3000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "image_path": "/images/temp.png",
+            "reward": 10000000000,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         }
     ],
     "loaves": [
@@ -193,36 +223,42 @@
             "category": "loaves",
             "display_name": "Mouth-Feeder",
             "desc": "Bake 5 loaves.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "amount": 5,
             "reward": 100,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "loaves_2",
             "category": "loaves",
             "display_name": "Income-Earner",
             "desc": "Bake 50 loaves.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "amount": 50,
             "reward": 500,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "loaves_3",
             "category": "loaves",
             "display_name": "Income-Earner",
             "desc": "Bake 500 loaves.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "amount": 500,
             "reward": 10000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "loaves_4",
@@ -230,12 +266,14 @@
             "display_name": "Miracle-Worker",
             "desc": "Bake 5,000 loaves.",
             "quip": "It took Jesus 5 loaves and 2 fish to make 5,000 loaves of bread. You did it with only clicks.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "amount": 5000,
             "reward": 500000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         }
     ],
     "medals": [
@@ -248,9 +286,11 @@
             "image_path": "/images/bronze.png",
             "amount": 100000000,
             "reward": 1,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "medal_2",
@@ -261,9 +301,11 @@
             "image_path": "/images/silver.png",
             "amount": 1000000000,
             "reward": 1,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "medal_3",
@@ -274,9 +316,11 @@
             "image_path": "/images/gold.png",
             "amount": 10000000000,
             "reward": 1,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         }
     ],
     "daily_orders": [
@@ -285,36 +329,42 @@
             "category": "daily_orders",
             "display_name": "All in a Week’s Work",
             "desc": "Fulfill 7 Daily Orders.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/calendar_1.png",
             "amount": 7,
             "reward": 1000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "daily_order_2",
             "category": "daily_orders",
             "display_name": "Prompt",
-            "desc": "Fulfill 10 Daily Orders within an hour of generation.",
-            "image_path": "/images/measuring_cup.png",
-            "amount": 10,
+            "desc": "Fulfill a Daily Orders within an hour of generation.",
+            "image_path": "/images/calendar_2.png",
+            "amount": 1,
             "reward": 10000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "daily_order_3",
             "category": "daily_orders",
             "display_name": "Carbs Monthly",
             "desc": "Fulfill 30 Daily Orders.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "amount": 30,
             "reward": 10000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         }
     ],
     "misc": [
@@ -323,58 +373,68 @@
             "category": "misc",
             "display_name": "What Extension?",
             "desc": "Spend an uninterrupted hour on the Breadwinner page.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "amount": 10000,
             "reward": 10000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "misc_2",
             "category": "misc",
             "display_name": "Button Masher",
             "desc": "Click the Green Convert Button 1,000 times.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/button.png",
             "amount": 1000,
-            "reward": 10000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "reward": 5000,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "misc_3",
             "category": "misc",
             "display_name": "Satisfying",
             "desc": "Sell a full oven at once.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "reward": 10000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "misc_4",
             "category": "misc",
             "display_name": "Cash Money",
             "desc": "Make $5,000,000 in one click.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "reward": 10000,
             "amount": 5000000,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         },
         {
             "id": "misc_5",
             "category": "misc",
             "display_name": "Mature",
             "desc": "Ha ha.",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "reward": 50,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
         }
     ],
     "ending": [
@@ -383,66 +443,84 @@
             "category": "ending",
             "display_name": "Ending 1",
             "desc": "",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "reward": 1,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false,
+                "epilogue": true
+            }
         },
         {
             "id": "ending_2",
             "category": "ending",
             "display_name": "Ending 2",
             "desc": "",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "reward": 1,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false,
+                "epilogue": true
+            }
         },
         {
             "id": "ending_3",
             "category": "ending",
             "display_name": "Ending 3",
             "desc": "",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "reward": 1,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false,
+                "epilogue": true
+            }
         },
         {
             "id": "ending_4",
             "category": "ending",
             "display_name": "Ending 4",
             "desc": "",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "reward": 1,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false,
+                "epilogue": true
+            }
         },
         {
             "id": "ending_5",
             "category": "ending",
             "display_name": "Ending 5",
             "desc": "",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "reward": 1,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false,
+                "epilogue": true
+            }
         },
         {
             "id": "ending_6",
             "category": "ending",
             "display_name": "Ending 6",
             "desc": "",
-            "image_path": "/images/measuring_cup.png",
+            "image_path": "/images/temp.png",
             "reward": 1,
-            "revealed": false,
-            "achieved": false,
-            "claimed": false
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false,
+                "epilogue": true
+            }
         }
     ]
 }

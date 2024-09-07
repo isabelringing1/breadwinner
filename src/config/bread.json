@@ -5,14 +5,16 @@
       "desc": "America's favorite bread.",
       "image_path": "/images/white.png",
       "initial_cost": 100,
-      "cost": 100,
       "bake_time": 60,
-      "markup": 1.2,
+      "markup": 1.1,
       "increase_rate": 1.07,
-      "purchase_count": 0,
-      "unlocked": false,
       "starting_color": "#fcd994",
-      "ending_color": "#d59313"
+      "ending_color": "#d59313",
+      "save": {
+        "cost": 100,
+        "purchase_count": 0,
+        "unlocked": false
+      }
     },
     "whole_wheat": {
       "id": "whole_wheat",
@@ -21,14 +23,16 @@
       "image_path": "/images/whole_wheat.png",
       "previous": "white",
       "initial_cost": 1200,
-      "cost": 1200,
-      "bake_time": 300,
-      "markup": 1.3,
+      "bake_time": 180,
+      "markup": 1.15,
       "increase_rate": 1.15,
-      "purchase_count": 0,
-      "unlocked": false,
       "starting_color": "#debd9f",
-      "ending_color": "#986844"
+      "ending_color": "#986844",
+      "save": {
+        "cost": 1200,
+        "purchase_count": 0,
+        "unlocked": false
+      }
     },
     "sourdough": {
       "id": "sourdough",
@@ -37,14 +41,16 @@
       "image_path": "/images/sourdough.png",
       "previous": "whole_wheat",
       "initial_cost": 14400,
-      "cost": 14400,
       "bake_time": 600,
-      "markup": 1.4,
+      "markup": 1.3,
       "increase_rate": 1.15,
-      "purchase_count": 0,
-      "unlocked": false,
       "starting_color": "#dec7b1",
-      "ending_color": "#a88663"
+      "ending_color": "#a88663",
+      "save": {
+        "cost": 14400,
+        "purchase_count": 0,
+        "unlocked": false
+      }
     },
     "challah": {
       "id": "challah",
@@ -53,12 +59,14 @@
       "image_path": "/images/challah.png",
       "previous": "sourdough",
       "initial_cost": 172800,
-      "cost": 172800,
       "bake_time": 1200,
-      "markup": 1.5,
+      "markup": 1.35,
       "increase_rate": 1.15,
-      "purchase_count": 0,
-      "unlocked": false
+      "save": {
+        "cost": 172800,
+        "purchase_count": 0,
+        "unlocked": false
+      }
     },
     "cinnamon_raisin": {
       "id": "cinnamon_raisin",
@@ -67,12 +75,15 @@
       "image_path": "/images/cinnamon_raisin.png",
       "previous": "challah",
       "initial_cost": 2073600,
-      "cost": 2073600,
-      "bake_time": 2400,
-      "markup": 1.6,
+      "bake_time": 2700,
+      "markup": 1.5,
       "increase_rate": 1.15,
-      "purchase_count": 0,
-      "unlocked": false
+      "save": {
+        "cost": 2073600,
+        "purchase_count": 0,
+        "unlocked": false
+      }
+      
     },
     "pumpernickel": {
       "id": "pumpernickel",
@@ -81,12 +92,14 @@
       "image_path": "/images/pumpernickel.png",
       "previous": "cinnamon_raisin",
       "initial_cost": 24883200,
-      "cost": 24883200,
       "bake_time": 5400,
-      "markup": 1.7,
+      "markup": 1.6,
       "increase_rate": 1.15,
-      "purchase_count": 0,
-      "unlocked": false
+      "save": {
+        "cost": 24883200,
+        "purchase_count": 0,
+        "unlocked": false
+      }
     },
     "potato": {
       "id": "potato",
@@ -95,12 +108,14 @@
       "image_path": "/images/potato.png",
       "previous": "pumpernickel",
       "initial_cost": 298598400,
-      "cost": 298598400,
-      "bake_time": 18000,
-      "markup": 1.8,
+      "bake_time": 10800,
+      "markup": 1.75,
       "increase_rate": 1.1,
-      "purchase_count": 0,
-      "unlocked": false
+      "save": {
+        "cost": 298598400,
+        "purchase_count": 0,
+        "unlocked": false
+      }
     },
     "brioche": {
       "id": "brioche",
@@ -109,12 +124,14 @@
       "image_path": "/images/brioche.png",
       "previous": "potato",
       "initial_cost": 3583180800,
-      "cost": 3583180800,
-      "bake_time": 54000,
-      "markup": 1.9,
+      "bake_time": 16000,
+      "markup": 1.8,
       "increase_rate": 1.09,
-      "purchase_count": 0,
-      "unlocked": false
+      "save": {
+        "cost": 3583180800,
+        "purchase_count": 0,
+        "unlocked": false
+      }
     },
     "banana": {
       "id": "banana",
@@ -123,11 +140,13 @@
       "image_path": "/images/banana.png",
       "previous": "brioche",
       "initial_cost": 42998169600,
-      "cost": 42998169600,
-      "bake_time": 172800,
+      "bake_time": 28800,
       "markup": 2.1,
       "increase_rate": 1.08,
-      "purchase_count": 0,
-      "unlocked": false
+      "save": {
+        "cost": 42998169600,
+        "purchase_count": 0,
+        "unlocked": false
+      }
     }
 }

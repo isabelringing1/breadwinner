@@ -51,7 +51,8 @@ function formatNumber(num, isDecimal = false){
 
 function formatPercent(num){
   if (num == null) return
-  return (num * 100) + "%"
+  num = +(num * 100).toFixed(2); // plus sign drops any "extra" zeroes at the end.
+  return num + "%"
 }
 
 function hexToRgb(hex) {

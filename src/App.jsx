@@ -24,6 +24,7 @@ import FloatingText from "./FloatingText";
 import SpeechBubble from "./SpeechBubble";
 import Achievements from "./Achievements";
 import DailyOrder from "./DailyOrder";
+import Envelope from "./Envelope";
 
 import tile from "/images/tile.png";
 import shadow from "/images/shadow.png";
@@ -79,6 +80,8 @@ function App() {
     const [convertPresses, setConvertPresses] = useState(0);
     const [allLoavesDone, setAllLoavesDone] = useState(false);
     const [inSellAllSequence, setInSellAllSequence] = useState(false);
+    const [showEnvelope, setShowEnvelope] = useState(false);
+    const [envelopeCategory, setEnvelopeCategory] = useState(null);
 
     const hourTimeout = useRef(null);
     const onInfoScreenButtonPressed = useRef(null);
@@ -90,9 +93,9 @@ function App() {
         var player = {
             multiplier: multiplier ?? 1.0,
             bread_coin: breadCoin ?? 0,
-            supplies_object: SupplyObject,
-            bread_object: BreadObject,
-            achievements_object: AchievementsObject,
+            supplies_object: getSave(SupplyObject),
+            bread_object: getSave(BreadObject),
+            achievements_object: getSaveAchievements(AchievementsObject),
             oven_queue: OvenQueue,
             total_spent: totalSpent,
             total_earned: totalEarned,
@@ -108,6 +111,26 @@ function App() {
         return player;
     };
 
+    const getSave = (obj) => {
+        var saveObj = {}
+        for (const [key, value] of Object.entries(obj)) {
+            saveObj[key] = value.save;
+        }
+        return saveObj;
+    }
+
+    const getSaveAchievements = (obj) => {
+        var saveObj = {}
+        for (const [categoryName, array] of Object.entries(obj)) {
+            var achievements = [];
+            for (var i in array){
+                achievements.push(array[i].save);
+            }
+            saveObj[categoryName] = achievements;
+        }
+        return saveObj;
+    }
+
     const reset = () => {
         lockKeys();
         localStorage.clear();
@@ -115,7 +138,7 @@ function App() {
     };
 
     const isSupplyPurchased = (id) => {
-        return SupplyObject[id].purchased;
+        return SupplyObject[id].save.purchased;
     };
 
     const shouldShowBread = (id) => {
@@ -127,14 +150,14 @@ function App() {
         if (id == "white") {
             return true;
         }
-        if (!bread.unlocked && BreadObject[bread.previous].purchase_count > 0) {
-            bread.unlocked = true;
+        if (!bread.save.unlocked && BreadObject[bread.previous].save.purchase_count > 0) {
+            bread.save.unlocked = true;
         }
-        return bread.unlocked;
+        return bread.save.unlocked;
     };
 
     const isBreadDisabled = (id) => {
-        return BreadObject[id].cost > breadCoin;
+        return BreadObject[id].save.cost > breadCoin;
     };
 
     const shouldShowSupply = (id) => {
@@ -146,14 +169,18 @@ function App() {
         if (id == "mixing_bowl") {
             return !isSupplyPurchased(id);
         } else if (supply.oven_increase) {
-            if (!supply.unlocked && breadCoin >= supply.cost * 0.5) {
-                supply.unlocked = true;
+            var index = parseInt(supply.id.slice(-1))
+            if (index > 1 && !SupplyObject["oven_slot_" + (index - 1)].save.purchased){
+                return false;
             }
-        } else if (!supply.unlocked && isSupplyPurchased(supply.previous)) {
-            supply.unlocked = true;
+            if (!supply.save.unlocked && breadCoin >= supply.cost * 0.5) {
+                supply.save.unlocked = true;
+            }
+        } else if (!supply.save.unlocked && isSupplyPurchased(supply.previous)) {
+            supply.save.unlocked = true;
         }
 
-        return supply.unlocked && !isSupplyPurchased(id);
+        return supply.save.unlocked && !isSupplyPurchased(id);
     };
 
     const isSupplyDisabled = (id) => {
@@ -174,19 +201,19 @@ function App() {
             setFloatingText("Oven full!");
             setFloatingTextPos(mousePos);
             return false;
-        } else if (!bread || bread.cost > breadCoin) {
+        } else if (!bread || bread.save.cost > breadCoin) {
             return false;
         }
         var now = Date.now();
         var loaf = {
             id: id,
-            purchase_count: bread.purchase_count,
+            purchase_count: bread.save.purchase_count,
             display_name: bread.display_name,
             starting_color: bread.starting_color ?? "#FFE7B7",
             ending_color: bread.ending_color ?? "#BB7F0A",
             start_time: now,
             end_time: now + bread.bake_time * 1000,
-            sell_value: Math.floor(bread.cost * bread.markup),
+            sell_value: Math.floor(bread.save.cost * bread.markup),
         };
         var newOvenQueue = [
             ...OvenQueue.slice(0, nextOpen),
@@ -196,17 +223,20 @@ function App() {
         setOvenQueue(newOvenQueue);
 
         var newBread = { ...BreadObject };
-        newBread[id].purchase_count++;
-        spendBreadCoin(bread.cost);
-        setTotalSpent(totalSpent + bread.cost);
-        newBread[id].cost = Math.floor(newBread[id].cost * bread.increase_rate);
+        newBread[id].save.purchase_count++;
+        spendBreadCoin(bread.save.cost);
+        setTotalSpent(totalSpent + bread.save.cost);
+        newBread[id].save.cost = Math.floor(newBread[id].save.cost * bread.increase_rate);
         setBreadObject(newBread);
         updateBreadTooltip(newBread[id]);
         setBreadBaked(breadBaked + 1);
         emitEvent("bread-baked", null, breadBaked + 1);
         tryUnlockDailyOrder(loaf.id, newBread);
-        if (id == "banana" && newBread[id].purchase_count == 1) {
+        if (id == "banana" && newBread[id].save.purchase_count == 1) {
             emitEvent("bread-finished", null, null);
+        }
+        if (breadBaked == 0){ //1st loaf of bread
+            peekInEnvelope("intro");
         }
     };
 
@@ -220,7 +250,7 @@ function App() {
         spendBreadCoin(supply.cost);
         setTotalSpent(totalSpent + supply.cost);
         var newSupply = { ...SupplyObject };
-        newSupply[id].purchased = true;
+        newSupply[id].save.purchased = true;
         setSupplyObject(newSupply);
         if (supply.keys) {
             setKeyUnlocked(true);
@@ -236,14 +266,14 @@ function App() {
                 setSpeechBubble("OVEN-ROW");
             }
             var allOvenSlotsPurchased = Object.entries(newSupply).every(item => {
-                return item[1].oven_increase == null || item[1].purchased
+                return item[1].oven_increase == null || item[1].save.purchased
             });
             if (allOvenSlotsPurchased) {
                 emitEvent("oven-finished", null, null);
             }
         }
         var allPurchased = Object.entries(newSupply).every(item => {
-            return item[1].purchased
+            return item[1].save.purchased
         });
         if (allPurchased) {
             emitEvent("supply-finished", null, null);
@@ -310,8 +340,8 @@ function App() {
     };
 
     const updateBreadTooltip = (item) => {
-        var sell_price = Math.floor(item.cost * item.markup);
-        var times = item.purchase_count == 1 ? " time." : " times.";
+        var sell_price = Math.floor(item.save.cost * item.markup);
+        var times = item.save.purchase_count == 1 ? " time." : " times.";
         var text =
             item.desc +
             "\nSells for " +
@@ -320,7 +350,7 @@ function App() {
         var textAfter =
             formatNumber(sell_price) +
             ").\nYou've baked this " +
-            item.purchase_count +
+            item.save.purchase_count +
             times;
         setTooltipText(text);
         setTooltipTextAfter(textAfter);
@@ -382,7 +412,7 @@ function App() {
             var text = "???";
             var inbetweenAfter = ""
             var after = "";
-            if (achievement.claimed) {
+            if (achievement.save.claimed) {
                 text = "**" + achievement.display_name + "**\n" + achievement.desc;
                 if (achievement.desc_after) {
                     inbetweenAfter = achievement.desc_after;
@@ -391,7 +421,7 @@ function App() {
                     text += "\n_" + achievement.quip + "_";
                 }
             }
-            else if (true) { //achievement.revealed
+            else if (achievement.save.revealed) { //achievement.save.revealed
                 var text;
                 if (achievement.desc_after) {
                     text =
@@ -411,10 +441,10 @@ function App() {
 
                 }
                 after = formatNumber(achievement.reward);
-                if (achievement.achieved) {
+                if (achievement.save.achieved) {
                     after += "\nClick to claim!";
                 }
-                else if (achievement.revealed) {
+                else if (achievement.save.revealed) {
                     if (achievement.progress != null) {
                         if (achievement.timer){
                             if (achievement.progress > 0){
@@ -433,7 +463,7 @@ function App() {
                 }
             }
 
-            if (achievement.manual && !achievement.claimed){
+            if (achievement.manual && !achievement.save.claimed && achievement.save.revealed){
                 onAchievementClaimButtonPressed.current = () => {
                     showAchievementInfoDialog(achievement);
                 };
@@ -498,10 +528,20 @@ function App() {
         if (messagesJson[category] == null) {
             return;
         }
-        var message =
-            messagesJson[category][
-            Math.floor(Math.random() * messagesJson[category].length)
-            ];
+        var totalWeight = 0
+        for (const [key, value] of Object.entries(messagesJson[category])) {
+            totalWeight += value
+        }
+        var roll = Math.random() * totalWeight
+        var sum = 0;
+        var message = ""
+        for (const [key, value] of Object.entries(messagesJson[category])) {
+            sum += value
+            if (sum >= roll){
+                message = key;
+                break;
+            }
+        }
         setSpeechBubbleText(message);
         setSpeechBubbleDuration(time == -1 ? 2000 : time);
         setSpeechBubbleCount(speechBubbleCount + 1);
@@ -510,7 +550,7 @@ function App() {
     const getBreadTotal = () => {
         var total = 0;
         for (var bread in BreadObject) {
-            total += BreadObject[bread].purchase_count;
+            total += BreadObject[bread].save.purchase_count;
         }
         return total;
     };
@@ -543,7 +583,7 @@ function App() {
     }
 
     const tryUnlockDailyOrder = (id, breadObject) => {
-        if (id == "cinnamon_raisin" && breadObject[id].purchase_count == 1){
+        if (id == "cinnamon_raisin" && breadObject[id].save.purchase_count == 1){
             setDailyOrderEvent(true);
             return;
         }
@@ -554,6 +594,10 @@ function App() {
             emitEvent("mature");
         }
     }, [keys, clicks]);
+
+    const peekInEnvelope = (category) => {
+        setEnvelopeCategory(category)
+    }
 
     useEffect(() => {
         registerForMessages(
@@ -576,10 +620,18 @@ function App() {
         if (playerData) {
             setMultiplier(playerData.multiplier);
             if (playerData.supplies_object) {
-                setSupplyObject(playerData.supplies_object);
+                var newSupply = { ...SupplyObject }
+                for (const [key, value] of Object.entries(playerData.supplies_object)) {
+                    newSupply[key].save = value
+                }
+                setSupplyObject(newSupply);
             }
             if (playerData.bread_object) {
-                setBreadObject(playerData.bread_object);
+                var newBread = { ...BreadObject }
+                for (const [key, value] of Object.entries(playerData.bread_object)) {
+                    newBread[key].save = value
+                }
+                setBreadObject(newBread);
             }
             if (playerData.bread_coin) {
                 broadcastBc(playerData.bread_coin);
@@ -601,7 +653,14 @@ function App() {
                 setKeyUnlocked(playerData.key_unlocked);
             }
             if (playerData.achievements_object) {
-                setAchievementsObject(playerData.achievements_object);
+                console.log(playerData.achievements_object)
+                var newAchievements = { ...AchievementsObject }
+                for (const [categoryName, array] of Object.entries(playerData.achievements_object)) {
+                    for (var i = 0; i < array.length; i++){
+                        newAchievements[categoryName][i].save = playerData.achievements_object[categoryName][i]
+                    }
+                }
+                setAchievementsObject(newAchievements);
             }
             if (playerData.bread_baked) {
                 setBreadBaked(playerData.bread_baked);
@@ -668,6 +727,8 @@ function App() {
                 setBreadCoin={setBreadCoin}
                 ovenQueue={OvenQueue}
                 setOvenQueue={setOvenQueue}
+                achievements={AchievementsObject}
+                setAchievements={setAchievementsObject}
             />
             <Tooltip
                 show={showTooltip}
@@ -675,6 +736,13 @@ function App() {
                 textAfter={tooltipTextAfter}
                 textAfterAfter={tooltipTextAfterAfter}
                 mousePos={tooltipPos}
+            />
+            <Envelope
+                cat={envelopeCategory}
+                setCat={setEnvelopeCategory}
+                showEnvelope={showEnvelope}
+                setShowEnvelope={setShowEnvelope}
+                emitEvent={emitEvent}
             />
             <Achievements
                 showAchievements={showAchievements}
@@ -690,6 +758,7 @@ function App() {
                 setTotalEarned={setTotalEarned}
                 loaded={loaded}
                 claimButtonPressed={onAchievementClaimButtonPressed.current}
+                peekInEnvelope={peekInEnvelope}
             />
             <DailyOrder
                 showDailyOrder={showDailyOrder}
@@ -790,7 +859,7 @@ function App() {
                     count={speechBubbleCount}
                 />
                 <div id="version">
-                    bread winner v1.0.0b{" "}
+                    bread winner{" "}
                     <span
                         id="info"
                         onClick={() => {

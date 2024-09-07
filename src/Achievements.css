@@ -96,6 +96,11 @@
     border: none;
 }
 
+.locked.epilogue{
+    background-color: #535c63;
+    box-shadow: none;
+}
+
 #spirals{
     height: 96%;
     width: 10%;

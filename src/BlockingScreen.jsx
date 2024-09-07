@@ -26,13 +26,13 @@ function BlockingScreen(props){
                         <div>
                         <div className='blocking-screen-title'>Welcome to Bread Winner!</div>
                             <div className='blocking-screen-text'>
-                                We're glad you're here. This is a game about clicking, baking, and working your way to the top. </div>
+                                Where no matter what you do... you can't NOT be productive. </div>
                             <div className='blocking-screen-text'>   
                                 You'll need the <a href="https://chromewebstore.google.com/detail/bread-winner-companion/mlfplmodeiemagcbcfofdmfcahjaafel" target="_blank" rel="noreferrer">Chrome</a> or <a href="https://addons.mozilla.org/en-US/firefox/addon/bread-winner-companion/" target="_blank" rel="noreferrer">Firefox</a> extension to play (other browsers not supported yet, sorry!)
                             </div>
                             <div className="credits">
-                                <div className='blocking-screen-text'>Made with 💪 by <a href="https://isabellee.me" target="_blank" rel="noreferrer">Isabel Lee</a></div>
-                                <div className='blocking-screen-text'>Have thoughts, questions, or bugs to report? Any feedback is welcome <a href="https://forms.gle/XZsfyj8Vem2RhEYHA" target="_blank" rel="noreferrer">here</a>!</div>
+                                <div className='blocking-screen-text'>Have thoughts, questions, or bugs to report? Any <a href="https://forms.gle/XZsfyj8Vem2RhEYHA" target="_blank" rel="noreferrer">feedback</a> is welcome.</div>
+                                <div className='blocking-screen-text'>v1.0.0b</div>
                             </div>
                         </div>
                     : delayPassed ? 

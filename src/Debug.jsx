@@ -3,7 +3,7 @@ import { resetCheat, setClicksCheat } from '../public/debug';
 import { broadcastBc } from '../public/extension';
 
 function Debug(props) {
-    const { resetProgress, setBreadCoin, ovenQueue, setOvenQueue } = props;
+    const { resetProgress, setBreadCoin, ovenQueue, setOvenQueue, achievements, setAchievements } = props;
     const [showDebug, setShowDebug] = useState(false);
     const clickInputRef = useRef();
     const BCInputRef = useRef();
@@ -21,6 +21,25 @@ function Debug(props) {
             }
         }
         setOvenQueue(newOvenQueue);
+    }
+
+    const finishAchievements = () => {
+        var newAchievements = { ...achievements };
+        for (var categoryName in newAchievements) {
+            var category = newAchievements[categoryName];
+            for (var i in category) {
+                if (category[i].save.epilogue){
+                    continue;
+                }
+                category[i].save.revealed = true;
+                category[i].save.achieved = true;
+                if (category[i].manual){
+                    category[i].save.claimed = true;
+                }
+                
+            }
+        }
+        setAchievements(newAchievements);
     }
 
     useEffect(() => {
@@ -44,6 +63,7 @@ function Debug(props) {
             setBreadCoin(parseInt(BCInputRef.current.value))
         }}> Set Bread Coin </button>
         <button id="finish-oven-button" onClick={finishOven}> Finish Baking </button>
+        <button id="set-achievements-button" onClick={finishAchievements}>Finish Achievements</button>
 
     </div> : null
     )

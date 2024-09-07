@@ -1,6 +1,8 @@
 import Loaf from './Loaf'
 import './Oven.css'
 
+import engravement from "/images/engravement.png"
+
 function Oven(props) {
     const { queue, sellLoaf, toggleTooltip, updateTooltip, shouldShow, setAllDone } = props;
     
@@ -36,6 +38,7 @@ function Oven(props) {
         </div>)
     }
     return (shouldShow ? <div id="oven">
+        <div id="oven-engravement">Dough & Co <img src={engravement} className="oven-engravement-img"/> </div>
         {rows}
     </div> : null)
 }

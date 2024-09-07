@@ -1,26 +1,27 @@
 {
-    "RETURN": [
-        "Welcome back! Let's get baking.",
-        "It smells amazing in here.",
-        "It’s so crazy we keep meeting like this.",
-        "We get it, you’re procrastinating.",
-        "Let’s get this bread!"
-    ],
-    "CLICK": [
-        "Cha-ching!"
-    ],
-    "SELL": [
-        "I can’t wait to eat this.",
-        "Finally!",
-        "Good things come to those who wait.",
-        "God, that smells amazing."
-    ],
-    "MULTIPLIER": [
-        "We're going to need more shelf space.",
-        "Retail therapy is my favorite.",
-        "You got a receipt for that, right?"
-    ],
-    "OVEN-ROW": [
-        "New row unlocked!"
-    ]
+    "RETURN": {
+        "Welcome back! Let's get baking.": 2.0,
+        "We're glad you're here." : 1.0,
+        "It smells amazing in here." : 1.0,
+        "It's not called procrastinating if you're still being productive.": 1.0,
+        "Let’s get this bread!" : 1.5
+    },
+    "CLICK": {
+        "Cha-ching!" : 9.0,
+        "You're being so productive." : 1.0
+    },
+    "SELL": {
+        "I can’t wait to eat this.": 1.0,
+        "Finally!" : 1.0,
+        "Good things come to those who wait.": 1.0,
+        "God, that smells amazing." : 1.0
+    },
+    "MULTIPLIER": {
+        "We're going to need more shelf space.": 1.0,
+        "Retail therapy is my favorite.": 1.0,
+        "You got a receipt for that, right?" : 1.0
+    },
+    "OVEN-ROW": {
+        "New row unlocked!": 1.0
+    }
 }
