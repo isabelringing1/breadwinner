@@ -333,6 +333,11 @@ p{
     padding-right: 5px;
 }
 
+#tooltip-timer-icon{
+    height: 2vh;
+    margin-bottom: -0.1vh;
+}
+
 @keyframes flash {
     0%{
         opacity: 0;
@@ -390,4 +395,3 @@ p{
         padding-top: 60px
     }
 }
-

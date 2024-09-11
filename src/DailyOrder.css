@@ -167,6 +167,11 @@
     margin-bottom: -4vh;
 }
 
+#daily-order-timer{
+    height: 4vh;
+    margin-bottom: -0.8vh;
+}
+
 .do-button:not(:disabled):after {
     background-color: #6EE835;
 }

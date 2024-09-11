@@ -118,3 +118,8 @@
   border-width: 4px 0 0;
   background: none;
 }
+
+#timer-icon{
+    width: 3vh;
+    margin-bottom: -0.5vh;
+}
