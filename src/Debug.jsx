@@ -52,12 +52,12 @@ function Debug(props) {
 
 	useEffect(() => {
 		document.addEventListener("keydown", (event) => {
-			if (event.code === "KeyD") {
+			if (event.code === "KeyD" && event.ctrlKey) {
 				toggleShowDebug();
 			}
 		});
 		return document.removeEventListener("keydown", (event) => {
-			if (event.code === "KeyD") {
+			if (event.code === "KeyD" && event.ctrlKey) {
 				toggleShowDebug();
 			}
 		});
@@ -74,7 +74,7 @@ function Debug(props) {
 			>
 				Reset?
 			</button>
-			<br />
+			{/* <br />
 			<input type="number" ref={clickInputRef} />{" "}
 			<button
 				id="set-clicks-button"
@@ -110,7 +110,7 @@ function Debug(props) {
 			</button>
 			<button id="set-achievements-button" onClick={finishAchievements}>
 				Finish Achievements
-			</button>
+			</button> */}
 		</div>
 	) : null;
 }
