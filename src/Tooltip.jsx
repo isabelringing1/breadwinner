@@ -4,8 +4,7 @@ import Markdown from "react-markdown";
 import timer from "/images/timer.png";
 
 function Tooltip(props) {
-	const { show, text, textAfter, textAfterAfter, mousePos, showTimer } =
-		props;
+	const { show, mousePos, contentArray } = props;
 
 	// prevents text from getting cut off at bottom
 	if (mousePos[1] > window.innerHeight - 150) {
@@ -22,16 +21,43 @@ function Tooltip(props) {
 			}}
 		>
 			<div id="tooltip-text">
-				<Markdown>{text}</Markdown>{" "}
-				{textAfter ? (
-					<BCSymbol color="black" height={15} top={1} />
-				) : null}
-				{textAfter}
-				{textAfterAfter ? (
-					<BCSymbol color="black" height={15} top={1} />
-				) : null}
-				{textAfterAfter}
-				{showTimer ? <img src={timer} id="tooltip-timer-icon" /> : null}
+				{contentArray.map((content, i) => {
+					content = String(content);
+					if (content == "BC") {
+						return (
+							<BCSymbol
+								color="black"
+								height={15}
+								top={1}
+								left={5}
+								key={"tooltip-content-" + i}
+							/>
+						);
+					} else if (content == "timer") {
+						return (
+							<img
+								src={timer}
+								id="tooltip-timer-icon"
+								key={"tooltip-content-" + i}
+								style={{
+									top: "-1",
+									marginLeft: ".3vh",
+								}}
+							/>
+						);
+					} else {
+						if (content.substr(0, 2) == "**") {
+							return (
+								<Markdown key={"tooltip-content-" + i}>
+									{content}
+								</Markdown>
+							);
+						}
+						return (
+							<span key={"tooltip-content-" + i}>{content}</span>
+						);
+					}
+				})}
 			</div>
 		</div>
 	);

@@ -47,9 +47,6 @@ function App() {
 	const [BreadObject, setBreadObject] = useState(breadJson);
 	const [OvenQueue, setOvenQueue] = useState([null, null, null, null]);
 	const [showTooltip, setShowTooltip] = useState(false);
-	const [tooltipText, setTooltipText] = useState("");
-	const [tooltipTextAfter, setTooltipTextAfter] = useState("");
-	const [tooltipTextAfterAfter, setTooltipTextAfterAfter] = useState("");
 	const [tooltipPos, setTooltipPos] = useState([0, 0]);
 	const [totalSpent, setTotalSpent] = useState(0);
 	const [totalEarned, setTotalEarned] = useState(0);
@@ -82,10 +79,10 @@ function App() {
 	const [allLoavesDone, setAllLoavesDone] = useState(false);
 	const [inSellAllSequence, setInSellAllSequence] = useState(false);
 	const [showEnvelope, setShowEnvelope] = useState(false);
-	const [envelopeCategory, setEnvelopeCategory] = useState(null);
 	const [timers, setTimers] = useState(0);
 	const [timersUnlocked, setTimersUnlocked] = useState(false);
-	const [showTimer, setShowTimer] = useState(false);
+	const [tooltipContentArray, setTooltipContentArray] = useState([]);
+	const [envelopeUnlocks, setEnvelopeUnlocks] = useState([]);
 
 	const hourTimeout = useRef(null);
 	const onInfoScreenButtonPressed = useRef(null);
@@ -112,7 +109,8 @@ function App() {
 			total_timely_daily_orders: totalTimelyDailyOrders,
 			convert_presses: convertPresses,
 			timers: timers,
-			timersUnlocked: timersUnlocked,
+			timers_unlocked: timersUnlocked,
+			envelope_unlocks: envelopeUnlocks,
 		};
 		return player;
 	};
@@ -254,7 +252,11 @@ function App() {
 		}
 		if (breadBaked == 0) {
 			//1st loaf of bread
-			peekInEnvelope("intro");
+			unlockEnvelope("intro");
+		}
+		if (breadBaked == 3) {
+			//4th loaf of bread
+			unlockEnvelope("timer", "envelope-timer-event");
 		}
 	};
 
@@ -341,17 +343,15 @@ function App() {
 
 	// Does stuff to set the default tooltip
 	const setupTooltip = (show, mousePos = [0, 0]) => {
-		setTooltipTextAfter("");
-		setTooltipTextAfterAfter("");
-		setTooltipPos(mousePos);
+		setTooltipContentArray([]);
 		setShowTooltip(show);
-		setShowTimer(false);
+		setTooltipPos(mousePos);
 	};
 
 	const toggleTooltip = (show, item = null, mousePos = [0, 0]) => {
 		setupTooltip(show, mousePos);
 		if (item != null) {
-			setTooltipText(item.desc);
+			setTooltipContentArray([item.desc]);
 		}
 	};
 
@@ -365,19 +365,17 @@ function App() {
 	const updateBreadTooltip = (item) => {
 		var sell_price = Math.floor(item.save.cost * item.markup);
 		var times = item.save.purchase_count == 1 ? " time." : " times.";
-		var text =
+		var text1 =
 			item.desc +
 			"\nSells for " +
 			formatPercent(item.markup) +
 			" of the original price (";
-		var textAfter =
+		var text2 =
 			formatNumber(sell_price) +
 			").\nYou've baked this " +
 			item.save.purchase_count +
 			times;
-		setTooltipText(text);
-		setTooltipTextAfter(textAfter);
-		setTooltipTextAfterAfter("");
+		setTooltipContentArray([text1, "BC", text2]);
 	};
 
 	const toggleLoafTooltip = (
@@ -398,24 +396,28 @@ function App() {
 			progress_text = "Ready!";
 		}
 
-		var text = item.display_name + " - " + progress_text + "\nSells for  ";
-		var textAfter = formatNumber(item.sell_value);
-
+		var tooltipArray = [];
+		var text1 = item.display_name + " - " + progress_text + "\nSells for  ";
+		tooltipArray.push(text1);
+		tooltipArray.push("BC");
+		var text2 = formatNumber(item.sell_value);
 		if (percent_done < 1 && timers > 0) {
-			textAfter += "\nClick to use ";
-			setShowTimer(true);
+			text2 += "\nClick to use ";
+			tooltipArray.push(text2);
+			tooltipArray.push("timer");
+		} else {
+			tooltipArray.push(text2);
 		}
-		setTooltipText(text);
-		setTooltipTextAfter(textAfter);
+
+		setTooltipContentArray(tooltipArray);
 	};
 
 	const toggleConvertClicksTooltip = (show, mousePos = [0, 0]) => {
 		setupTooltip(show, mousePos);
 		if (show) {
-			var text = "Convert for +";
-			var textAfter = Math.round(clicks * multiplier);
-			setTooltipText(text);
-			setTooltipTextAfter(textAfter);
+			var text1 = "Convert for +";
+			var text2 = Math.round(clicks * multiplier);
+			setTooltipContentArray([text1, "BC", text2]);
 		}
 	};
 
@@ -426,7 +428,7 @@ function App() {
 				"Increase your multiplier by tiny amount with every key. Convert for +" +
 				keys * 0.0001 +
 				".";
-			setTooltipText(text);
+			setTooltipContentArray([text]);
 		}
 	};
 
@@ -437,58 +439,74 @@ function App() {
 	) => {
 		setupTooltip(show, mousePos);
 		if (show) {
-			var text = "???";
-			var inbetweenAfter = "";
-			var after = "";
+			if (!achievement.save.revealed) {
+				setTooltipContentArray(["???"]);
+				return;
+			}
+
 			if (achievement.save.claimed) {
-				text =
+				var tooltipArray = [];
+				var text1 =
 					"**" + achievement.display_name + "**\n" + achievement.desc;
-				if (achievement.desc_after) {
-					inbetweenAfter = achievement.desc_after;
-				}
 				if (achievement.quip) {
-					text += "\n_" + achievement.quip + "_";
+					text1 += "\n_" + achievement.quip + "_";
 				}
-			} else if (true) {
-				//achievement.save.revealed
+				tooltipArray.push(text1);
+
 				if (achievement.desc_after) {
-					text =
-						"**" +
-						achievement.display_name +
-						"**\n" +
-						achievement.desc;
-					inbetweenAfter = achievement.desc_after + "\nReward: ";
-					after += "\n";
-				} else {
-					text =
-						"**" +
-						achievement.display_name +
-						"**\n" +
-						achievement.desc +
-						"\nReward: ";
+					text2 = achievement.desc_after;
+					tooltipArray.push("BC");
+					tooltipArray.push(text2);
 				}
-				after = formatNumber(achievement.reward);
+				setTooltipContentArray(tooltipArray);
+				return;
+			}
+
+			if (true) {
+				//achievement.save.revealed
+				var tooltipArray = [];
+				var text1 =
+					"**" + achievement.display_name + "**\n" + achievement.desc;
+				tooltipArray.push(text1);
+
+				if (achievement.desc_after) {
+					var text2 = achievement.desc_after + "\nReward: ";
+					tooltipArray.push("BC");
+					tooltipArray.push(text2);
+				} else {
+					tooltipArray.push("\nReward: ");
+				}
+				tooltipArray.push("BC");
+				tooltipArray.push(formatNumber(achievement.reward));
+
+				if (achievement.timers) {
+					tooltipArray.push(" + " + formatNumber(achievement.timers));
+					tooltipArray.push("timer");
+				}
+
 				if (achievement.save.achieved) {
-					after += "\nClick to claim!";
+					tooltipArray.push("\nClick to claim!");
 				} else if (achievement.save.revealed) {
 					if (achievement.progress != null) {
 						if (achievement.timer) {
 							if (achievement.progress > 0) {
-								after +=
+								tooltipArray.push(
 									"\nTime Remaining: " +
-									msToTime(
-										(achievement.timer -
-											achievement.progress) *
-											1000,
-										true
-									);
+										msToTime(
+											(achievement.timer -
+												achievement.progress) *
+												1000,
+											true
+										)
+								);
 							}
 						} else {
-							after +=
+							tooltipArray.push(
 								"\nProgress: " +
-								formatNumber(achievement.progress) +
-								"/" +
-								formatNumber(achievement.amount);
+									formatNumber(achievement.progress) +
+									"/" +
+									formatNumber(achievement.amount)
+							);
 						}
 					}
 				}
@@ -502,11 +520,9 @@ function App() {
 				onAchievementClaimButtonPressed.current = () => {
 					showAchievementInfoDialog(achievement);
 				};
-				after += "\nClick to complete now!";
+				tooltipArray.push("\nClick to complete now!");
 			}
-			setTooltipText(text);
-			setTooltipTextAfter(inbetweenAfter);
-			setTooltipTextAfterAfter(after);
+			setTooltipContentArray(tooltipArray);
 		}
 	};
 
@@ -514,7 +530,7 @@ function App() {
 		setupTooltip(show, mousePos);
 		if (show) {
 			var text = "Use a timer to finish a baking loaf instantly!";
-			setTooltipText(text);
+			setTooltipContentArray([text]);
 		}
 	};
 
@@ -609,16 +625,12 @@ function App() {
 	};
 
 	const emitEvent = (id, value = null, amount = null) => {
-		var newEvents = events.slice(0); //copies
 		var newEvent = { id: id, value: value, amount: amount };
-		newEvents.push(newEvent);
-		setEvents(newEvents);
+		setEvents([newEvent]);
 	};
 
 	const emitEvents = (events) => {
-		var newEvents = events.slice(0); //copies
-		newEvents.push.apply(newEvents, events);
-		setEvents(newEvents);
+		setEvents(events);
 	};
 
 	const updateDailyOrder = (id) => {
@@ -636,10 +648,7 @@ function App() {
 	};
 
 	const tryUnlockDailyOrder = (id, breadObject) => {
-		if (
-			id == "cinnamon_raisin" &&
-			breadObject[id].save.purchase_count == 1
-		) {
+		if (id == "challah" && breadObject[id].save.purchase_count == 1) {
 			setDailyOrderEvent(true);
 			return;
 		}
@@ -655,7 +664,6 @@ function App() {
 			// Spend timer
 			loaf.end_time = Date.now() - 1;
 			setTimers(timers - 1);
-			setShowTimer(false);
 			updateLoafTooltip(loaf, 100);
 			saveData(convertForSave());
 		}
@@ -667,8 +675,18 @@ function App() {
 		}
 	}, [keys, clicks]);
 
-	const peekInEnvelope = (category) => {
-		setEnvelopeCategory(category);
+	const unlockEnvelope = (category, eventName) => {
+		for (var entry in envelopeUnlocks) {
+			if (entry[0] == category) {
+				//already unlocked
+				return;
+			}
+		}
+		var newEnvelopeUnlocks = [
+			[category, eventName, false],
+			...envelopeUnlocks,
+		];
+		setEnvelopeUnlocks(newEnvelopeUnlocks);
 	};
 
 	useEffect(() => {
@@ -764,9 +782,13 @@ function App() {
 			if (playerData.timers) {
 				setTimers(playerData.timers);
 			}
-			if (playerData.timersUnlocked) {
-				setTimersUnlocked(playerData.timersUnlocked);
+			if (playerData.timers_unlocked) {
+				setTimersUnlocked(playerData.timers_unlocked);
 			}
+			if (playerData.envelope_unlocks) {
+				setEnvelopeUnlocks(playerData.envelope_unlocks);
+			}
+
 			setVisited(true);
 		}
 		setLoaded(true);
@@ -776,7 +798,6 @@ function App() {
 		}, 3600000);
 
 		window.onblur = function (e) {
-			console.log("onblur");
 			clearTimeout(hourTimeout.current);
 			hourTimeout.current = setTimeout(() => {
 				emitEvent("hour-timeout");
@@ -795,7 +816,7 @@ function App() {
 
 	useEffect(() => {
 		saveData(convertForSave());
-	}, [breadCoin, AchievementsObject]);
+	}, [breadCoin, AchievementsObject, envelopeUnlocks]);
 
 	useEffect(() => {
 		emitEvent("current-balance", null, breadCoin);
@@ -806,6 +827,19 @@ function App() {
 			setSpeechBubble("RETURN");
 		}
 	}, [extensionDetected]);
+
+	// Event Handler
+	useEffect(() => {
+		for (var i = 0; i < events.length; i++) {
+			var event = events[i];
+			switch (event.id) {
+				case "envelope-timer-event":
+					setTimersUnlocked(true);
+					setTimers(timers + 1);
+					break;
+			}
+		}
+	}, [events]);
 
 	return (
 		<div id="content">
@@ -820,15 +854,12 @@ function App() {
 			/>
 			<Tooltip
 				show={showTooltip}
-				text={tooltipText}
-				textAfter={tooltipTextAfter}
-				textAfterAfter={tooltipTextAfterAfter}
 				mousePos={tooltipPos}
-				showTimer={showTimer}
+				contentArray={tooltipContentArray}
 			/>
 			<Envelope
-				cat={envelopeCategory}
-				setCat={setEnvelopeCategory}
+				unlocks={envelopeUnlocks}
+				setUnlocks={setEnvelopeUnlocks}
 				showEnvelope={showEnvelope}
 				setShowEnvelope={setShowEnvelope}
 				emitEvent={emitEvent}
@@ -847,7 +878,7 @@ function App() {
 				setTotalEarned={setTotalEarned}
 				loaded={loaded}
 				claimButtonPressed={onAchievementClaimButtonPressed.current}
-				peekInEnvelope={peekInEnvelope}
+				unlockEnvelope={unlockEnvelope}
 				timers={timers}
 				setTimers={setTimers}
 				timersUnlocked={timersUnlocked}

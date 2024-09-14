@@ -110,6 +110,7 @@ function Wallet(props) {
 					</button>
 				</div>
 			) : null}
+			<div className="br"></div>
 			{timersUnlocked ? (
 				<div
 					id="timers-wallet"

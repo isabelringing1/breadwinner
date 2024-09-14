@@ -101,7 +101,7 @@ function DailyOrder(props) {
 	}, 1000);
 
 	const dailyOrderUnlocked = () => {
-		return BreadObject["cinnamon_raisin"].save.purchase_count > 0;
+		return BreadObject["challah"].save.purchase_count > 0;
 	};
 
 	/* Daily orders refresh at 3 p.m. est */
@@ -152,8 +152,8 @@ function DailyOrder(props) {
 				higherWeights[id] = 0;
 			}
 		}
-		// console.log(lowerWeights)
-		// console.log(higherWeights)
+		console.log(lowerWeights);
+		console.log(higherWeights);
 
 		for (var i = 0; i < 2; i++) {
 			if (getRandomInt(0, 2) == 0) {

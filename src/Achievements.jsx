@@ -25,11 +25,11 @@ function Achievements(props) {
 		setTotalEarned,
 		claimButtonPressed,
 		loaded,
-		peekInEnvelope,
 		timers,
 		setTimers,
 		timersUnlocked,
 		setTimersUnlocked,
+		unlockEnvelope,
 	} = props;
 
 	const animating = useRef(false);
@@ -49,8 +49,8 @@ function Achievements(props) {
 	useEffect(() => {
 		var newAchievements = { ...AchievementsObject };
 		for (var i = 0; i < events.length; i++) {
-			var event = events.pop();
-			console.log("listening to event ", event);
+			var event = events[i];
+			//console.log("Listening to event ", event);
 			switch (event.id) {
 				case "total-conversions":
 					var productivityAchievements =
@@ -240,7 +240,7 @@ function Achievements(props) {
 		animateReward(achievement.reward, achievement.id);
 		console.log(numAchievements);
 		if (numAchievements == 30) {
-			peekInEnvelope("ending");
+			unlockEnvelope("ending", "reveal-epilogue");
 		}
 	};
 
