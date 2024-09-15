@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { saveData, loadData } from "../public/account";
+import { resetCheat } from "../public/debug";
 import {
 	requestClickCount,
 	registerForMessages,
@@ -707,9 +708,10 @@ function App() {
 		requestKeyCount();
 
 		var playerData = loadData();
-		if (playerData) {
-			setMultiplier(playerData.multiplier);
-			if (playerData.supplies_object) {
+		try {
+			if (playerData != null) {
+				setMultiplier(playerData.multiplier);
+
 				var newSupply = { ...SupplyObject };
 				for (const [key, value] of Object.entries(
 					playerData.supplies_object
@@ -717,8 +719,7 @@ function App() {
 					newSupply[key].save = value;
 				}
 				setSupplyObject(newSupply);
-			}
-			if (playerData.bread_object) {
+
 				var newBread = { ...BreadObject };
 				for (const [key, value] of Object.entries(
 					playerData.bread_object
@@ -726,28 +727,7 @@ function App() {
 					newBread[key].save = value;
 				}
 				setBreadObject(newBread);
-			}
-			if (playerData.bread_coin) {
-				broadcastBc(playerData.bread_coin);
-				setBreadCoin(playerData.bread_coin);
-			}
-			if (playerData.oven_queue) {
-				setOvenQueue(playerData.oven_queue);
-			}
-			if (playerData.total_spent) {
-				setTotalSpent(playerData.total_spent);
-			}
-			if (playerData.total_earned) {
-				setTotalEarned(playerData.total_earned);
-			}
-			if (playerData.total_clicks) {
-				setTotalClicks(playerData.total_clicks);
-			}
-			if (playerData.key_unlocked) {
-				setKeyUnlocked(playerData.key_unlocked);
-			}
-			if (playerData.achievements_object) {
-				console.log(playerData.achievements_object);
+
 				var newAchievements = { ...AchievementsObject };
 				for (const [categoryName, array] of Object.entries(
 					playerData.achievements_object
@@ -758,38 +738,31 @@ function App() {
 					}
 				}
 				setAchievementsObject(newAchievements);
-			}
-			if (playerData.bread_baked) {
+
+				broadcastBc(playerData.bread_coin);
+				setBreadCoin(playerData.bread_coin);
+				setOvenQueue(playerData.oven_queue);
+				setTotalSpent(playerData.total_spent);
+				setTotalEarned(playerData.total_earned);
+				setTotalClicks(playerData.total_clicks);
+				setKeyUnlocked(playerData.key_unlocked);
 				setBreadBaked(playerData.bread_baked);
-			}
-			if (playerData.daily_order_next_refresh_time) {
 				setDailyOrderNextRefreshTime(
 					playerData.daily_order_next_refresh_time
 				);
-			}
-			if (playerData.daily_order) {
 				setDailyOrderArray(playerData.daily_order);
-			}
-			if (playerData.total_daily_orders) {
+				setTotalDailyOrders(playerData.total_daily_orders);
 				setTotalTimelyDailyOrders(playerData.total_daily_orders);
-			}
-			if (playerData.total_timely_daily_orders) {
-				setTotalTimelyDailyOrders(playerData.total_timely_daily_orders);
-			}
-			if (playerData.convert_presses) {
 				setConvertPresses(playerData.convert_presses);
-			}
-			if (playerData.timers) {
 				setTimers(playerData.timers);
-			}
-			if (playerData.timers_unlocked) {
 				setTimersUnlocked(playerData.timers_unlocked);
-			}
-			if (playerData.envelope_unlocks) {
 				setEnvelopeUnlocks(playerData.envelope_unlocks);
+				setVisited(true);
 			}
-
-			setVisited(true);
+		} catch (e) {
+			console.error("Error setting save data: ", e);
+			reset();
+			resetCheat();
 		}
 		setLoaded(true);
 

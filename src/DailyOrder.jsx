@@ -152,9 +152,6 @@ function DailyOrder(props) {
 				higherWeights[id] = 0;
 			}
 		}
-		console.log(lowerWeights);
-		console.log(higherWeights);
-
 		for (var i = 0; i < 2; i++) {
 			if (getRandomInt(0, 2) == 0) {
 				var suborder = createSuborder(lowerWeights, 4, 10);
@@ -170,7 +167,7 @@ function DailyOrder(props) {
 		}
 		order.unshift(getRandomInt(1, 3));
 		order.unshift(totalReward);
-		console.log("Order: ", order);
+		//console.log("Order: ", order);
 		return order;
 	};
 

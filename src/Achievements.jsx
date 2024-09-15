@@ -224,7 +224,7 @@ function Achievements(props) {
 			for (var i in category) {
 				if (category[i].id == achievement.id) {
 					category[i].save.claimed = true;
-					console.log("Claiming ", achievement);
+					//console.log("Claiming ", achievement);
 				}
 				numAchievements += category[i].save.claimed ? 1 : 0;
 			}
@@ -238,7 +238,6 @@ function Achievements(props) {
 		emitEvent("breadcoin-gain", achievement.reward, null);
 		setTotalEarned(totalEarned + achievement.reward);
 		animateReward(achievement.reward, achievement.id);
-		console.log(numAchievements);
 		if (numAchievements == 30) {
 			unlockEnvelope("ending", "reveal-epilogue");
 		}
