@@ -74,7 +74,7 @@ function Debug(props) {
 			>
 				Reset?
 			</button>
-			<br />
+			{/* <br />
 			<input type="number" ref={clickInputRef} />{" "}
 			<button
 				id="set-clicks-button"
@@ -110,7 +110,7 @@ function Debug(props) {
 			</button>
 			<button id="set-achievements-button" onClick={finishAchievements}>
 				Finish Achievements
-			</button>
+			</button> */}
 		</div>
 	) : null;
 }
