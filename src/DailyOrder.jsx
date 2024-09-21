@@ -52,6 +52,7 @@ function DailyOrder(props) {
 		setTotalTimelyDailyOrders,
 		timers,
 		setTimers,
+		timerUnit,
 	} = props;
 
 	const animating = useRef(false);
@@ -139,7 +140,8 @@ function DailyOrder(props) {
 	const createNewDailyOrder = () => {
 		var order = [];
 		shuffleArray(cards);
-		var totalReward = 0;
+		var totalBcReward = 0;
+		var totalTimerReward = 0;
 		var lowerWeights = { ...lowerBreadWeights };
 		var higherWeights = { ...higherBreadWeights };
 		for (const [id, _] of Object.entries(lowerWeights)) {
@@ -153,21 +155,18 @@ function DailyOrder(props) {
 			}
 		}
 		for (var i = 0; i < 2; i++) {
-			if (getRandomInt(0, 2) == 0) {
-				var suborder = createSuborder(lowerWeights, 4, 10);
-				suborder.push(cards[i]);
-				totalReward += suborder[3];
-				order.push(suborder);
-			} else {
-				var suborder = createSuborder(higherWeights, 1, 3);
-				suborder.push(cards[i]);
-				totalReward += suborder[3];
-				order.push(suborder);
-			}
+			var suborder =
+				getRandomInt(0, 2) == 0
+					? createSuborder(lowerWeights, 4, 10)
+					: (suborder = createSuborder(higherWeights, 1, 3));
+			suborder.push(cards[i]);
+			totalBcReward += suborder[3];
+			totalTimerReward += suborder[4];
+			order.push(suborder);
 		}
-		order.unshift(getRandomInt(1, 3));
-		order.unshift(totalReward);
 		//console.log("Order: ", order);
+		order.unshift(totalTimerReward);
+		order.unshift(totalBcReward);
 		return order;
 	};
 
@@ -184,10 +183,13 @@ function DailyOrder(props) {
 			sum += weight;
 			if (sum >= roll) {
 				weights[id] = 0;
-				var reward = Math.floor(
+				var bc_reward = Math.floor(
 					BreadObject[id].save.cost * BreadObject[id].markup
 				);
-				return [id, numLoaves, 0, reward];
+				var timer_reward = Math.ceil(
+					(1000 * BreadObject[id].bake_time) / timerUnit / 2
+				);
+				return [id, numLoaves, 0, bc_reward, timer_reward];
 			}
 		}
 		return null;

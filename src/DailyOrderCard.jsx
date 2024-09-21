@@ -17,7 +17,7 @@ function DailyOrderCard(props) {
 					window.location.origin + "/images/" + order[0] + "_full.png"
 				}
 			/>
-			<img className="daily-order-bg" src={order[4]} />
+			<img className="daily-order-bg" src={order[5]} />
 			<div className="daily-order-info"> {breadName} </div>
 			<div className={progressClass}>{order[2] + "/" + order[1]}</div>
 		</div>

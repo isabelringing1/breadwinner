@@ -20,12 +20,12 @@
             "id": "productivity_2",
             "category": "productivity",
             "display_name": "So Productive",
-            "desc": "Convert 1,000 Clicks to Bread Coin.",
+            "desc": "Convert 2,000 Clicks to Bread Coin.",
             "progress": 0,
-            "amount": 1000,
+            "amount": 2000,
             "image_path": "/images/water.png",
-            "reward": 1500,
-            "timers": 1,
+            "reward": 2500,
+            "timers": 5,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -41,7 +41,7 @@
             "amount": 10000,
             "image_path": "/images/dumbell.png",
             "reward": 2000,
-            "timers": 1,
+            "timers": 20,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -55,7 +55,7 @@
             "desc": "Complete a chore you've been procrastinating.",
             "image_path": "/images/plate.png",
             "reward": 3000,
-            "timers": 1,
+            "timers": 3,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -70,7 +70,7 @@
             "desc": "Reply to a message that you've been neglecting.",
             "image_path": "/images/bubble.png",
             "reward": 4000,
-            "timers": 1,
+            "timers": 5,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -85,7 +85,7 @@
             "desc": "Say something nice to yourself in the mirror.",
             "image_path": "/images/mirror.png",
             "reward": 5000,
-            "timers": 1,
+            "timers": 10,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -100,7 +100,7 @@
             "desc": "Go outside for half an hour while keeping your mouse here. Yes, seriously. We'll keep track.",
             "image_path": "/images/grass.png",
             "reward": 6000,
-            "timers": 1,
+            "timers": 50,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -116,7 +116,7 @@
             "desc": "Don’t look at a screen for an hour while keeping your mouse here.",
             "image_path": "/images/plug.png",
             "reward": 7000,
-            "timers": 1,
+            "timers": 100,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -135,7 +135,7 @@
             "desc": "Unlock Secret Spread.",
             "image_path": "/images/butter.png",
             "reward": 1000,
-            "timers": 1,
+            "timers": 5,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -150,7 +150,7 @@
             "image_path": "/images/page.png",
             "amount": 10000,
             "reward": 10000,
-            "timers": 1,
+            "timers": 10,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -165,7 +165,7 @@
             "image_path": "/images/book.png",
             "amount": 262270,
             "reward": 262270,
-            "timers": 1,
+            "timers": 20,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -180,7 +180,7 @@
             "image_path": "/images/books.png",
             "amount": 600067,
             "reward": 600067,
-            "timers": 1,
+            "timers": 40,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -196,7 +196,7 @@
             "desc": "Unlock all oven expansions.",
             "image_path": "/images/spool.png",
             "reward": 10000000,
-            "timers": 1,
+            "timers": 20,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -210,7 +210,7 @@
             "desc": "Buy every kitchen supply.",
             "image_path": "/images/chef.png",
             "reward": 20000000,
-            "timers": 1,
+            "timers": 50,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -224,7 +224,7 @@
             "desc": "Unlock all bread types.",
             "image_path": "/images/temp.png",
             "reward": 10000000000,
-            "timers": 1,
+            "timers": 100,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -256,7 +256,7 @@
             "image_path": "/images/temp.png",
             "amount": 50,
             "reward": 500,
-            "timers": 1,
+            "timers": 10,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -271,7 +271,7 @@
             "image_path": "/images/temp.png",
             "amount": 500,
             "reward": 10000,
-            "timers": 1,
+            "timers": 50,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -287,7 +287,7 @@
             "image_path": "/images/temp.png",
             "amount": 5000,
             "reward": 500000,
-            "timers": 1,
+            "timers": 100,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -305,7 +305,7 @@
             "image_path": "/images/bronze.png",
             "amount": 100000000,
             "reward": 1,
-            "timers": 1,
+            "timers": 50,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -321,7 +321,7 @@
             "image_path": "/images/silver.png",
             "amount": 1000000000,
             "reward": 1,
-            "timers": 1,
+            "timers": 100,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -337,7 +337,7 @@
             "image_path": "/images/gold.png",
             "amount": 10000000000,
             "reward": 1,
-            "timers": 1,
+            "timers": 150,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -354,7 +354,7 @@
             "image_path": "/images/calendar_1.png",
             "amount": 7,
             "reward": 1000,
-            "timers": 1,
+            "timers": 30,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -365,11 +365,11 @@
             "id": "daily_order_2",
             "category": "daily_orders",
             "display_name": "Prompt",
-            "desc": "Fulfill a Daily Orders within an hour of generation.",
+            "desc": "Fulfill a Daily Order within an hour of generation.",
             "image_path": "/images/calendar_2.png",
             "amount": 1,
             "reward": 10000,
-            "timers": 1,
+            "timers": 5,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -384,7 +384,7 @@
             "image_path": "/images/temp.png",
             "amount": 30,
             "reward": 10000,
-            "timers": 1,
+            "timers": 300,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -401,7 +401,7 @@
             "image_path": "/images/temp.png",
             "amount": 10000,
             "reward": 10000,
-            "timers": 1,
+            "timers": 10,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -416,7 +416,7 @@
             "image_path": "/images/button.png",
             "amount": 1000,
             "reward": 5000,
-            "timers": 1,
+            "timers": 30,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -430,7 +430,7 @@
             "desc": "Sell a full oven at once.",
             "image_path": "/images/temp.png",
             "reward": 10000,
-            "timers": 1,
+            "timers": 60,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -445,7 +445,7 @@
             "image_path": "/images/temp.png",
             "reward": 10000,
             "amount": 5000000,
-            "timers": 1,
+            "timers": 50,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -459,7 +459,7 @@
             "desc": "Ha ha.",
             "image_path": "/images/temp.png",
             "reward": 50,
-            "timers": 1,
+            "timers": 69,
             "save": {
                 "revealed": false,
                 "achieved": false,

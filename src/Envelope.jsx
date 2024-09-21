@@ -11,6 +11,8 @@ function Envelope(props) {
 	const { unlocks, setUnlocks, showEnvelope, setShowEnvelope, emitEvent } =
 		props;
 	const animating = useRef(false);
+	const jiggleInterval = useRef(null);
+
 	const [currentEntry, setCurrentEntry] = useState(null);
 	const [cards, setCards] = useState([]);
 	const [cardIndex, setCardIndex] = useState(0);
@@ -206,6 +208,9 @@ function Envelope(props) {
 			document.getElementById("small-envelope").style.bottom = "-3vh";
 			jiggle_envelope();
 		}, 400);
+		jiggleInterval.current = setInterval(() => {
+			jiggle_envelope();
+		}, 2000);
 	};
 
 	const jiggle_envelope = () => {
@@ -223,6 +228,7 @@ function Envelope(props) {
 	const animate_open = () => {
 		if (animating.current || showEnvelope) return;
 		setCardIndex(0);
+		jiggleInterval.current = null;
 
 		animating.current = true;
 		document

@@ -111,8 +111,8 @@
 }
 
 .do-button{
-    width: 25vh;
-    height: 10vh;
+    width: 22vh;
+    height: 8vh;
     font-size: 4vh;
     background-color: #4c9d27;
     appearance: button;
@@ -125,7 +125,7 @@
     font-weight: 500;
     letter-spacing: .8px;
     line-height: 2.09vh;
-    margin: 0;
+    margin: 2vh 0 0 0;
     outline: none;
     overflow: visible;
     padding: 1.8vh 2vh;

@@ -37,6 +37,8 @@ import suppliesJson from "./config/supplies.json";
 import messagesJson from "./config/messages.json";
 import achievementsJson from "./config/achievements.json";
 
+const timer_unit = 300000;
+
 function App() {
 	const [loaded, setLoaded] = useState(false);
 	const [clicks, setClicks] = useState(null);
@@ -84,6 +86,8 @@ function App() {
 	const [timersUnlocked, setTimersUnlocked] = useState(false);
 	const [tooltipContentArray, setTooltipContentArray] = useState([]);
 	const [envelopeUnlocks, setEnvelopeUnlocks] = useState([]);
+	const [useTimerMode, setUseTimerMode] = useState(false);
+	const [timerButtonHovered, setTimerButtonHovered] = useState(false);
 
 	const hourTimeout = useRef(null);
 	const onInfoScreenButtonPressed = useRef(null);
@@ -255,8 +259,8 @@ function App() {
 			//1st loaf of bread
 			unlockEnvelope("intro");
 		}
-		if (breadBaked == 3) {
-			//4th loaf of bread
+		if (breadBaked == 2) {
+			//3rd loaf of bread
 			unlockEnvelope("timer", "envelope-timer-event");
 		}
 	};
@@ -383,15 +387,16 @@ function App() {
 		show,
 		item = null,
 		mousePos = [0, 0],
-		percent_done = -1
+		percent_done = -1,
+		timerCost = 0
 	) => {
 		setupTooltip(show, mousePos);
 		if (item != null) {
-			updateLoafTooltip(item, percent_done);
+			updateLoafTooltip(item, percent_done, timerCost);
 		}
 	};
 
-	const updateLoafTooltip = (item, percent_done) => {
+	const updateLoafTooltip = (item, percent_done, timerCost) => {
 		var progress_text = Math.floor(percent_done * 100) + "% done";
 		if (percent_done >= 1) {
 			progress_text = "Ready!";
@@ -400,14 +405,19 @@ function App() {
 		var tooltipArray = [];
 		var text1 = item.display_name + " - " + progress_text + "\nSells for  ";
 		tooltipArray.push(text1);
-		tooltipArray.push("BC");
+		tooltipArray.push("[BC]");
 		var text2 = formatNumber(item.sell_value);
-		if (percent_done < 1 && timers > 0) {
-			text2 += "\nClick to use ";
-			tooltipArray.push(text2);
-			tooltipArray.push("timer");
-		} else {
-			tooltipArray.push(text2);
+		tooltipArray.push(text2);
+
+		if (percent_done < 1) {
+			tooltipArray.push("\n");
+			if (timers < timerCost) {
+				tooltipArray.push("[gray]Speed up for " + timerCost);
+				tooltipArray.push("[bw timer]");
+			} else {
+				tooltipArray.push("Speed up for " + timerCost);
+				tooltipArray.push("[timer]");
+			}
 		}
 
 		setTooltipContentArray(tooltipArray);
@@ -418,7 +428,7 @@ function App() {
 		if (show) {
 			var text1 = "Convert for +";
 			var text2 = Math.round(clicks * multiplier);
-			setTooltipContentArray([text1, "BC", text2]);
+			setTooltipContentArray([text1, "[BC]", text2]);
 		}
 	};
 
@@ -456,7 +466,7 @@ function App() {
 
 				if (achievement.desc_after) {
 					text2 = achievement.desc_after;
-					tooltipArray.push("BC");
+					tooltipArray.push("[BC]");
 					tooltipArray.push(text2);
 				}
 				setTooltipContentArray(tooltipArray);
@@ -472,17 +482,17 @@ function App() {
 
 				if (achievement.desc_after) {
 					var text2 = achievement.desc_after + "\nReward: ";
-					tooltipArray.push("BC");
+					tooltipArray.push("[BC]");
 					tooltipArray.push(text2);
 				} else {
 					tooltipArray.push("\nReward: ");
 				}
-				tooltipArray.push("BC");
+				tooltipArray.push("[BC]");
 				tooltipArray.push(formatNumber(achievement.reward));
 
 				if (achievement.timers) {
 					tooltipArray.push(" + " + formatNumber(achievement.timers));
-					tooltipArray.push("timer");
+					tooltipArray.push("[timer]");
 				}
 
 				if (achievement.save.achieved) {
@@ -530,7 +540,7 @@ function App() {
 	const toggleTimerInfoTooltip = (show, mousePos = [0, 0]) => {
 		setupTooltip(show, mousePos);
 		if (show) {
-			var text = "Use a timer to finish a baking loaf instantly!";
+			var text = "Spend timers to finish a baking loaf instantly!\n";
 			setTooltipContentArray([text]);
 		}
 	};
@@ -661,13 +671,36 @@ function App() {
 			return;
 		}
 		var loaf = OvenQueue[index];
-		if (loaf.end_time >= Date.now() && timers > 0) {
+		var cost = getTimerCost(loaf);
+		if (useTimerMode && loaf.end_time >= Date.now() && timers >= cost) {
 			// Spend timer
 			loaf.end_time = Date.now() - 1;
-			setTimers(timers - 1);
+			setTimers(timers - cost);
 			updateLoafTooltip(loaf, 100);
 			saveData(convertForSave());
+			setUseTimerMode(false);
 		}
+	};
+
+	const getTimerCost = (loaf) => {
+		var time_left = loaf.end_time - Date.now();
+		return Math.ceil(time_left / timer_unit);
+	};
+
+	const canUseTimers = () => {
+		if (timers == 0) {
+			return false;
+		}
+		for (var i = 0; i < OvenQueue.length; i++) {
+			if (OvenQueue[i] != null) {
+				var loaf = OvenQueue[i];
+				var timerCost = getTimerCost(loaf);
+				if (timerCost <= timers && loaf.end_time > Date.now()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	};
 
 	useEffect(() => {
@@ -777,6 +810,12 @@ function App() {
 			}, 3600000);
 		};
 
+		document.addEventListener("click", (e) => {
+			if (e.target.id != "timer-activate-button") {
+				setUseTimerMode(false);
+			}
+		});
+
 		return () => {
 			document.removeEventListener("visibilitychange", (event) => {
 				if (document.visibilityState == "visible") {
@@ -789,7 +828,7 @@ function App() {
 
 	useEffect(() => {
 		saveData(convertForSave());
-	}, [breadCoin, AchievementsObject, envelopeUnlocks]);
+	}, [breadCoin, AchievementsObject, envelopeUnlocks, timers]);
 
 	useEffect(() => {
 		emitEvent("current-balance", null, breadCoin);
@@ -878,6 +917,7 @@ function App() {
 				setTotalTimelyDailyOrders={setTotalTimelyDailyOrders}
 				timers={timers}
 				setTimers={setTimers}
+				timerUnit={timer_unit}
 			/>
 			<FloatingText
 				text={floatingText}
@@ -919,6 +959,11 @@ function App() {
 					timers={timers}
 					timersUnlocked={timersUnlocked}
 					toggleTimerInfoTooltip={toggleTimerInfoTooltip}
+					useTimerMode={useTimerMode}
+					setUseTimerMode={setUseTimerMode}
+					canUseTimers={canUseTimers}
+					timerButtonHovered={timerButtonHovered}
+					setTimerButtonHovered={setTimerButtonHovered}
 				/>
 
 				{SupplyObject ? (
@@ -953,6 +998,11 @@ function App() {
 					shouldShow={totalSpent > 0}
 					setAllDone={setAllLoavesDone}
 					onLoafClicked={onLoafClicked}
+					timers={timers}
+					getTimerCost={getTimerCost}
+					useTimerMode={useTimerMode}
+					setUseTimerMode={setUseTimerMode}
+					timerButtonHovered={timerButtonHovered}
 				/>
 				<SpeechBubble
 					text={speechBubbleText}

@@ -22,7 +22,7 @@ function Card(props) {
 		>
 			<div className="card-title">{item.display_name}</div>
 			<div className="card-price">
-				<BCSymbol color="red" />
+				<BCSymbol color="green" />
 				{formatNumber(item.save.cost ?? item.cost)}
 			</div>
 			<img

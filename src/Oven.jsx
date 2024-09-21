@@ -12,6 +12,11 @@ function Oven(props) {
 		shouldShow,
 		setAllDone,
 		onLoafClicked,
+		timers,
+		getTimerCost,
+		useTimerMode,
+		setUseTimerMode,
+		timerButtonHovered,
 	} = props;
 
 	const onLoafDone = (i) => {
@@ -39,6 +44,11 @@ function Oven(props) {
 					updateTooltip={updateTooltip}
 					loafDone={onLoafDone}
 					onLoafClicked={onLoafClicked}
+					timers={timers}
+					getTimerCost={getTimerCost}
+					useTimerMode={useTimerMode}
+					setUseTimerMode={setUseTimerMode}
+					timerButtonHovered={timerButtonHovered}
 				/>
 			);
 		}

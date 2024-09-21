@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { formatNumber } from "./Util";
 import timer from "/images/timer.png";
 import "./Wallet.css";
@@ -16,7 +16,14 @@ function Wallet(props) {
 		timers,
 		timersUnlocked,
 		toggleTimerInfoTooltip,
+		useTimerMode,
+		setUseTimerMode,
+		canUseTimers,
+		timerButtonHovered,
+		setTimerButtonHovered,
 	} = props;
+
+	const [showTimerButton, setShowTimerButton] = useState(false);
 
 	useEffect(() => {
 		const num = document.getElementById("click-num");
@@ -65,7 +72,12 @@ function Wallet(props) {
 				<button
 					className="button"
 					id="convert-clicks"
-					onClick={() => {
+					onClick={(e) => {
+						console.log(e.detail);
+						if (e.detail == 0) {
+							// Occurs when someone holds down enter
+							return;
+						}
 						convertClicks();
 					}}
 					onMouseMove={(e) => {
@@ -120,12 +132,28 @@ function Wallet(props) {
 								? e.clientX + 30
 								: e.clientX - 240;
 						toggleTimerInfoTooltip(true, [x, e.clientY + 30]);
+						setTimerButtonHovered(true);
 					}}
 					onMouseLeave={() => {
 						toggleTimerInfoTooltip(false);
+						setTimerButtonHovered(false);
 					}}
 				>
 					{timers} <img src={timer} id="timer-icon" />
+					{timerButtonHovered ? (
+						<button
+							className={
+								"button" +
+								(canUseTimers() ? "" : " button-disabled")
+							}
+							id="timer-activate-button"
+							onClick={() => {
+								setUseTimerMode(true);
+							}}
+						>
+							Use
+						</button>
+					) : null}
 				</div>
 			) : null}
 		</div>

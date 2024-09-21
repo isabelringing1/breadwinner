@@ -89,7 +89,7 @@ p{
 
 .card-container{
     padding: 1.046vh;
-    margin: 0.941vh 0;
+    margin: 0.75vh 0;
     text-align: left;
     width: 29.19vh;
     height: 8.86vh;
@@ -108,10 +108,12 @@ p{
 
 .card-price{
     font-size: 2.1vh;
-    color: red;
+    color: #4c9d27;
     filter: none;
     z-index: 2;
     font-family: "Readex Pro", sans-serif;
+    width: 100%;
+    height: 30%;
 }
 
 .card-img{
@@ -182,11 +184,6 @@ p{
 
 .small-timer{
     font-size: 2vh;
-}
-
-.card-price{
-    width: 100%;
-    height: 30%;
 }
 
 .bc-symbol-span{
@@ -314,6 +311,10 @@ p{
     opacity: 0;
 }
 
+.gray-text{
+    color: gray;
+}
+
 .float-up{
     animation: float-up 1s 1 ease-out;
     -webkit-animation: float-up 1s 1 ease-out;
@@ -334,8 +335,8 @@ p{
 }
 
 #tooltip-timer-icon{
-    height: 2vh;
-    margin-bottom: -0.1vh;
+    height: 1.5vh;
+    margin-bottom: -0.2vh;
 }
 
 @keyframes flash {

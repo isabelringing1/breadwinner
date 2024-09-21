@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useInterval, msToTime } from "./Util";
 
 function Timer(props) {
-	const { endTime, onTimerEnd } = props;
+	const { endTime, onTimerEnd, visible } = props;
 
 	var [timeLeft, setTimeLeft] = useState(null);
 	const [status, setStatus] = useState("idle");
@@ -37,9 +37,11 @@ function Timer(props) {
 			: "timer";
 
 	return (
-		<div className={timerClassName}>
-			{" "}
-			{status === "done" ? "Done!" : timeLeftString}{" "}
+		<div
+			className={timerClassName}
+			style={{ display: visible ? "block" : "none" }}
+		>
+			{timeLeftString}
 		</div>
 	);
 }
