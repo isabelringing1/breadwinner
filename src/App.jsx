@@ -2,6 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { saveData, loadData } from "../public/account";
 import { resetCheat } from "../public/debug";
 import {
+	reportLoafBought,
+	reportSupplyBought,
+	reportLoafSold,
+	reportTimerUsed,
+} from "../public/analytics";
+import {
 	requestClickCount,
 	registerForMessages,
 	spendClicks,
@@ -40,6 +46,7 @@ import achievementsJson from "./config/achievements.json";
 const timer_unit = 300000;
 
 function App() {
+	const [playerId, setPlayerId] = useState(null);
 	const [loaded, setLoaded] = useState(false);
 	const [clicks, setClicks] = useState(null);
 	const [keys, setKeys] = useState(null);
@@ -97,6 +104,7 @@ function App() {
 
 	const convertForSave = () => {
 		var player = {
+			playerId: playerId,
 			multiplier: multiplier ?? 1.0,
 			bread_coin: breadCoin ?? 0,
 			supplies_object: getSave(SupplyObject),
@@ -263,6 +271,7 @@ function App() {
 			//3rd loaf of bread
 			unlockEnvelope("timer", "envelope-timer-event");
 		}
+		reportLoafBought(loaf, breadBaked + 1, newOvenQueue.length, playerId);
 	};
 
 	const TryBuySupply = (id, mousePos) => {
@@ -272,6 +281,7 @@ function App() {
 			return false;
 		}
 
+		var ovenSize = OvenQueue.length;
 		spendBreadCoin(supply.cost);
 		setTotalSpent(totalSpent + supply.cost);
 		var newSupply = { ...SupplyObject };
@@ -286,6 +296,7 @@ function App() {
 			setSpeechBubble("MULTIPLIER");
 		} else if (supply.oven_increase) {
 			var newOvenQueue = [...OvenQueue, null];
+			ovenSize++;
 			setOvenQueue(newOvenQueue);
 			if (newOvenQueue.length % 4 == 1) {
 				setSpeechBubble("OVEN-ROW");
@@ -307,6 +318,7 @@ function App() {
 		if (allPurchased) {
 			emitEvent("supply-finished", null, null);
 		}
+		reportSupplyBought(supply, breadBaked + 1, ovenSize, playerId);
 	};
 
 	const convertClicksToBreadCoin = () => {
@@ -589,6 +601,14 @@ function App() {
 					//Check if oven is empty now
 					emitEvent("sell-oven");
 				}
+
+				reportLoafSold(
+					loaf,
+					breadBaked,
+					OvenQueue.length,
+					Date.now() - loaf.end_time,
+					playerId
+				);
 				return;
 			}
 		}
@@ -674,11 +694,24 @@ function App() {
 		var cost = getTimerCost(loaf);
 		if (useTimerMode && loaf.end_time >= Date.now() && timers >= cost) {
 			// Spend timer
+			var percentFinished =
+				(1 -
+					(loaf.end_time - Date.now()) /
+						(loaf.end_time - loaf.start_time)) *
+				100;
 			loaf.end_time = Date.now() - 1;
 			setTimers(timers - cost);
 			updateLoafTooltip(loaf, 100);
 			saveData(convertForSave());
 			setUseTimerMode(false);
+			reportTimerUsed(
+				loaf,
+				cost,
+				percentFinished,
+				breadBaked,
+				OvenQueue.length,
+				playerId
+			);
 		}
 	};
 
@@ -741,63 +774,61 @@ function App() {
 		requestKeyCount();
 
 		var playerData = loadData();
-		try {
-			if (playerData != null) {
-				setMultiplier(playerData.multiplier);
 
-				var newSupply = { ...SupplyObject };
-				for (const [key, value] of Object.entries(
-					playerData.supplies_object
-				)) {
-					newSupply[key].save = value;
-				}
-				setSupplyObject(newSupply);
+		if (playerData != null) {
+			setPlayerId(playerData.playerId);
+			setMultiplier(playerData.multiplier);
+			broadcastBc(playerData.bread_coin);
+			setBreadCoin(playerData.bread_coin);
+			setOvenQueue(playerData.oven_queue);
+			setTotalSpent(playerData.total_spent);
+			setTotalEarned(playerData.total_earned);
+			setTotalClicks(playerData.total_clicks);
+			setKeyUnlocked(playerData.key_unlocked);
+			setBreadBaked(playerData.bread_baked);
+			setDailyOrderNextRefreshTime(
+				playerData.daily_order_next_refresh_time
+			);
+			setDailyOrderArray(playerData.daily_order);
+			setTotalDailyOrders(playerData.total_daily_orders);
+			setTotalTimelyDailyOrders(playerData.total_daily_orders);
+			setConvertPresses(playerData.convert_presses);
+			setTimers(playerData.timers);
+			setTimersUnlocked(playerData.timers_unlocked);
+			setEnvelopeUnlocks(playerData.envelope_unlocks);
+			setVisited(true);
 
-				var newBread = { ...BreadObject };
-				for (const [key, value] of Object.entries(
-					playerData.bread_object
-				)) {
-					newBread[key].save = value;
-				}
-				setBreadObject(newBread);
-
-				var newAchievements = { ...AchievementsObject };
-				for (const [categoryName, array] of Object.entries(
-					playerData.achievements_object
-				)) {
-					for (var i = 0; i < array.length; i++) {
-						newAchievements[categoryName][i].save =
-							playerData.achievements_object[categoryName][i];
-					}
-				}
-				setAchievementsObject(newAchievements);
-
-				broadcastBc(playerData.bread_coin);
-				setBreadCoin(playerData.bread_coin);
-				setOvenQueue(playerData.oven_queue);
-				setTotalSpent(playerData.total_spent);
-				setTotalEarned(playerData.total_earned);
-				setTotalClicks(playerData.total_clicks);
-				setKeyUnlocked(playerData.key_unlocked);
-				setBreadBaked(playerData.bread_baked);
-				setDailyOrderNextRefreshTime(
-					playerData.daily_order_next_refresh_time
-				);
-				setDailyOrderArray(playerData.daily_order);
-				setTotalDailyOrders(playerData.total_daily_orders);
-				setTotalTimelyDailyOrders(playerData.total_daily_orders);
-				setConvertPresses(playerData.convert_presses);
-				setTimers(playerData.timers);
-				setTimersUnlocked(playerData.timers_unlocked);
-				setEnvelopeUnlocks(playerData.envelope_unlocks);
-				setVisited(true);
+			var newSupply = { ...SupplyObject };
+			for (const [key, value] of Object.entries(
+				playerData.supplies_object
+			)) {
+				newSupply[key].save = value;
 			}
-		} catch (e) {
-			console.error("Error setting save data: ", e);
-			reset();
-			resetCheat();
+			setSupplyObject(newSupply);
+
+			var newBread = { ...BreadObject };
+			for (const [key, value] of Object.entries(
+				playerData.bread_object
+			)) {
+				newBread[key].save = value;
+			}
+			setBreadObject(newBread);
+
+			var newAchievements = { ...AchievementsObject };
+			for (const [categoryName, array] of Object.entries(
+				playerData.achievements_object
+			)) {
+				for (var i = 0; i < array.length; i++) {
+					newAchievements[categoryName][i].save =
+						playerData.achievements_object[categoryName][i];
+				}
+			}
+			setAchievementsObject(newAchievements);
 		}
 		setLoaded(true);
+		if (playerId == null) {
+			setPlayerId(self.crypto.randomUUID());
+		}
 
 		hourTimeout.current = setTimeout(() => {
 			emitEvent("hour-timeout");
