@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { formatNumber } from "./Util";
-
+import { reportAchievementClaimed } from "../public/analytics";
 import "./Achievements.css";
 
 import Achievement from "./Achievement";
@@ -241,6 +241,7 @@ function Achievements(props) {
 		if (numAchievements == 30) {
 			unlockEnvelope("ending", "reveal-epilogue");
 		}
+		reportAchievementClaimed(achievement, numAchievements);
 	};
 
 	const animateReward = (amount, id) => {

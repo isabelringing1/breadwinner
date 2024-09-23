@@ -58,13 +58,13 @@
     align-items: center;
     flex-direction: column;
     margin-bottom: 1.046vh;
+    background-image: url('/images/bread_shade.png');
+    background-size: 100%;
+    background-repeat: round;
 }
 
 .baking{
     animation: glow 3s infinite ease-in-out;
-    background-image: url('/images/bread_shade.png');
-    background-size: 100%;
-    background-repeat: round;
 }
 
 .loaf-button{
@@ -116,8 +116,6 @@
 
 .done{
     box-shadow: 0 0 16px #fff1a0;
-    background-image: url('/images/bread_shade.png');
-    background-size: cover;
 }
 
 .done-anim{
@@ -126,6 +124,7 @@
 
 .empty{
     background-color: white;
+    background-image: none;
 }
 
 .empty-slot{
