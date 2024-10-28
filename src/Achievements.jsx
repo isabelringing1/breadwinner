@@ -50,7 +50,7 @@ function Achievements(props) {
 		var newAchievements = { ...AchievementsObject };
 		for (var i = 0; i < events.length; i++) {
 			var event = events[i];
-			//console.log("Listening to event ", event);
+			console.log("Listening to event ", event);
 			switch (event.id) {
 				case "total-conversions":
 					var productivityAchievements =
@@ -94,6 +94,15 @@ function Achievements(props) {
 							achieve("keys", i, newAchievements);
 						}
 					});
+
+					// Stretch 3
+					newAchievements["stretch"][2].progress = event.amount;
+					if (
+						event.amount >= newAchievements["stretch"][2].amount &&
+						!newAchievements["stretch"][2].save.epilogue
+					) {
+						achieve("stretch", 2, newAchievements, false);
+					}
 					break;
 				case "oven-finished":
 					achieve("unlocking", 0, newAchievements);
@@ -127,24 +136,46 @@ function Achievements(props) {
 							achieve("medals", i, newAchievements);
 						}
 					});
+
+					// Stretch 2
+					if (
+						event.amount >= newAchievements["stretch"][1].amount &&
+						!newAchievements["stretch"][1].save.epilogue
+					) {
+						achieve("stretch", 1, newAchievements, false);
+					}
 					break;
 				case "daily-order-claim":
 					var dailyOrderAchievements =
 						AchievementsObject["daily_orders"];
-					var [total, totalTimely] = event.value;
+					var [total, totalLastHour, totalLateNight] =
+						parseDailyOrders(event.value);
 					if (total == 1) {
 						newAchievements["daily_orders"][0].save.revealed = true;
 					}
 					dailyOrderAchievements.forEach((a, i) => {
-						if (a.id != "daily_order_2" && total >= a.amount) {
+						if (a.id == "daily_order_1" && total >= a.amount) {
 							achieve("daily_orders", i, newAchievements);
 						} else if (
 							a.id == "daily_order_2" &&
-							totalTimely >= a.amount
+							totalLastHour >= a.amount
+						) {
+							achieve("daily_orders", i, newAchievements);
+						} else if (
+							a.id == "daily_order_3" &&
+							totalLateNight >= a.amount
 						) {
 							achieve("daily_orders", i, newAchievements);
 						}
 					});
+
+					// Stretch 1
+					if (
+						total >= newAchievements["stretch"][0].amount &&
+						!newAchievements["stretch"][0].save.epilogue
+					) {
+						achieve("stretch", 0, newAchievements, false);
+					}
 					break;
 				case "breadcoin-gain":
 					var spendAchievement = AchievementsObject["misc"][3];
@@ -190,12 +221,28 @@ function Achievements(props) {
 					}
 					break;
 				case "reveal-epilogue":
-					var achievements = AchievementsObject["ending"];
+					var achievements = AchievementsObject["stretch"];
 					achievements.forEach((a, i) => {
-						newAchievements["ending"][i].save.epilogue = false;
-						newAchievements["ending"][i].save.revealed = true;
+						newAchievements["stretch"][i].save.epilogue = false;
+						if (i != 5) {
+							newAchievements["stretch"][i].save.revealed = true;
+						}
 					});
 					break;
+				case "stretch": //stretch 4, kickin it
+					if (!newAchievements["stretch"][3].save.epilogue) {
+						achieve("stretch", 3, newAchievements, false);
+						claimAchievement(AchievementsObject["stretch"][3]);
+					}
+					break;
+				case "banana-baked": //stretch 5
+					if (
+						event.amount >= newAchievements["stretch"][4].amount &&
+						!newAchievements["stretch"][4].save.epilogue
+					) {
+						achieve("stretch", 4, newAchievements, false);
+					}
+					newAchievements["stretch"][4].progress = event.amount;
 			}
 		}
 		setAchievementsObject(newAchievements);
@@ -238,10 +285,36 @@ function Achievements(props) {
 		emitEvent("breadcoin-gain", achievement.reward, null);
 		setTotalEarned(totalEarned + achievement.reward);
 		animateReward(achievement.reward, achievement.id);
-		if (numAchievements == 30) {
-			unlockEnvelope("ending", "reveal-epilogue");
-		}
 		reportAchievementClaimed(achievement, numAchievements);
+	};
+
+	const parseDailyOrders = (dailyOrders) => {
+		var total = dailyOrders.length;
+		var totalLastHour = 0;
+		var totalLateNight = 0;
+		dailyOrders.forEach((entry, i) => {
+			var timeSinceGeneration = entry[1];
+			console.log(
+				"Time since generation for entry ",
+				entry,
+				" is ",
+				timeSinceGeneration
+			);
+			// Check if generation was in the last 15 minutes of 24 hours
+			if (
+				timeSinceGeneration >= 85500000 &&
+				timeSinceGeneration < 86400000
+			) {
+				totalLastHour += 1;
+			} else if (
+				timeSinceGeneration >= 64800000 &&
+				timeSinceGeneration <= 68400000
+			) {
+				totalLateNight += 1;
+			}
+		});
+		console.log(total, totalLastHour, totalLateNight);
+		return [total, totalLastHour, totalLateNight];
 	};
 
 	const animateReward = (amount, id) => {

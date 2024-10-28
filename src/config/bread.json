@@ -44,8 +44,8 @@
       "bake_time": 600,
       "markup": 1.3,
       "increase_rate": 1.15,
-      "starting_color": "#dec7b1",
-      "ending_color": "#a88663",
+      "starting_color": "#F1BD88",
+      "ending_color": "#DF882E",
       "save": {
         "cost": 14400,
         "purchase_count": 0,
@@ -62,6 +62,8 @@
       "bake_time": 1200,
       "markup": 1.35,
       "increase_rate": 1.15,
+      "starting_color": "#EBB369",
+      "ending_color": "#B97925",
       "save": {
         "cost": 172800,
         "purchase_count": 0,
@@ -78,6 +80,8 @@
       "bake_time": 2700,
       "markup": 1.5,
       "increase_rate": 1.15,
+      "starting_color": "#FBD39E",
+      "ending_color": "#D88E2E",
       "save": {
         "cost": 2073600,
         "purchase_count": 0,
@@ -95,6 +99,8 @@
       "bake_time": 5400,
       "markup": 1.6,
       "increase_rate": 1.15,
+      "starting_color": "#AF9377",
+      "ending_color": "#614529",
       "save": {
         "cost": 24883200,
         "purchase_count": 0,
@@ -111,6 +117,8 @@
       "bake_time": 10800,
       "markup": 1.75,
       "increase_rate": 1.1,
+      "starting_color": "#FFC46A",
+      "ending_color": "#FFA41C",
       "save": {
         "cost": 298598400,
         "purchase_count": 0,
@@ -127,6 +135,8 @@
       "bake_time": 16000,
       "markup": 1.8,
       "increase_rate": 1.09,
+      "starting_color": "#E5B366",
+      "ending_color": "#CC7C03",
       "save": {
         "cost": 3583180800,
         "purchase_count": 0,
@@ -143,6 +153,8 @@
       "bake_time": 28800,
       "markup": 2.1,
       "increase_rate": 1.08,
+      "starting_color": "#F4DBBA",
+      "ending_color": "#C2955B",
       "save": {
         "cost": 42998169600,
         "purchase_count": 0,

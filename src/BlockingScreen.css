@@ -133,7 +133,11 @@ a:hover{
     width: 100%;
     display: flex;
     justify-content: space-around;
-}  
+}
+
+.blocking-screen-container{
+    width: 100%;
+}
   
 @keyframes load8 {
     0% {

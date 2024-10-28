@@ -1,172 +1,40 @@
 import { useState, useRef, useEffect } from "react";
 
+import * as Parser from "./EnvelopeParser";
+
 import envelope_open from "/images/envelope_open.png";
 import envelope_closed from "/images/envelope_closed.png";
-import dough_logo from "/images/dough-logo.png";
-import timer from "/images/timer.png";
+import letter_logo from "/images/letter-logo.png";
+import crossed_line from "/images/crossed_line.png";
 
 import "./Envelope.css";
 
 function Envelope(props) {
-	const { unlocks, setUnlocks, showEnvelope, setShowEnvelope, emitEvent } =
-		props;
+	const {
+		unlocks,
+		setUnlocks,
+		showEnvelope,
+		setShowEnvelope,
+		emitEvent,
+		timersUnlocked,
+		setTimersUnlocked,
+		setTimers,
+		timers,
+		breadObject,
+		events,
+		totalClicks,
+		totalKeys,
+		AchievementsObject,
+		storyState,
+		setStoryState,
+	} = props;
 	const animating = useRef(false);
+	const animatingTimer = useRef(false);
 	const jiggleInterval = useRef(null);
 
 	const [currentEntry, setCurrentEntry] = useState(null);
 	const [cards, setCards] = useState([]);
 	const [cardIndex, setCardIndex] = useState(0);
-
-	const introCards = [
-		<div className="envelope-card-body">
-			<div className="env-line">Dear Baker,</div>
-			<div className="env-line">Wow! Look at you! Your first loaf!</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				From all of us here at Dough & Co, we’d like to welcome you to
-				the bakery.
-			</div>
-			<div className="env-line">
-				It’s not much, but with a little elbow grease, we bet you can
-				get a real operation going.
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				Are you settling in okay? Extension working well, clicks feeling
-				good?
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">Well, we’ll leave you to it.</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				And remember.... no matter what you do, you can’t NOT be
-				productive.
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line-signature">Cheers!</div>
-			<div className="env-line-signature">
-				Dough & Co <img src={dough_logo} className="dough-logo" />
-			</div>
-		</div>,
-	];
-
-	const timerCards = [
-		<div className="envelope-card-body">
-			<div className="env-line">Dear Baker,</div>
-			<div className="env-line">We see you’re on a roll!</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">(Ha ha. You know, because--)</div>
-			<div className="env-line">Anyways. You get it. </div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				We wanted to give you a small token of our appreciation, for
-				sticking by us until now. Hopefully it will make you feel a
-				little more productive.{" "}
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				Here, take this-- you deserve it!
-				<img src={timer} id="envelope-timer" />
-			</div>
-			<div className="env-line"></div>
-			<div className="env-line-signature">Cheers,</div>
-			<div className="env-line-signature">
-				Dough & Co <img src={dough_logo} className="dough-logo" />
-			</div>
-		</div>,
-	];
-
-	const endingCards = [
-		<div className="envelope-card-body">
-			<div className="env-line">Dear Baker,</div>
-			<div className="env-line">
-				Congrats! You’ve completed all of our achievements. From all of
-				us at Dough & Co, we wanted to send our heartfelt
-				congratulations.
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				After all this time, you might be wondering who exactly you’ve
-				been selling your bread to.
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				You might think we’re some evil, greedy corporation.
-			</div>
-			<div className="env-line">
-				After all, who makes banana bread that expensive?
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">But the truth is...</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				...we’re just like you. And we just want to help people like you
-				help themselves.{" "}
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				All that liking, reacting, doomscrolling... what if it was WORTH
-				something? What if it could be exchanged for fresh, delicious
-				bread?
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				(Never mind you can’t actually eat it-- we believe in your
-				imagination.)
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				But you felt it, right? The giddiness in watching your
-				multiplier double? The anticipation in watching a loaf tick down
-				its final seconds? The satisfaction of turning your hard-earned
-				clicks into cold, hard cash?
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				And it’s not like we didn’t make some real good in your life,
-				either. (Has that person responded to you yet?)
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				Anyways, congrats on making it all the way to the “end”. Don’t
-				worry; we won’t take this away from you, even if we’ve spilled
-				all our beans.
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				For as long as the internet is still alive--there will still be
-				bread to bake.
-			</div>
-			<div className="env-line-signature">Cheers,</div>
-			<div className="env-line-signature">
-				Dough & Co <img src={dough_logo} className="dough-logo" />
-			</div>
-		</div>,
-		<div className="envelope-card-body">
-			<div className="env-line">
-				(P.S. We've added a few new challenges for you to sink your
-				teeth into. Enjoy!)
-			</div>
-		</div>,
-	];
 
 	useEffect(() => {
 		if (unlocks == null || currentEntry != null) {
@@ -178,20 +46,15 @@ function Envelope(props) {
 				//envelope is seen
 				continue;
 			}
-			setCurrentEntry(entry);
-			switch (entry[0]) {
-				case "intro":
-					setCards(introCards);
-					peek_in_envelope();
-					break;
-				case "ending":
-					setCards(endingCards);
-					peek_in_envelope();
-					break;
-				case "timer":
-					setCards(timerCards);
-					peek_in_envelope();
-					break;
+			var parsedEntry = Parser.parse(
+				entry[0],
+				on_button_click,
+				replace_tokens
+			);
+			if (parsedEntry != null) {
+				setCurrentEntry(entry);
+				setCards(parsedEntry);
+				peek_in_envelope();
 			}
 		}
 	}, [unlocks]);
@@ -257,9 +120,16 @@ function Envelope(props) {
 		}, 250);
 	};
 
-	const on_click = () => {
+	const on_click = (e) => {
 		if (animating.current || !showEnvelope) return;
 		var card = document.getElementById("envelope-card-" + cardIndex);
+		if (
+			card.querySelectorAll(".env-buttons-container").length &&
+			!e.target.classList.contains("env-button")
+		) {
+			return;
+		}
+
 		setCardIndex(cardIndex + 1);
 		if (cardIndex + 1 >= cards.length) {
 			animate_close();
@@ -268,7 +138,64 @@ function Envelope(props) {
 		}
 	};
 
-	const animate_next_card = (currentCard) => {
+	const on_button_click = (id) => {
+		console.log("Button clicked: " + id);
+	};
+
+	const replace_tokens = (text) => {
+		if (text.includes("[LOAVES]")) {
+			text = text.replace("[LOAVES]", getBreadTotal());
+		}
+		if (text.includes("[CLICKS]")) {
+			text = text.replace("[CLICKS]", totalClicks);
+		}
+		if (text.includes("[KEYS]")) {
+			text = text.replace("[KEYS]", totalKeys);
+		}
+		if (text.includes("[ACHIEVEMENTS]")) {
+			text = text.replace("[ACHIEVEMENTS]", getUnclaimedAchievements());
+		}
+		return text;
+	};
+
+	const getBreadTotal = () => {
+		var total = 0;
+		for (var bread in breadObject) {
+			total += breadObject[bread].save.purchase_count;
+		}
+		return total;
+	};
+
+	const getUnclaimedAchievements = () => {
+		var total = 0;
+		for (var categoryName in AchievementsObject) {
+			var category = AchievementsObject[categoryName];
+			for (var a in category) {
+				console.log(category[a]);
+				if (!category[a].save.claimed && !category[a].save.epilogue) {
+					total += 1;
+				}
+			}
+		}
+		return total;
+	};
+
+	useEffect(() => {
+		var card = document.getElementById("envelope-card-" + cardIndex);
+		if (card != null && card.querySelector(".confetti-card")) {
+			confetti({
+				particleCount: 150,
+				spread: 340,
+				startVelocity: 28,
+				origin: {
+					x: 0.5,
+					y: 0.4,
+				},
+			});
+		}
+	}, [cardIndex]);
+
+	const animate_next_card = async (currentCard) => {
 		if (animating.current || !showEnvelope) return;
 		animating.current = true;
 		currentCard.classList.add("flip-out");
@@ -277,26 +204,139 @@ function Envelope(props) {
 		}, 250);
 		setTimeout(() => {
 			currentCard.classList.remove("flip-out");
-			animating.current = false;
+			if (!animatingTimer.current) {
+				animating.current = false;
+			}
 		}, 500);
-		return;
+
+		var nextCard = document.getElementById(
+			"envelope-card-" + (cardIndex + 1)
+		);
+		if (nextCard != null && nextCard.querySelector(".envelope-timer-div")) {
+			var firstTime = false;
+			if (!timersUnlocked) {
+				setTimersUnlocked(true);
+				firstTime = true;
+			}
+			animating.current = true;
+			animatingTimer.current = true;
+			await animate_timer(firstTime);
+			setTimers(timers + 1);
+			animating.current = false;
+			animatingTimer.current = false;
+		}
 	};
+
+	const animate_timer = async (first_time = false) => {
+		while (document.getElementById("timer-icon") == null) {
+			await new Promise((resolve) => setTimeout(resolve, 10));
+		}
+		if (first_time) {
+			document.getElementById("timer-icon").style.display = "none";
+			document.getElementById("timer-icon-copy").style.display = "none";
+		}
+
+		var timer_div =
+			document.getElementsByClassName("envelope-timer-div")[0];
+		var timer = document.getElementById("envelope-timer");
+
+		await new Promise(function (resolve) {
+			setTimeout(function () {
+				timer_div.classList.add("timer-move");
+				timer.classList.add("timer-spin");
+				resolve();
+			}, 500);
+		});
+
+		await new Promise(function (resolve) {
+			setTimeout(function () {
+				timer_div.classList.remove("timer-move");
+				timer.classList.remove("timer-spin");
+				timer.style.display = "none";
+				document.getElementById("timer-icon").style.display = "";
+				document
+					.getElementById("timer-icon")
+					.classList.add("wallet-timer-move");
+				resolve();
+			}, 600);
+		});
+
+		await new Promise(function (resolve) {
+			setTimeout(function () {
+				document
+					.getElementById("timer-icon")
+					.classList.remove("wallet-timer-move");
+				var newUnlocks = [...unlocks];
+				newUnlocks = try_finish_envelope(newUnlocks, false);
+				setUnlocks(newUnlocks);
+				resolve();
+				if (first_time) {
+					document.getElementById("timer-icon-copy").style.display =
+						"";
+				}
+			}, 250);
+		});
+	};
+
+	const try_finish_envelope = (newUnlocks, emitCurrentEvent = true) => {
+		for (var i in newUnlocks) {
+			var entry = newUnlocks[i];
+			if (entry[0] == currentEntry[0]) {
+				if (entry[2]) {
+					// Already finished
+					return newUnlocks;
+				} else {
+					entry[2] = Date.now();
+					break;
+				}
+			}
+		}
+		if (currentEntry[1] != null && emitCurrentEvent) {
+			emitEvent(currentEntry[1]);
+		}
+		var state = getState(entry[0]);
+		if (state > storyState) {
+			console.log("Setting story state to new state " + state);
+			setStoryState(state);
+		}
+
+		return newUnlocks;
+	};
+
+	const getState = (id) => {
+		if (id == "brioche2") {
+			return 1; //reveal
+		}
+		if (id == "banana") {
+			return 2; //first endng
+		}
+		return 0;
+	};
+
+	useEffect(() => {
+		for (var i = 0; i < events.length; i++) {
+			var event = events[i];
+			switch (event.id) {
+				case "skip-envelope":
+					var newUnlocks = [...unlocks];
+					try_finish_envelope(newUnlocks);
+					setUnlocks(newUnlocks);
+					animate_close();
+					break;
+			}
+		}
+	}, [events]);
 
 	const animate_close = () => {
 		if (animating.current || !showEnvelope) return;
 		animating.current = true;
 		document.getElementById("big-envelope").classList.add("bounce-out-big");
+
 		if (currentEntry[1] != null) {
 			emitEvent(currentEntry[1]);
 		}
 		var newUnlocks = [...unlocks];
-		for (var i in newUnlocks) {
-			var entry = newUnlocks[i];
-			if (entry[0] == currentEntry[0]) {
-				entry[2] = true;
-				break;
-			}
-		}
+		newUnlocks = try_finish_envelope(newUnlocks);
 		setTimeout(() => {
 			document
 				.getElementById("big-envelope")
@@ -311,9 +351,8 @@ function Envelope(props) {
 			setCurrentEntry(null);
 		}, 750);
 	};
-
 	return (
-		<div id="envelope-container" onClick={() => on_click()}>
+		<div id="envelope-container" onClick={(e) => on_click(e)}>
 			<div
 				id="small-envelope"
 				src={envelope_closed}
@@ -327,6 +366,13 @@ function Envelope(props) {
 			</div>
 
 			<div id="big-envelope">
+				<div className="envelope-logo-div">
+					Dough & Co{" "}
+					<img className="envelope-logo" src={letter_logo} />
+					{storyState > 0 ? (
+						<img className="crossed-line" src={crossed_line} />
+					) : null}
+				</div>
 				<img className="big-envelope-bg-image" src={envelope_open} />
 				{cards.map((body, i) => {
 					var dropValue = 0.45 / cards.length;

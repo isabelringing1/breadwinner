@@ -46,9 +46,11 @@ function Loaf(props) {
 				.getElementById(loaf.id + "-" + index)
 				.classList.add("done-anim");
 			setTimeout(() => {
-				document
-					.getElementById(loaf.id + "-" + index)
-					.classList.remove("done-anim");
+				if (document.getElementById(loaf.id + "-" + index) != null) {
+					document
+						.getElementById(loaf.id + "-" + index)
+						.classList.remove("done-anim");
+				}
 			}, 250);
 		}, 100);
 		loafDone(index);
@@ -120,9 +122,13 @@ function Loaf(props) {
 					.getElementById(loaf.id + "-" + index)
 					.classList.add("done-anim");
 				setTimeout(() => {
-					document
-						.getElementById(loaf.id + "-" + index)
-						.classList.remove("done-anim");
+					if (
+						document.getElementById(loaf.id + "-" + index) != null
+					) {
+						document
+							.getElementById(loaf.id + "-" + index)
+							.classList.remove("done-anim");
+					}
 				}, 250);
 			}}
 		>

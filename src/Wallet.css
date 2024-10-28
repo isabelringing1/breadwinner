@@ -119,9 +119,18 @@
   background: none;
 }
 
-#timer-icon{
+.timer-icon{
     width: 3vh;
     margin-bottom: -0.5vh;
+}
+
+#timer-icon{
+    z-index: 2;
+}
+
+#timer-icon-copy{
+    position: relative;
+    left: -3vh;
 }
 
 #timer-activate-button{
@@ -148,4 +157,26 @@
 
 #timer-activate-button.button-disabled:after{
     background-color: #b8b8b8;
+}
+
+#timers-wallet{
+    width: fit-content;
+}
+
+.wallet-timer-move{
+    position: relative;
+    animation: wallet-timer-move 0.25s ease-in;
+    -webkit-animation: wallet-timer-move 0.25s ease-in;
+}
+
+@keyframes wallet-timer-move{
+    0%{
+        top: -40vh;
+    }
+    100%{
+        top: 0vh;
+        transform: rotate(720deg);
+        -webkit-transform: rotate(720deg);
+        -moz-transform: rotate(720deg);
+    }
 }

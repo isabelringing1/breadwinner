@@ -284,7 +284,7 @@
             "display_name": "Miracle-Worker",
             "desc": "Bake 5,000 loaves.",
             "quip": "It took Jesus 5 loaves and 2 fish to make 5,000 loaves of bread. You did it with only clicks.",
-            "image_path": "/images/temp.png",
+            "image_path": "/images/loaves_4.png",
             "amount": 5000,
             "reward": 500000,
             "timers": 100,
@@ -299,7 +299,7 @@
         {
             "id": "medal_1",
             "category": "medals",
-            "display_name": "Dough Aficionado",
+            "display_name": "Dough Enthusiast",
             "desc": "Reach ",
             "desc_after": "100,000,000.",
             "image_path": "/images/bronze.png",
@@ -315,7 +315,7 @@
         {
             "id": "medal_2",
             "category": "medals",
-            "display_name": "Dough Master",
+            "display_name": "Dough Aficionado",
             "desc": "Reach ",
             "desc_after": "1,000,000,000.",
             "image_path": "/images/silver.png",
@@ -331,7 +331,7 @@
         {
             "id": "medal_3",
             "category": "medals",
-            "display_name": "Dough God",
+            "display_name": "Dough Expert",
             "desc": "Reach ",
             "desc_after": "10,000,000,000.",
             "image_path": "/images/gold.png",
@@ -364,12 +364,12 @@
         {
             "id": "daily_order_2",
             "category": "daily_orders",
-            "display_name": "Prompt",
-            "desc": "Fulfill a Daily Order within an hour of generation.",
+            "display_name": "Procrastinator",
+            "desc": "Fulfill 3 Daily Orders within the last 15 minutes before refresh.",
             "image_path": "/images/calendar_2.png",
-            "amount": 1,
+            "amount": 3,
             "reward": 10000,
-            "timers": 5,
+            "timers": 45,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -379,12 +379,12 @@
         {
             "id": "daily_order_3",
             "category": "daily_orders",
-            "display_name": "Carbs Monthly",
-            "desc": "Fulfill 30 Daily Orders.",
-            "image_path": "/images/temp.png",
-            "amount": 30,
+            "display_name": "Witching Hour",
+            "desc": "Fulfill a Daily Order between the hours of 3am and 4am.",
+            "image_path": "/images/calendar_3.png",
+            "amount": 1,
             "reward": 10000,
-            "timers": 300,
+            "timers": 60,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -457,7 +457,7 @@
             "category": "misc",
             "display_name": "Mature",
             "desc": "Ha ha.",
-            "image_path": "/images/temp.png",
+            "image_path": "/images/hat.png",
             "reward": 50,
             "timers": 69,
             "save": {
@@ -467,15 +467,16 @@
             }
         }
     ],
-    "ending": [
+    "stretch": [
         {
-            "id": "ending_1",
-            "category": "ending",
-            "display_name": "Epilogue 1",
-            "desc": "NYI",
-            "image_path": "/images/temp.png",
-            "reward": 1,
-            "timers": 1,
+            "id": "stretch_1",
+            "category": "daily_orders",
+            "display_name": "Carbs Monthly",
+            "desc": "Fulfill 30 Daily Orders.",
+            "image_path": "/images/calendar_4.png",
+            "amount": 30,
+            "reward": 10000,
+            "timers": 300,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -484,13 +485,15 @@
             }
         },
         {
-            "id": "ending_2",
-            "category": "ending",
-            "display_name": "Epilogue 2",
-            "desc": "NYI",
-            "image_path": "/images/temp.png",
+            "id": "stretch_2",
+            "category": "medals",
+            "display_name": "Dough God",
+            "desc": "Reach ",
+            "desc_after": "100,000,000,000.",
+            "image_path": "/images/iridescent.png",
             "reward": 1,
             "timers": 1,
+            "amount": 100000000000,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -499,13 +502,14 @@
             }
         },
         {
-            "id": "ending_3",
-            "category": "ending",
-            "display_name": "Epilogue 3",
-            "desc": "NYI",
-            "image_path": "/images/temp.png",
-            "reward": 1,
-            "timers": 1,
+            "id": "stretch_3",
+            "category": "keys",
+            "display_name": "Babel Librarian",
+            "desc": "Convert 1,000,000 keystrokes.",
+            "image_path": "/images/babel.png",
+            "amount": 1000000,
+            "reward": 1000000,
+            "timers": 80,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -514,13 +518,31 @@
             }
         },
         {
-            "id": "ending_4",
+            "id": "stretch_4",
+            "category": "productivity",
+            "display_name": "Kickin' it",
+            "desc": "Cross something off your bucket list.",
+            "image_path": "/images/bubble.png",
+            "reward": 5000,
+            "timers": 0,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false,
+                "epilogue": true
+            },
+            "manual": true
+        },
+        {
+            "id": "stretch_5",
             "category": "ending",
-            "display_name": "Epilogue 4",
-            "desc": "NYI",
+            "display_name": "Monkey Do",
+            "desc": "Bake 100 loaves of banana bread.",
             "image_path": "/images/temp.png",
+            "amount": 100,
             "reward": 1,
             "timers": 1,
+            "progress": 0,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -529,22 +551,7 @@
             }
         },
         {
-            "id": "ending_5",
-            "category": "ending",
-            "display_name": "Epilogue 5",
-            "desc": "NYI",
-            "image_path": "/images/temp.png",
-            "reward": 1,
-            "timers": 1,
-            "save": {
-                "revealed": false,
-                "achieved": false,
-                "claimed": false,
-                "epilogue": true
-            }
-        },
-        {
-            "id": "ending_6",
+            "id": "stretch_6",
             "category": "ending",
             "display_name": "Epilogue 6",
             "desc": "NYI",

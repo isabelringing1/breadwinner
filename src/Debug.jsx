@@ -11,6 +11,8 @@ function Debug(props) {
 		achievements,
 		setAchievements,
 		setTimers,
+		skipEnvelope,
+		emitEvent,
 	} = props;
 	const [showDebug, setShowDebug] = useState(false);
 	const clickInputRef = useRef();
@@ -74,7 +76,7 @@ function Debug(props) {
 			>
 				Reset?
 			</button>
-			{/* <br />
+			<br />
 			<input type="number" ref={clickInputRef} />{" "}
 			<button
 				id="set-clicks-button"
@@ -110,7 +112,15 @@ function Debug(props) {
 			</button>
 			<button id="set-achievements-button" onClick={finishAchievements}>
 				Finish Achievements
-			</button> */}
+			</button>
+			<button
+				id="skip-envelope-button"
+				onClick={() => {
+					emitEvent("skip-envelope");
+				}}
+			>
+				Skip Envelope
+			</button>
 		</div>
 	) : null;
 }

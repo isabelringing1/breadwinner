@@ -94,6 +94,22 @@
     background-color: #EB8080;
 }
 
+#misc_2:not(.locked){
+    background-color: #f276c9;
+}
+
+#misc_3:not(.locked){
+    background-color: #B8B8C5;
+}
+
+#misc_4:not(.locked){
+    background-color: #4D69CC;
+}
+
+#misc_5:not(.locked){
+    background-color: #EEC993;
+}
+
 .locked{
     background-color: #717E8A;
     box-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.2);
@@ -237,6 +253,7 @@
     z-index: 100;
     opacity: 0;
     filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.45));
+    pointer-events: none;
 }
 
 .float-up{

@@ -172,7 +172,7 @@ p{
 
 #bread-list-title{
     padding-top: 4px;
-    padding-bottom: 6px;
+    padding-bottom: 0;
 }
 
 .timer{
@@ -339,6 +339,23 @@ p{
     margin-bottom: -0.2vh;
 }
 
+#ending-logo{
+    width: 3vh;
+    position: fixed;
+    margin-left: -1vh;
+    margin-top: -1vh;
+    transform: rotateZ(-7deg);
+}
+
+#ending-logo:active{
+    filter: brightness(0.9);
+}
+
+.jiggle-crown{
+    animation: jiggle-crown 0.25s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
 @keyframes flash {
     0%{
         opacity: 0;
@@ -395,4 +412,17 @@ p{
         opacity: 0;
         padding-top: 60px
     }
+}
+
+@keyframes jiggle-crown {
+    0% {
+      transform: rotateZ(-7deg);
+    }
+    20% {
+        transform: rotateZ(-14deg);
+    }
+    75% {
+        transform: rotateZ(0deg);
+    }
+    100% { transform: rotateZ(-7deg); }
 }

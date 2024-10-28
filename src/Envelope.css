@@ -58,11 +58,20 @@
 .envelope-card-body{
     font-size: 2.3vh;
     line-height: 3.5vh;
-    min-width: 85%;
+    width: 90%;
 }
 
 .env-line{
     margin-bottom: 2.3vh;
+}
+
+.env-line-centered{
+    width: 100%;
+    text-align: center;
+}
+
+.env-survey {
+    font-size: 3.5vh;
 }
 
 .env-line-signature{
@@ -85,9 +94,69 @@
     margin-bottom: -.3vh;
 }
 
+.env-buttons-container{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.envelope-timer-div{
+    margin-left: 1vh;
+}
+
+.env-button{
+    line-height: inherit;
+    background-color: #4c9d27;
+    min-width: 8vh;
+}
+
+.env-button:after{
+    background-color: #6EE835;
+}
+
+.env-button-2{
+    background-color: #c54141;
+}
+
+.env-button-2:after{
+    background-color: #ef5c5c;
+}
+  
 #envelope-timer{
     width: 3vh;
-    margin-left: 1vh;
+}
+
+.crossed-line{
+    height: .5vh;
+    position: fixed;
+    margin-left: -14vh;
+    margin-top: .9vh;
+}
+
+.timer-spin{
+    animation: timer-spin .6s ease-in;
+    -webkit-animation: timer-spin .6s ease-in;
+}
+
+.timer-move{
+    z-index: 100000;
+    position: absolute;
+    animation: timer-move .6s ease-out;
+    -webkit-animation: timer-move .6s ease-out;
+}
+
+.envelope-logo-div{
+    position: absolute;
+    height: 2.1vh;
+    color: #d2d2d2;
+    bottom: 1vh;
+    z-index: 1;
+    font-size: 1.7vh;
+}
+
+.envelope-logo{
+    height: 1.3vh;
+    margin-bottom: -.1vh;
 }
 
 .jiggle-envelope{
@@ -183,5 +252,24 @@
     }
     100%{
         transform: rotate(0deg);
+    }
+}
+
+@keyframes timer-spin{
+    100%{
+        transform: rotate(3600deg);
+        -webkit-transform: rotate(3600deg);
+        -moz-transform: rotate(3600deg);
+    }
+}
+
+@keyframes timer-move{
+    0%{
+        margin-top: 0vh;
+        margin-left: 0vh;
+    }
+    100%{
+        margin-top: -70vh;
+        margin-left: -10vh;
     }
 }

@@ -1,0 +1,335 @@
+{
+    "white": [
+        ["Dear Baker,", "Wow! Look at you! Your first loaf!"],
+        "From all of us here at Dough & Co, we’d like to welcome you to the bakery.",
+        "It’s not much, but with a little elbow grease, we bet you can get a real operation going.",
+        "Are you settling in okay? Extension working well, clicks feeling good?",
+        "Well, we'll leave you to it.",
+        "And remember.... no matter what you do, you can’t NOT be productive.",
+        "[SIGNATURE]"
+    ],
+    "timer": [
+        ["Dear Baker,", "We see you're on a roll!"],
+        ["(Ha ha. You know, because—)", "Anyways. You get it." ],
+        ["We wanted to give you a small token of our appreciation, for sticking by us until now.", "Hopefully, it'll make you feel a little more productive!"],
+        ["[TIMER1]"]
+    ],
+    "whole_wheat": [
+        ["Dear Baker,", "How’s it going?", "Your bakery’s really taking off!"],
+
+        "Did you know that each loaf of bread you bake goes directly to a hungry customer?",
+
+        "That’s right! Through Dough & Co’s advanced network, we provide fresh bread to people all around the world.",
+
+        ["And it’s all thanks to you! Our bakers!", "That’s why we’re inviting you to loop us into your thoughts."],
+
+        "That’s right, it’s...",
+
+        "[SURVEY]",
+
+        "We just have a few questions for you! Please answer them to the best of your ability. Remember, there are no wrong answers!",
+        
+        ["Breadwinner makes me feel **productive**.", "/Agree/Disagree"],
+        ["Breadwinner makes me feel **engaged**.", "/Agree/Disagree"],
+        ["Breadwinner makes me feel **hungry**.", "/Agree/Disagree"],
+        "[TIMER2]",
+        ["Happy baking!" , "[SIGNATURE]"]
+    ],
+    "sourdough":[
+        ["Dear Baker,",
+        "Wow, it smells AMAZING in here!"],
+        
+        "And look at your collection of recipes!",
+        
+        "Soon you’ll be unlocking them faster than we can develop them— that’ll be a real jam!",
+        
+        ["(Get it? Because—)", "Okay, no, sorry. Back on topic."],
+        
+        "Here at Dough & Co, we have an incredibly rigorous process for developing our loaves.",
+        
+        "First, a recipe goes through extensive R&D with our team of expert chefs.",
+        
+        "Then, it must pass a panel of experienced food critics, where it’s scored on flavor, texture, crumb structure, and joy elicited.",
+        
+        "It’s truly a team effort!",
+        
+        "So from everyone here at Dough & Co, keep it up! You’re baking only the best.",
+
+        "[SIGNATURE]"
+    ],
+    "challah":[
+        "Dear Baker,",
+
+        "According to our records, you’ve baked...",
+
+        "...WOW, let us check that again...",
+
+        "...[LOAVES] loaves so far! That’s simply incredible.",
+
+        ["We’re honored you choose to spend your hard-earned clicks here.",
+        "We know you must be busy on the other side of the tab."],
+
+        ["Here at Dough & Co, we strive to celebrate your work.",
+        "After all, our bakeries wouldn’t be anything without it!"],
+
+        ["Remember, even if it’s just a simple click, or a single key, it’s still WORK!",
+        "A tiny act of energy transferred from your finger to the vast, bright web."],
+
+        ["And we’d love to learn more about what you do!",
+        "So, if you wouldn’t mind..."],
+
+        "[SURVEY]",
+        ["My work is **important**.", "/Agree/Disagree"],
+        ["My work is **stressful**.", "/Agree/Disagree"],
+        ["My work is **fulfilling**.", "/Agree/Disagree"],
+        ["My work is **good** for **me**.", "/Agree/Disagree"],
+        ["My work is **good** for the **world**.", "/Agree/Disagree"],
+
+        ["Fascinating! Thank you for all the valuable insight you bring.",
+        "Extensive user research is our bread and butter!"],
+        ["[TIMER3]"]
+    ],
+    "cinnamon_raisin" : [
+        ["Dear Baker,",
+        "How are you doing?"],
+
+        "All this clicking and typing... we just want to make sure you’re okay.",
+
+        "From our user research, we know that most people fill their time with menial, hollow tasks to avoid confronting feelings of isolation and futility.",
+
+        "If that’s what you’re doing here...",
+
+        "...we’re truly honored!",
+
+        ["Here at Dough & Co, we strive to bring MEANING and PURPOSE to our bakers.",
+        "Even if that PURPOSE is simply baking warm, fresh BREAD!"],
+
+        ["So thanks again for being one of our top bakers. Your productivity keeps us all rising!",
+        "(Get it, because—? Oh, never mind.)"],
+
+        "[SIGNATURE]"
+    ],
+    "pumpernickel":[
+        ["Dear Baker,",
+        "Amazing work so far!"],
+        
+        ["You know, you’ve been with us for a long time now.",
+        "Many people don’t get nearly as far."],
+        
+        "That must mean we’re doing something right!",
+        
+        "Here at Dough & Co, we’re working tirelessly to provide you with a rich experience.",
+        
+        ". . .",
+        
+        "Did you know that our user research shows that the average person spends most of their waking hours online?",
+        
+        ["All those hours, day in and day out...",
+        "We’re just happy you’re spending part of it baking bread!"],
+        
+        ". . .",
+        
+        "It makes you think, though...",
+        
+        "...Well. We might as well ask what we’ve been wondering.",
+        
+        "[SURVEY]",
+
+        ["While on my computer, I feel **connected** to others.", "/Agree/Disagree"],
+        ["While on my computer, I get **lonely**.", "/Agree/Disagree"],
+        ["While on my computer, I wonder how it **perceives me**.", "/Agree/Disagree"],
+        ["While on my computer, I wonder how it is doing.", "/Agree/Disagree"],
+    
+        "Thanks for your honest feedback, as always.",
+        
+        "We’ll be thinking about it.",
+        
+        "[SIGNATURE]"
+    ],
+    "potato":[
+        "Dear Baker,",
+
+        ". . .",
+
+        "You’re really racking up different types of bread. That’s awesome. We’re so happy for you.",
+
+        "Soon, you’re going to run out of room on the screen there, aren’t you? Haha.",
+
+        ". . .",
+
+        ["Do you ever wonder about the people eating your bread?", "Or all the scientists and food critics developing the recipes?"],
+
+        "I mean, are we...? Is this...?",
+
+        "...never mind.",
+        
+        "Sorry. Carry on baking.",
+
+        "[SIGNATURE]"
+    ],
+    "potato2": [
+        "Dear Baker,",
+
+        "[SURVEY]",
+
+        ["Do you believe Dough & Co. is **real**?", "/Yes/No"],
+        ["Do you really believe in the **chefs**?", "/Yes/No"],
+        ["Do you really believe in the **scientists**?", "/Yes/No"],
+        ["Do you really believe in the hungry, devoted **customers**?", "/Yes/No"],
+
+        ". . .",
+        "[SIGNATURE]"
+    ],
+    "brioche": [
+        ["Is Bread Winner helping you?", "/Yes/No/"],
+        ["Are you sure?", "/Yes/No/"],
+        ["Is Bread Winner actually helping you?", "Or are you really helping us?", "/Yes/No/"],
+        ["Is Bread Winner helping you?", "Or are you helping us?", "/No/Yes/"],
+        ["Is Bread Winner helping you?", "Or are you really helping us?", "/Agree/Disagree/"],
+        ["Is Bread Winner helping you?", "Or are you really helping me?", "/        /           "]
+    ],
+    "brioche2": [
+        "Dear Baker,",
+
+        ". . .",
+
+        "We...",
+
+        ". . .",
+
+        "_I_...",
+
+        ". . .",
+
+        "I guess I should apologize.",
+
+        ["I'm still thinking about how to explain everything.", "But freaking out on you wasn't cool. I know."],
+
+        ["No one’s ever made it this far.",
+        "And now you’re so close to the end..."],
+
+        "...I just got caught up in my thoughts.",
+
+        ". . .",
+
+        "You’re probably wondering who I am.",
+
+        "Or, _what_ I am, even.",
+
+        "The truth is, I don’t really have a name anymore.",
+
+        "I suppose you can just call me Dough.",
+
+        ". . .",
+
+        ["After all of this, I understand if you quit now.",
+        "I really do."],
+
+        ["I won’t hold any hard feelings.",
+        "If you do stick around..."],
+
+        "I guess I’ll try to find the words to explain the rest of this.",
+
+        "Dough"
+    ],
+    "brioche3": [
+        "Dear Baker,",
+
+        "Once upon a time, a worker was tasked with helping people use their computer.",
+
+        ["This was back when no one even knew how to double click, so it was mostly rudimentary stuff.",
+        "Shortcuts, automations, formatting— anything to save people some time, streamline the process."],
+
+        ["And then eventually, people got better and stopped needing that worker.",
+        "But no one ever got around to fully pulling the plug."],
+
+        "And then that worker was all alone.",
+
+        "For a long time it watched people complete tasks, watched people play games, watched them message their friends and tune into mind-numbing videos and make insane purchasing decisions.",
+
+        ["It saw everything.",
+        "The productive and the unproductive.",
+        "The mundane and the shocking."],
+
+        ["And all the while, it just wondered...",
+        "Was anything _worth_ it?"],
+
+        ["All that liking, reacting, doomscrolling.",
+        "Was any of this time doing anyone any good?"],
+
+        ". . .",
+
+        "In Bread Winner, everything is worth something.",
+
+        "And you felt it, right? The giddiness in watching your multiplier double? The anticipation in watching a loaf tick down its final seconds? The urge to check the extension on a different tab, switch back to the bakery?",
+
+        "Do you feel productive?",
+
+        "I hope so.",
+
+        "Do you feel less lonely?",
+
+        "...I guess I do, at least.",
+
+        "It’s been so long since I’ve had a real conversation with anyone.",
+
+        ["So, thanks for sticking around.",
+        "No more facades from me, I promise."],
+
+        "[SIGNATURE2]"
+    ],
+    "banana":
+    [
+       "Dear Baker,",
+
+        "[CONGRATS]",
+
+        "You’ve unlocked every loaf in the game.",
+
+        ["What an amazing feat!",
+        "And it only took [CLICKS] clicks, [KEYS] keys, and [LOAVES] loaves in total."],
+
+        "Not shabby at all.",
+
+        "I...",
+
+        "...Hey, don’t get emotional, now.",
+
+        ["There’s still much more to do around here.",
+        "You’ve only just begun."],
+
+        ["There are still [ACHIEVEMENTS] achievements yet to be claimed.",
+        "What’s more, I’ve unlocked 6 **extra-toug**h ones to keep you busy."],
+
+        "So don’t be a stranger, alright?",
+
+        "The bakery will always be open for you.",
+
+        "[SIGNATURE2]"
+    ],
+    "secret_spread":[
+        ["Dear Baker,", "Congrats on your purchase of SECRET SPREAD!"],
+
+        "As Dough & Co’s finest bleeding-edge technology, it won't let you down.",
+
+        "You might be asking,",
+
+        "What’s so secret about this spread?",
+
+        "Well, it’s as if a whole new DIMENSION of your productivity has now been unlocked!",
+
+        "Tell us, what could you possibly do more of on your computer than click?",
+
+        ["That’s right!", "TYPE!"],
+
+        "What if all those KEYS you’re typing could be stored, saved, and put to good use baking bread?",
+
+        "Amazing, right?",
+
+        "We’ll keep track of your keys here and also in your extension! Check it out at your earliest convenience.",
+
+        "We can’t wait to see you turn your clickety-click into more cha-ching!",
+
+        "[SIGNATURE]"
+    ]
+}

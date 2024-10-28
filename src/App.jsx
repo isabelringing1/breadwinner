@@ -35,6 +35,7 @@ import Envelope from "./Envelope";
 
 import tile from "/images/tile.png";
 import shadow from "/images/shadow.png";
+import dough_logo from "/images/dough-logo.png";
 
 import "./App.css";
 
@@ -47,6 +48,7 @@ const timer_unit = 300000;
 
 function App() {
 	const [playerId, setPlayerId] = useState(null);
+	const [playerStartTime, setPlayerStartTime] = useState(null);
 	const [loaded, setLoaded] = useState(false);
 	const [clicks, setClicks] = useState(null);
 	const [keys, setKeys] = useState(null);
@@ -69,7 +71,7 @@ function App() {
 	const [speechBubbleCount, setSpeechBubbleCount] = useState(0);
 	const [extensionDetected, setExtensionDetected] = useState(false);
 	const [visited, setVisited] = useState(false);
-	const [showBlocking, setShowBlocking] = useState(false);
+	const [blockingCategory, setBlockingCategory] = useState(null);
 	const [showInfo, setShowInfo] = useState(false);
 	const [infoScreenTitle, setInfoScreenTitle] = useState("");
 	const [infoScreenBody, setInfoScreenBody] = useState("");
@@ -83,7 +85,7 @@ function App() {
 		useState(null);
 	const [dailyOrderArray, setDailyOrderArray] = useState([]);
 	const [dailyOrderEvent, setDailyOrderEvent] = useState(null);
-	const [totalDailyOrders, setTotalDailyOrders] = useState(0);
+	const [totalDailyOrders, setTotalDailyOrders] = useState([]);
 	const [totalTimelyDailyOrders, setTotalTimelyDailyOrders] = useState(0);
 	const [convertPresses, setConvertPresses] = useState(0);
 	const [allLoavesDone, setAllLoavesDone] = useState(false);
@@ -95,6 +97,9 @@ function App() {
 	const [envelopeUnlocks, setEnvelopeUnlocks] = useState([]);
 	const [useTimerMode, setUseTimerMode] = useState(false);
 	const [timerButtonHovered, setTimerButtonHovered] = useState(false);
+	const [loavesSinceLastBreadUnlock, setLoavesSinceLastBreadUnlock] =
+		useState(0);
+	const [storyState, setStoryState] = useState(0); //start
 
 	const hourTimeout = useRef(null);
 	const onInfoScreenButtonPressed = useRef(null);
@@ -114,6 +119,7 @@ function App() {
 			total_spent: totalSpent,
 			total_earned: totalEarned,
 			total_clicks: totalClicks,
+			total_keys: totalKeys,
 			key_unlocked: keyUnlocked,
 			bread_baked: breadBaked,
 			daily_order_next_refresh_time: dailyOrderNextRefreshTime,
@@ -124,6 +130,9 @@ function App() {
 			timers: timers,
 			timers_unlocked: timersUnlocked,
 			envelope_unlocks: envelopeUnlocks,
+			loaves_since_last_bread_unlock: loavesSinceLastBreadUnlock,
+			story_state: storyState,
+			start_time: playerStartTime,
 		};
 		return player;
 	};
@@ -259,18 +268,48 @@ function App() {
 		updateBreadTooltip(newBread[id]);
 		setBreadBaked(breadBaked + 1);
 		emitEvent("bread-baked", null, breadBaked + 1);
-		tryUnlockDailyOrder(loaf.id, newBread);
-		if (id == "banana" && newBread[id].save.purchase_count == 1) {
-			emitEvent("bread-finished", null, null);
-		}
-		if (breadBaked == 0) {
-			//1st loaf of bread
-			unlockEnvelope("intro");
+		if (id == "banana") {
+			emitEvent("banana-baked", null, newBread[id].save.purchase_count);
+			if (newBread[id].save.purchase_count == 1) {
+				emitEvent("bread-finished", null, null);
+			}
 		}
 		if (breadBaked == 2) {
 			//3rd loaf of bread
-			unlockEnvelope("timer", "envelope-timer-event");
+			unlockEnvelope("timer");
 		}
+
+		if (
+			newBread["potato"].save.purchase_count > 0 &&
+			newBread["brioche"].save.purchase_count == 0 &&
+			loavesSinceLastBreadUnlock == 1
+		) {
+			unlockEnvelope("potato2");
+		}
+		if (
+			newBread["brioche"].save.purchase_count > 0 &&
+			newBread["banana"].save.purchase_count == 0
+		) {
+			if (loavesSinceLastBreadUnlock == 2) {
+				unlockEnvelope("brioche2");
+			} else if (loavesSinceLastBreadUnlock == 5) {
+				unlockEnvelope("brioche3");
+			}
+		}
+
+		if (newBread[id].save.purchase_count == 1) {
+			var event = null;
+			if (id == "challah") {
+				event = "unlock-daily-order";
+			} else if (id == "banana") {
+				event = "reveal-epilogue";
+			}
+			unlockEnvelope(id, event);
+			setLoavesSinceLastBreadUnlock(0);
+		} else {
+			setLoavesSinceLastBreadUnlock(loavesSinceLastBreadUnlock + 1);
+		}
+
 		reportLoafBought(loaf, breadBaked + 1, newOvenQueue.length, playerId);
 	};
 
@@ -317,6 +356,9 @@ function App() {
 		});
 		if (allPurchased) {
 			emitEvent("supply-finished", null, null);
+		}
+		if (id == "secret_spread") {
+			unlockEnvelope("secret_spread");
 		}
 		reportSupplyBought(supply, breadBaked + 1, ovenSize, playerId);
 	};
@@ -392,7 +434,7 @@ function App() {
 			").\nYou've baked this " +
 			item.save.purchase_count +
 			times;
-		setTooltipContentArray([text1, "BC", text2]);
+		setTooltipContentArray([text1, "[BC]", text2]);
 	};
 
 	const toggleLoafTooltip = (
@@ -647,14 +689,6 @@ function App() {
 		setSpeechBubbleCount(speechBubbleCount + 1);
 	};
 
-	const getBreadTotal = () => {
-		var total = 0;
-		for (var bread in BreadObject) {
-			total += BreadObject[bread].save.purchase_count;
-		}
-		return total;
-	};
-
 	const emitEvent = (id, value = null, amount = null) => {
 		var newEvent = { id: id, value: value, amount: amount };
 		setEvents([newEvent]);
@@ -675,13 +709,6 @@ function App() {
 		});
 		if (changed) {
 			setDailyOrderArray(newDailyOrderArray);
-		}
-	};
-
-	const tryUnlockDailyOrder = (id, breadObject) => {
-		if (id == "challah" && breadObject[id].save.purchase_count == 1) {
-			setDailyOrderEvent(true);
-			return;
 		}
 	};
 
@@ -742,9 +769,21 @@ function App() {
 		}
 	}, [keys, clicks]);
 
+	useEffect(() => {
+		for (var i = 0; i < events.length; i++) {
+			var event = events[i];
+			switch (event.id) {
+				case "unlock-daily-order":
+					setDailyOrderEvent(true);
+					break;
+			}
+		}
+	}, [events]);
+
 	const unlockEnvelope = (category, eventName) => {
-		for (var entry in envelopeUnlocks) {
-			if (entry[0] == category) {
+		console.log("Unlocking envelope ", category);
+		for (var i in envelopeUnlocks) {
+			if (envelopeUnlocks[i][0] == category) {
 				//already unlocked
 				return;
 			}
@@ -754,6 +793,15 @@ function App() {
 			...envelopeUnlocks,
 		];
 		setEnvelopeUnlocks(newEnvelopeUnlocks);
+	};
+
+	const jiggle_crown = () => {
+		document.getElementById("ending-logo").classList.add("jiggle-crown");
+		setTimeout(() => {
+			document
+				.getElementById("ending-logo")
+				.classList.remove("jiggle-crown");
+		}, 250);
 	};
 
 	useEffect(() => {
@@ -774,7 +822,6 @@ function App() {
 		requestKeyCount();
 
 		var playerData = loadData();
-
 		if (playerData != null) {
 			setPlayerId(playerData.playerId);
 			setMultiplier(playerData.multiplier);
@@ -784,6 +831,7 @@ function App() {
 			setTotalSpent(playerData.total_spent);
 			setTotalEarned(playerData.total_earned);
 			setTotalClicks(playerData.total_clicks);
+			setTotalKeys(playerData.total_keys);
 			setKeyUnlocked(playerData.key_unlocked);
 			setBreadBaked(playerData.bread_baked);
 			setDailyOrderNextRefreshTime(
@@ -796,6 +844,11 @@ function App() {
 			setTimers(playerData.timers);
 			setTimersUnlocked(playerData.timers_unlocked);
 			setEnvelopeUnlocks(playerData.envelope_unlocks);
+			setLoavesSinceLastBreadUnlock(
+				playerData.loaves_since_last_bread_unlock
+			);
+			setStoryState(playerData.story_state);
+			setPlayerStartTime(playerData.start_time);
 			setVisited(true);
 
 			var newSupply = { ...SupplyObject };
@@ -828,6 +881,7 @@ function App() {
 		setLoaded(true);
 		if (playerId == null) {
 			setPlayerId(self.crypto.randomUUID());
+			setPlayerStartTime(Date.now());
 		}
 
 		hourTimeout.current = setTimeout(() => {
@@ -871,19 +925,6 @@ function App() {
 		}
 	}, [extensionDetected]);
 
-	// Event Handler
-	useEffect(() => {
-		for (var i = 0; i < events.length; i++) {
-			var event = events[i];
-			switch (event.id) {
-				case "envelope-timer-event":
-					setTimersUnlocked(true);
-					setTimers(timers + 1);
-					break;
-			}
-		}
-	}, [events]);
-
 	return (
 		<div id="content">
 			<Debug
@@ -894,6 +935,7 @@ function App() {
 				achievements={AchievementsObject}
 				setAchievements={setAchievementsObject}
 				setTimers={setTimers}
+				emitEvent={emitEvent}
 			/>
 			<Tooltip
 				show={showTooltip}
@@ -906,6 +948,17 @@ function App() {
 				showEnvelope={showEnvelope}
 				setShowEnvelope={setShowEnvelope}
 				emitEvent={emitEvent}
+				timersUnlocked={timersUnlocked}
+				setTimersUnlocked={setTimersUnlocked}
+				setTimers={setTimers}
+				timers={timers}
+				breadObject={BreadObject}
+				events={events}
+				totalClicks={totalClicks}
+				totalKeys={totalKeys}
+				AchievementsObject={AchievementsObject}
+				storyState={storyState}
+				setStoryState={setStoryState}
 			/>
 			<Achievements
 				showAchievements={showAchievements}
@@ -956,15 +1009,17 @@ function App() {
 				mousePos={floatingTextPos}
 			/>
 
-			{!extensionDetected || isMobile || showBlocking ? (
-				<BlockingScreen
-					visited={visited}
-					isMobile={isMobile}
-					delay={1000}
-					showBlocking={showBlocking}
-					setShowBlocking={setShowBlocking}
-				/>
-			) : null}
+			<BlockingScreen
+				extensionDetected={extensionDetected}
+				visited={visited}
+				isMobile={isMobile}
+				delay={1000}
+				blockingCategory={blockingCategory}
+				setBlockingCategory={setBlockingCategory}
+				resetProgress={reset}
+				startTime={playerStartTime}
+			/>
+
 			{showInfo ? (
 				<InfoScreen
 					setShowInfo={setShowInfo}
@@ -1043,11 +1098,21 @@ function App() {
 					count={speechBubbleCount}
 				/>
 				<div id="version">
+					{storyState > 1 ? (
+						<img
+							src={dough_logo}
+							id="ending-logo"
+							onClick={() => {
+								setBlockingCategory("ending-crown");
+							}}
+							onMouseEnter={() => jiggle_crown()}
+						/>
+					) : null}
 					bread winner{" "}
 					<span
 						id="info"
 						onClick={() => {
-							setShowBlocking(true);
+							setBlockingCategory("question-mark");
 						}}
 					>
 						?

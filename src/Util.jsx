@@ -35,7 +35,7 @@ function msToTime(duration, clipZeroes = false, noSeconds = false) {
 		strtime += strminutes + "m ";
 	}
 	if (!noSeconds || strtime == "") {
-		strtime += strseconds + "s ";
+		strtime += strseconds + "s";
 	}
 
 	return strtime;

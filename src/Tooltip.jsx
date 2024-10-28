@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 import BCSymbol from "./BCSymbol";
 import Markdown from "react-markdown";
 
@@ -7,18 +9,30 @@ import bwTimer from "/images/bw_timer.png";
 function Tooltip(props) {
 	const { show, mousePos, contentArray } = props;
 
-	// prevents text from getting cut off at bottom
-	if (mousePos[1] > window.innerHeight - 150) {
-		mousePos[1] -= document.getElementById("tooltip").offsetHeight + 50;
-	}
+	const [top, setTop] = useState(0);
+	const [left, setLeft] = useState(0);
+
+	useEffect(() => {
+		setLeft(mousePos[0] - 80);
+		// prevents text from getting cut off at bottom
+		if (mousePos[1] > window.innerHeight - 150) {
+			setTop(
+				mousePos[1] -
+					document.getElementById("tooltip").offsetHeight -
+					30
+			);
+		} else {
+			setTop(mousePos[1]);
+		}
+	}, [mousePos]);
 
 	return (
 		<div
 			id="tooltip"
 			style={{
 				opacity: show ? 1 : 0,
-				top: mousePos[1] + "px",
-				left: mousePos[0] - 80 + "px",
+				top: top + "px",
+				left: left + "px",
 			}}
 		>
 			<div id="tooltip-text">

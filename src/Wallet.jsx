@@ -73,7 +73,6 @@ function Wallet(props) {
 					className="button"
 					id="convert-clicks"
 					onClick={(e) => {
-						console.log(e.detail);
 						if (e.detail == 0) {
 							// Occurs when someone holds down enter
 							return;
@@ -139,7 +138,13 @@ function Wallet(props) {
 						setTimerButtonHovered(false);
 					}}
 				>
-					{timers} <img src={timer} id="timer-icon" />
+					{timers}{" "}
+					<img src={timer} id="timer-icon" className="timer-icon" />
+					<img
+						src={timer}
+						id="timer-icon-copy"
+						className="timer-icon"
+					/>
 					{timerButtonHovered ? (
 						<button
 							className={

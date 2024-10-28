@@ -48,8 +48,6 @@ function DailyOrder(props) {
 		emitEvent,
 		totalDailyOrders,
 		setTotalDailyOrders,
-		totalTimelyDailyOrders,
-		setTotalTimelyDailyOrders,
 		timers,
 		setTimers,
 		timerUnit,
@@ -105,13 +103,13 @@ function DailyOrder(props) {
 		return BreadObject["challah"].save.purchase_count > 0;
 	};
 
-	/* Daily orders refresh at 3 p.m. est */
+	/* Daily orders refresh at 9 a.m. */
 	const updateDailyOrder = () => {
 		if (!dailyOrderUnlocked()) {
 			return;
 		}
 		var now = new Date();
-		var refreshTimeToday = new Date().setHours(15, 0, 0, 0);
+		var refreshTimeToday = new Date().setHours(9, 0, 0, 0);
 		var nextRefreshTime = dailyOrderNextRefreshTime;
 		if (dailyOrderNextRefreshTime == null) {
 			setDailyOrderArray(createNewDailyOrder());
@@ -158,7 +156,7 @@ function DailyOrder(props) {
 			var suborder =
 				getRandomInt(0, 2) == 0
 					? createSuborder(lowerWeights, 4, 10)
-					: (suborder = createSuborder(higherWeights, 1, 3));
+					: createSuborder(higherWeights, 1, 3);
 			suborder.push(cards[i]);
 			totalBcReward += suborder[3];
 			totalTimerReward += suborder[4];
@@ -219,18 +217,10 @@ function DailyOrder(props) {
 		setClaimState("claimed");
 		var timeSinceGeneration =
 			Date.now() - (dailyOrderNextRefreshTime - 86400000);
-		setTotalDailyOrders(totalDailyOrders + 1);
-		var totalTimely = totalTimelyDailyOrders;
-		console.log(timeSinceGeneration);
-		if (timeSinceGeneration <= 3600000) {
-			totalTimely += 1;
-			setTotalTimelyDailyOrders(totalTimely);
-		}
-		emitEvent(
-			"daily-order-claim",
-			[totalDailyOrders + 1, totalTimely],
-			null
-		);
+		var newTotalDailyOrders = [...totalDailyOrders];
+		newTotalDailyOrders.push([new Date(), timeSinceGeneration]);
+		setTotalDailyOrders(newTotalDailyOrders);
+		emitEvent("daily-order-claim", newTotalDailyOrders, null);
 		e.stopPropagation();
 	};
 
