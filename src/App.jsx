@@ -913,7 +913,7 @@ function App() {
 
 	useEffect(() => {
 		saveData(convertForSave());
-	}, [breadCoin, AchievementsObject, envelopeUnlocks, timers]);
+	}, [breadCoin, AchievementsObject, envelopeUnlocks, timers, OvenQueue]);
 
 	useEffect(() => {
 		emitEvent("current-balance", null, breadCoin);

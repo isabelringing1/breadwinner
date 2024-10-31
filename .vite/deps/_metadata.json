@@ -1,0 +1,40 @@
+{
+  "hash": "53cc6d87",
+  "configHash": "de696feb",
+  "lockfileHash": "78767803",
+  "browserHash": "53034ec6",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "cdb6b986",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "ad5b7729",
+      "needsInterop": true
+    },
+    "@jeffriggle/bison/dist/esm/index": {
+      "src": "../../node_modules/@jeffriggle/bison/dist/esm/index.js",
+      "file": "@jeffriggle_bison_dist_esm_index.js",
+      "fileHash": "e9908ed8",
+      "needsInterop": false
+    },
+    "react-markdown": {
+      "src": "../../node_modules/react-markdown/index.js",
+      "file": "react-markdown.js",
+      "fileHash": "95fab5f2",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-JBG67EE7": {
+      "file": "chunk-JBG67EE7.js"
+    },
+    "chunk-UV5CTPV7": {
+      "file": "chunk-UV5CTPV7.js"
+    }
+  }
+}

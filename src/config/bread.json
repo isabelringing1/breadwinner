@@ -63,7 +63,7 @@
       "markup": 1.35,
       "increase_rate": 1.15,
       "starting_color": "#EBB369",
-      "ending_color": "#B97925",
+      "ending_color": "#CC6926",
       "save": {
         "cost": 172800,
         "purchase_count": 0,
@@ -154,7 +154,7 @@
       "markup": 2.1,
       "increase_rate": 1.08,
       "starting_color": "#F4DBBA",
-      "ending_color": "#C2955B",
+      "ending_color": "#A96521",
       "save": {
         "cost": 42998169600,
         "purchase_count": 0,

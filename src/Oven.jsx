@@ -2,6 +2,7 @@ import Loaf from "./Loaf";
 import "./Oven.css";
 
 import engravement from "/images/engravement.png";
+import StencilEmpty from "./stencils/stencil-empty.jsx";
 
 function Oven(props) {
 	const {
@@ -52,7 +53,11 @@ function Oven(props) {
 				/>
 			);
 		}
-		return <div className="loaf empty" key={"empty-slot-" + i}></div>;
+		return (
+			<div className="loaf-div" key={"empty-slot-" + i}>
+				<StencilEmpty className={"loaf stencil-empty"} />
+			</div>
+		);
 	};
 	const rows = [];
 

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { interpolateColor, useInterval } from "./Util";
 import Timer from "./Timer";
 import timer from "/images/timer.png";
 import bwTimer from "/images/bw_timer.png";
+import LoafStencil from "./LoafStencil.jsx";
 
 function Loaf(props) {
 	const {
@@ -43,12 +44,14 @@ function Loaf(props) {
 	const onLoafDone = () => {
 		setTimeout(() => {
 			document
-				.getElementById(loaf.id + "-" + index)
+				.getElementById(loaf.id + "-div-" + index)
 				.classList.add("done-anim");
 			setTimeout(() => {
-				if (document.getElementById(loaf.id + "-" + index) != null) {
+				if (
+					document.getElementById(loaf.id + "-div-" + index) != null
+				) {
 					document
-						.getElementById(loaf.id + "-" + index)
+						.getElementById(loaf.id + "-div-" + index)
 						.classList.remove("done-anim");
 				}
 			}, 250);
@@ -71,6 +74,7 @@ function Loaf(props) {
 
 	var classname = "loaf";
 	var buttonClassname = "timer-mode-button button";
+	var filter = "";
 	if (ready) {
 		classname += " done";
 	} else if (
@@ -81,6 +85,7 @@ function Loaf(props) {
 		classname += " loaf-hint";
 	} else if (!useTimerMode) {
 		classname += " baking";
+		filter = "url(#baking)";
 	} else if (getTimerCost(loaf) <= timers) {
 		classname += " loaf-breathe";
 	} else {
@@ -88,57 +93,66 @@ function Loaf(props) {
 	}
 
 	return (
-		<div
-			className={classname}
-			id={loaf.id + "-" + index}
-			style={{ backgroundColor: color }}
-			onClick={(e) => {
-				onLoafClicked(index);
-				e.stopPropagation();
-			}}
-			onMouseMove={(e) => {
-				var x =
-					e.clientX < window.innerWidth - 300
-						? e.clientX + 30
-						: e.clientX - 240;
-				toggleTooltip(
-					true,
-					loaf,
-					[x, e.clientY + 30],
-					get_percent_done(),
-					getTimerCost(loaf)
-				);
-			}}
-			onMouseLeave={() => {
-				toggleTooltip(false);
-				setHovered(false);
-			}}
-			onMouseEnter={() => {
-				setHovered(true);
-				if (!ready) {
-					return;
-				}
-				document
-					.getElementById(loaf.id + "-" + index)
-					.classList.add("done-anim");
-				setTimeout(() => {
-					if (
-						document.getElementById(loaf.id + "-" + index) != null
-					) {
-						document
-							.getElementById(loaf.id + "-" + index)
-							.classList.remove("done-anim");
+		<div className="loaf-div" id={loaf.id + "-div-" + index}>
+			<LoafStencil
+				filter={filter}
+				preserveAspectRatio="none"
+				type={loaf.id}
+				fill={color}
+				className={classname}
+				id={loaf.id + "-" + index}
+				onMouseMove={(e) => {
+					var x =
+						e.clientX < window.innerWidth - 300
+							? e.clientX + 30
+							: e.clientX - 240;
+					toggleTooltip(
+						true,
+						loaf,
+						[x, e.clientY + 30],
+						get_percent_done(),
+						getTimerCost(loaf)
+					);
+				}}
+				onMouseLeave={() => {
+					toggleTooltip(false);
+					setHovered(false);
+				}}
+				onMouseEnter={() => {
+					setHovered(true);
+					if (!ready) {
+						return;
 					}
-				}, 250);
-			}}
-		>
+					document
+						.getElementById(loaf.id + "-div-" + index)
+						.classList.add("done-anim");
+					setTimeout(() => {
+						if (
+							document.getElementById(
+								loaf.id + "-div-" + index
+							) != null
+						) {
+							document
+								.getElementById(loaf.id + "-div-" + index)
+								.classList.remove("done-anim");
+						}
+					}, 250);
+				}}
+			/>
+
 			{ready ? (
 				<button className="loaf-button" onClick={() => sellLoaf(index)}>
 					SELL
 				</button>
 			) : useTimerMode ? (
 				<div className="timer-mode">
-					<button className={buttonClassname}>
+					<button
+						className={buttonClassname}
+						onClick={(e) => {
+							onLoafClicked(index);
+							e.stopPropagation();
+						}}
+					>
 						{getTimerCost(loaf)}
 						{getTimerCost(loaf) > timers ? (
 							<img src={bwTimer} className="loaf-timer" />
