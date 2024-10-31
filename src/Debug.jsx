@@ -76,7 +76,8 @@ function Debug(props) {
 			>
 				Reset?
 			</button>
-			<br />
+
+			{/* <br />
 			<input type="number" ref={clickInputRef} />{" "}
 			<button
 				id="set-clicks-button"
@@ -120,7 +121,7 @@ function Debug(props) {
 				}}
 			>
 				Skip Envelope
-			</button>
+			</button> */}
 		</div>
 	) : null;
 }
