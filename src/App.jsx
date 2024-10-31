@@ -872,6 +872,9 @@ function App() {
 				playerData.achievements_object
 			)) {
 				for (var i = 0; i < array.length; i++) {
+					if (newAchievements[categoryName] == null) {
+						continue;
+					}
 					newAchievements[categoryName][i].save =
 						playerData.achievements_object[categoryName][i];
 				}
