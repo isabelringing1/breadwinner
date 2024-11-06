@@ -27,6 +27,7 @@ function Envelope(props) {
 		AchievementsObject,
 		storyState,
 		setStoryState,
+		reportEnvelopeAnswer,
 	} = props;
 	const animating = useRef(false);
 	const animatingTimer = useRef(false);
@@ -69,6 +70,7 @@ function Envelope(props) {
 				.getElementById("small-envelope")
 				.classList.remove("peek-in-small");
 			document.getElementById("small-envelope").style.bottom = "-3vh";
+			//document.getElementById("small-envelope").classList.add("envelope-hint")
 			jiggle_envelope();
 		}, 400);
 		jiggleInterval.current = setInterval(() => {
@@ -138,8 +140,8 @@ function Envelope(props) {
 		}
 	};
 
-	const on_button_click = (id) => {
-		console.log("Button clicked: " + id);
+	const on_button_click = (buttonId) => {
+		reportEnvelopeAnswer(buttonId);
 	};
 
 	const replace_tokens = (text) => {
@@ -296,7 +298,6 @@ function Envelope(props) {
 		}
 		var state = getState(entry[0]);
 		if (state > storyState) {
-			console.log("Setting story state to new state " + state);
 			setStoryState(state);
 		}
 
@@ -360,7 +361,7 @@ function Envelope(props) {
 				onMouseEnter={() => jiggle_envelope()}
 			>
 				<img
-					className="small-envelope-bg-image"
+					className="small-envelope-bg-image envelope-hint"
 					src={envelope_closed}
 				/>
 			</div>

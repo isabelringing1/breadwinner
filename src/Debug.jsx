@@ -13,6 +13,8 @@ function Debug(props) {
 		setTimers,
 		skipEnvelope,
 		emitEvent,
+		inTrialMode,
+		setClicks,
 	} = props;
 	const [showDebug, setShowDebug] = useState(false);
 	const clickInputRef = useRef();
@@ -81,9 +83,13 @@ function Debug(props) {
 			<input type="number" ref={clickInputRef} />{" "}
 			<button
 				id="set-clicks-button"
-				onClick={() =>
-					setClicksCheat(parseInt(clickInputRef.current.value))
-				}
+				onClick={() => {
+					if (inTrialMode) {
+						setClicks(parseInt(clickInputRef.current.value));
+					} else {
+						setClicksCheat(parseInt(clickInputRef.current.value));
+					}
+				}}
 			>
 				{" "}
 				Set Click Count{" "}

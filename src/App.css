@@ -176,7 +176,7 @@ p{
 }
 
 .timer{
-    font-size: 3vh;
+    font-size: 2.5vh;
     overflow: hidden;
     white-space: nowrap;
     position: absolute;
@@ -353,8 +353,21 @@ p{
     filter: brightness(0.9);
 }
 
+#trial-mode-marker{
+    position: absolute;
+    top: 1.5vh;
+    font-size: 2vh;
+    color: #8d8d8d;
+    z-index: 11;
+}
+
 .jiggle-crown{
     animation: jiggle-crown 0.25s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+.jiggle{
+    animation: jiggle 0.25s ease-in-out;
     animation-fill-mode: forwards;
 }
 
@@ -427,4 +440,17 @@ p{
         transform: rotateZ(0deg);
     }
     100% { transform: rotateZ(-7deg); }
+}
+
+@keyframes jiggle {
+    0% {
+      transform: rotateZ(0deg);
+    }
+    20% {
+        transform: rotateZ(-7deg);
+    }
+    75% {
+        transform: rotateZ(7deg);
+    }
+    100% { transform: rotateZ(0deg); }
 }

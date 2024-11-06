@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { saveData, loadData } from "../public/account";
-import { resetCheat } from "../public/debug";
+import { setClicksCheat, setKeysCheat } from "../public/debug";
 import {
 	reportLoafBought,
 	reportSupplyBought,
 	reportLoafSold,
 	reportTimerUsed,
+	reportEnvelopeAnswer,
 } from "../public/analytics";
 import {
 	requestClickCount,
@@ -100,16 +101,20 @@ function App() {
 	const [loavesSinceLastBreadUnlock, setLoavesSinceLastBreadUnlock] =
 		useState(0);
 	const [storyState, setStoryState] = useState(0); //start
+	const [inTrialMode, setInTrialMode] = useState(false);
 
 	const hourTimeout = useRef(null);
 	const onInfoScreenButtonPressed = useRef(null);
 	const onAchievementClaimButtonPressed = useRef(null);
+	const trialModeJiggleInterval = useRef(null);
 
 	const isMobile = window.innerWidth <= 768;
 
 	const convertForSave = () => {
 		var player = {
 			playerId: playerId,
+			clicks: clicks, // only used in trial mode
+			keys: keys, // only used in trial mode
 			multiplier: multiplier ?? 1.0,
 			bread_coin: breadCoin ?? 0,
 			supplies_object: getSave(SupplyObject),
@@ -133,6 +138,7 @@ function App() {
 			loaves_since_last_bread_unlock: loavesSinceLastBreadUnlock,
 			story_state: storyState,
 			start_time: playerStartTime,
+			in_trial_mode: inTrialMode,
 		};
 		return player;
 	};
@@ -330,6 +336,9 @@ function App() {
 			setKeyUnlocked(true);
 			emitEvent("keys-unlocked", null, null);
 			unlockKeys();
+			if (inTrialMode) {
+				setKeys(0);
+			}
 		} else if (supply.multiplier) {
 			setMultiplier(multiplier * supply.multiplier);
 			setSpeechBubble("MULTIPLIER");
@@ -382,7 +391,12 @@ function App() {
 			value: earnedCoin,
 		};
 		emitEvents([conversionEvent, breadCoinEvent]);
-		spendClicks(clicks);
+
+		if (inTrialMode) {
+			setClicks(0);
+		} else {
+			spendClicks(clicks);
+		}
 		setSpeechBubble("CLICK");
 	};
 
@@ -395,7 +409,11 @@ function App() {
 	const convertKeysToMultiplier = () => {
 		setInSellAllSequence(false);
 		setMultiplier(multiplier + keys * 0.0001);
-		spendKeys(keys);
+		if (inTrialMode) {
+			setKeys(0);
+		} else {
+			spendKeys(keys);
+		}
 		setTotalKeys(totalKeys + keys);
 		emitEvent("keys-converted", null, totalKeys + keys);
 	};
@@ -463,7 +481,7 @@ function App() {
 		var text2 = formatNumber(item.sell_value);
 		tooltipArray.push(text2);
 
-		if (percent_done < 1) {
+		if (percent_done < 1 && timersUnlocked) {
 			tooltipArray.push("\n");
 			if (timers < timerCost) {
 				tooltipArray.push("[gray]Speed up for " + timerCost);
@@ -591,10 +609,17 @@ function App() {
 		}
 	};
 
-	const toggleTimerInfoTooltip = (show, mousePos = [0, 0]) => {
+	const toggleTimerInfoTooltip = (
+		show,
+		mousePos = [0, 0],
+		canUseTimers = false
+	) => {
 		setupTooltip(show, mousePos);
 		if (show) {
 			var text = "Spend timers to finish a baking loaf instantly!\n";
+			if (canUseTimers) {
+				text += "Click to use.";
+			}
 			setTooltipContentArray([text]);
 		}
 	};
@@ -795,13 +820,58 @@ function App() {
 		setEnvelopeUnlocks(newEnvelopeUnlocks);
 	};
 
-	const jiggle_crown = () => {
+	const jiggleCrown = () => {
 		document.getElementById("ending-logo").classList.add("jiggle-crown");
 		setTimeout(() => {
 			document
 				.getElementById("ending-logo")
 				.classList.remove("jiggle-crown");
 		}, 250);
+	};
+
+	const jiggleTrialMode = () => {
+		document.getElementById("trial-mode-marker").classList.add("jiggle");
+		setTimeout(() => {
+			document
+				.getElementById("trial-mode-marker")
+				.classList.remove("jiggle");
+		}, 250);
+	};
+
+	const startTrialMode = () => {
+		if (extensionDetected) {
+			console.log(
+				"Cannot start trial mode because extension is detected."
+			);
+			return;
+		}
+
+		console.log("Starting trial mode");
+		setInTrialMode(true);
+		trialModeJiggleInterval.current = setInterval(() => {
+			jiggleTrialMode();
+		}, 8000);
+	};
+
+	const onContentClick = (e) => {
+		if (!inTrialMode) {
+			return;
+		}
+		if (e.target.id == "convert-clicks") {
+			//pressing convert button
+			setClicks(1);
+			return;
+		} else if (e.target.id == "set-clicks-button") {
+			return;
+		}
+		setClicks(clicks + 1);
+	};
+
+	const onKeyDown = (e) => {
+		if (!inTrialMode || e.repeat) {
+			return;
+		}
+		setKeys(keys + 1);
 	};
 
 	useEffect(() => {
@@ -823,6 +893,7 @@ function App() {
 
 		var playerData = loadData();
 		if (playerData != null) {
+			console.log(playerData.playerId);
 			setPlayerId(playerData.playerId);
 			setMultiplier(playerData.multiplier);
 			broadcastBc(playerData.bread_coin);
@@ -868,6 +939,7 @@ function App() {
 			setBreadObject(newBread);
 
 			var newAchievements = { ...AchievementsObject };
+			console.log(playerData.achievements_object);
 			for (const [categoryName, array] of Object.entries(
 				playerData.achievements_object
 			)) {
@@ -880,12 +952,11 @@ function App() {
 				}
 			}
 			setAchievementsObject(newAchievements);
-		}
-		setLoaded(true);
-		if (playerId == null) {
+		} else {
 			setPlayerId(self.crypto.randomUUID());
 			setPlayerStartTime(Date.now());
 		}
+		setLoaded(true);
 
 		hourTimeout.current = setTimeout(() => {
 			emitEvent("hour-timeout");
@@ -899,12 +970,20 @@ function App() {
 		};
 
 		document.addEventListener("click", (e) => {
-			if (e.target.id != "timer-activate-button") {
+			if (e.target.id != "timer-icon" && e.target.id != "timers-wallet") {
 				setUseTimerMode(false);
 			}
 		});
 
 		return () => {
+			document.removeEventListener("click", (e) => {
+				if (
+					e.target.id != "timer-icon" &&
+					e.target.id != "timers-wallet"
+				) {
+					setUseTimerMode(false);
+				}
+			});
 			document.removeEventListener("visibilitychange", (event) => {
 				if (document.visibilityState == "visible") {
 					requestClickCount();
@@ -915,21 +994,73 @@ function App() {
 	}, []);
 
 	useEffect(() => {
-		saveData(convertForSave());
-	}, [breadCoin, AchievementsObject, envelopeUnlocks, timers, OvenQueue]);
+		if (playerId != null) {
+			saveData(convertForSave());
+		}
+	}, [
+		breadCoin,
+		AchievementsObject,
+		envelopeUnlocks,
+		timers,
+		OvenQueue,
+		inTrialMode,
+	]);
 
 	useEffect(() => {
 		emitEvent("current-balance", null, breadCoin);
 	}, [breadCoin]);
 
 	useEffect(() => {
-		if (extensionDetected && visited) {
+		if (inTrialMode && clicks != null) {
+			saveData(convertForSave());
+		}
+	}, [clicks, keys]);
+
+	useEffect(() => {
+		if (!inTrialMode) {
+			return;
+		}
+		document.addEventListener("keydown", onKeyDown);
+		return () => {
+			document.removeEventListener("keydown", onKeyDown);
+		};
+	}, [keys, inTrialMode]);
+
+	useEffect(() => {
+		var playerData = loadData();
+		if (extensionDetected && playerData != null) {
 			setSpeechBubble("RETURN");
+			if (playerData.in_trial_mode) {
+				console.log("just acquired extension");
+				//In the case where the player has just acquired the extension
+				if (playerData.keys != null) {
+					setKeysCheat(playerData.keys);
+				}
+				setClicksCheat(playerData.clicks);
+				setInTrialMode(false);
+			}
+
+			if (playerData.keys != null) {
+				unlockKeys();
+			}
+			return;
+		}
+
+		// In the case where the player is continuing from trial mode
+		if (!extensionDetected && playerData != null) {
+			setClicks(playerData.clicks);
+			setKeys(playerData.keys);
+			setVisited(true);
 		}
 	}, [extensionDetected]);
 
 	return (
-		<div id="content">
+		<div
+			id="content"
+			onClick={(e) => {
+				onContentClick(e);
+			}}
+		>
 			<Debug
 				resetProgress={reset}
 				setBreadCoin={setBreadCoin}
@@ -939,6 +1070,8 @@ function App() {
 				setAchievements={setAchievementsObject}
 				setTimers={setTimers}
 				emitEvent={emitEvent}
+				inTrialMode={inTrialMode}
+				setClicks={setClicks}
 			/>
 			<Tooltip
 				show={showTooltip}
@@ -962,6 +1095,7 @@ function App() {
 				AchievementsObject={AchievementsObject}
 				storyState={storyState}
 				setStoryState={setStoryState}
+				reportEnvelopeAnswer={reportEnvelopeAnswer}
 			/>
 			<Achievements
 				showAchievements={showAchievements}
@@ -1021,6 +1155,13 @@ function App() {
 				setBlockingCategory={setBlockingCategory}
 				resetProgress={reset}
 				startTime={playerStartTime}
+				inTrialMode={inTrialMode}
+				startTrialMode={startTrialMode}
+				envelopeUnlocks={envelopeUnlocks}
+				totalClicks={totalClicks}
+				totalKeys={totalKeys}
+				breadBaked={breadBaked}
+				AchievementsObject={AchievementsObject}
 			/>
 
 			{showInfo ? (
@@ -1070,6 +1211,19 @@ function App() {
 			</div>
 
 			<div id="column-2" className="column">
+				{inTrialMode ? (
+					<div
+						id="trial-mode-marker"
+						onClick={() => {
+							setBlockingCategory("trial-mode");
+						}}
+						onMouseOver={() => {
+							jiggleTrialMode();
+						}}
+					>
+						trial mode
+					</div>
+				) : null}
 				<div id="bc-container">
 					<div id="bread-coin">
 						<BCSymbol color="black" />
@@ -1108,7 +1262,7 @@ function App() {
 							onClick={() => {
 								setBlockingCategory("ending-crown");
 							}}
-							onMouseEnter={() => jiggle_crown()}
+							onMouseEnter={() => jiggleCrown()}
 						/>
 					) : null}
 					bread winner{" "}

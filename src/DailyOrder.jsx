@@ -110,23 +110,33 @@ function DailyOrder(props) {
 		}
 		var now = new Date();
 		var refreshTimeToday = new Date().setHours(9, 0, 0, 0);
-		var nextRefreshTime = dailyOrderNextRefreshTime;
-		if (dailyOrderNextRefreshTime == null) {
+		var nextRefreshTime = dailyOrderNextRefreshTime - 7408138;
+		console.log(
+			"updating daily order: next refresh time is " + nextRefreshTime
+		);
+		if (
+			dailyOrderNextRefreshTime == null ||
+			dailyOrderNextRefreshTime == 0
+		) {
 			setDailyOrderArray(createNewDailyOrder());
 			nextRefreshTime =
 				new Date(refreshTimeToday) >= now
 					? refreshTimeToday
 					: refreshTimeToday + 86400000; //+24 hours
 			setDailyOrderNextRefreshTime(nextRefreshTime);
+			console.log("setting next refresh time to " + nextRefreshTime);
 		} else if (now >= new Date(dailyOrderNextRefreshTime)) {
 			setDailyOrderArray(createNewDailyOrder());
 			nextRefreshTime = dailyOrderNextRefreshTime + 86400000;
 			setDailyOrderNextRefreshTime(nextRefreshTime);
 		}
 		var timeTilRefresh = nextRefreshTime - now.getTime();
-		setTimeout(() => {
-			updateDailyOrder();
-		}, timeTilRefresh);
+		console.log("time until refresh: " + timeTilRefresh);
+		if (timeTilRefresh >= 1) {
+			setTimeout(() => {
+				updateDailyOrder();
+			}, timeTilRefresh);
+		}
 	};
 
 	/* Daily Order Generation - 2 suborders

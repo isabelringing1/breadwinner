@@ -68,7 +68,7 @@
     background-color: #4c9d27;
     border: solid transparent;
     border-radius: 1.67vh;
-    border-width: 0 0 0.418vh;
+    border-width: 0 0 4px;
     box-sizing: border-box;
     cursor: pointer;
     display: inline-block;
@@ -107,6 +107,11 @@
 .loaf-button:hover{
     filter: brightness(1.1);
     -webkit-filter: brightness(1.1);
+}
+
+.loaf-button:active {
+    border-width: 4px 0 0;
+    background: none;
 }
 
 .done{

@@ -130,35 +130,67 @@ function Wallet(props) {
 							e.clientX < window.innerWidth - 300
 								? e.clientX + 30
 								: e.clientX - 240;
-						toggleTimerInfoTooltip(true, [x, e.clientY + 30]);
+						toggleTimerInfoTooltip(
+							true,
+							[x, e.clientY + 30],
+							canUseTimers()
+						);
 						setTimerButtonHovered(true);
 					}}
 					onMouseLeave={() => {
 						toggleTimerInfoTooltip(false);
 						setTimerButtonHovered(false);
+						if (!canUseTimers()) {
+							document
+								.getElementById("timer-icon")
+								.classList.remove("timer-icon-gray");
+						} else {
+							document
+								.getElementById("timer-icon")
+								.classList.remove("timer-icon-hover");
+						}
+					}}
+					onClick={() => {
+						setUseTimerMode(!useTimerMode);
+					}}
+					onMouseEnter={(e) => {
+						if (canUseTimers()) {
+							document
+								.getElementById("timer-icon")
+								.classList.add("timer-icon-hover");
+						} else {
+							document
+								.getElementById("timer-icon")
+								.classList.add("timer-icon-gray");
+						}
+					}}
+					onMouseDown={() => {
+						if (!canUseTimers()) {
+							return;
+						}
+						document
+							.getElementById("timer-icon")
+							.classList.add("timer-icon-clicked");
+					}}
+					onMouseUp={() => {
+						if (!canUseTimers()) {
+							return;
+						}
+						document
+							.getElementById("timer-icon")
+							.classList.remove("timer-icon-clicked");
 					}}
 				>
 					{timers}{" "}
-					<img src={timer} id="timer-icon" className="timer-icon" />
+					<img src={timer} id="timer-icon" className={"timer-icon"} />
 					<img
 						src={timer}
 						id="timer-icon-copy"
-						className="timer-icon"
+						className={
+							"timer-icon" +
+							(canUseTimers() ? "" : " timer-icon-gray")
+						}
 					/>
-					{timerButtonHovered ? (
-						<button
-							className={
-								"button" +
-								(canUseTimers() ? "" : " button-disabled")
-							}
-							id="timer-activate-button"
-							onClick={() => {
-								setUseTimerMode(true);
-							}}
-						>
-							Use
-						</button>
-					) : null}
 				</div>
 			) : null}
 		</div>

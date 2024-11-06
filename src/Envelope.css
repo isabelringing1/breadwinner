@@ -23,7 +23,7 @@
 .small-envelope-bg-image{
     width: 100%;
     height: 100%;
-    filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.45));
+    filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.45)) drop-shadow(0px 0px 5px yellow);
 }
 
 #big-envelope{
@@ -190,6 +190,11 @@
    -webkit-animation: flip-out 0.5s ease-in-out;
 }
 
+.envelope-hint{
+    animation: envelope-hint 3s infinite ease-in-out;
+    -webkit-animation: envelope-hint 3s infinite ease-in-out;
+}
+
 @keyframes jiggle-envelope {
     0% {
       transform: rotate(45deg);
@@ -271,5 +276,17 @@
     100%{
         margin-top: -70vh;
         margin-left: -10vh;
+    }
+}
+
+@keyframes envelope-hint{
+    0%{
+        filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.45)) drop-shadow(0px 0px 10px yellow);
+    }
+    50%{
+        filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.45)) drop-shadow(0px 0px 50px yellow);
+    }
+    100%{
+        filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.45)) drop-shadow(0px 0px 10px yellow);
     }
 }

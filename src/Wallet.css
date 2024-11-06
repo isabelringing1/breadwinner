@@ -120,8 +120,23 @@
 }
 
 .timer-icon{
+    position: absolute;
     width: 3vh;
+    margin-left: 1vh;
     margin-bottom: -0.5vh;
+}
+
+.timer-icon-hover:not(.timer-icon-clicked){
+    position: absolute;
+    filter: brightness(1.1);
+    transform: scale(1.1, 1.1);
+    -ms-transform: scale(1.1, 1.1);
+    -webkit-transform: scale(1.1, 1.1);
+}
+
+.timer-icon-gray{
+    filter: grayscale(1);
+    pointer-events: none;
 }
 
 #timer-icon{
@@ -130,34 +145,10 @@
 
 #timer-icon-copy{
     position: relative;
-    left: -3vh;
-}
-
-#timer-activate-button{
-    line-height: 0;
-    min-height: 0;
-    height: 3.3vh;
-    background-color: #d4ad1f;
-    margin-left: 1.5vh;
-    margin-top: 0;
-    font-size: 1.3vh;
-    font-weight: 600;
-}
-  
-#timer-activate-button:after{
-    background-color: #f9f630
-}
-
-#timer-activate-button.button-disabled{
-    background-color: #666666;
-    color: #666666;
-    filter: none;
     pointer-events: none;
 }
 
-#timer-activate-button.button-disabled:after{
-    background-color: #b8b8b8;
-}
+
 
 #timers-wallet{
     width: fit-content;

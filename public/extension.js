@@ -45,18 +45,18 @@ function lockKeys(){
 
 function registerForMessages(setClicks, setKeys, setKeyUnlocked, extensionDetected, setExtensionDetected){
     window.addEventListener("message", (event) => {
-        if (event.data.id == "updatedClicks"){
-          setClicks(event.data.clicks ?? 0);
-          if (!extensionDetected){
-            setExtensionDetected(true)
-          }
+        if (event.data.id == "updatedClicks") {
+            setClicks(event.data.clicks ?? 0);
+            if (!extensionDetected){
+                setExtensionDetected(true)
+            }
         }
-        else if (event.data.id == "updatedKeys"){
-          setKeys(event.data.keys ?? 0);
-          setKeyUnlocked(true)
-          if (!extensionDetected){
-            setExtensionDetected(true)
-          }
+        else if (event.data.id == "updatedKeys") {
+            setKeys(event.data.keys ?? 0);
+            setKeyUnlocked(true)
+            if (!extensionDetected){
+                setExtensionDetected(true)
+            }
         }
     });
 }

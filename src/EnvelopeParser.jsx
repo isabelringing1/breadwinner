@@ -9,6 +9,7 @@ function parse(id, onButtonClick, replaceTokens) {
 	if (!data) {
 		return null;
 	}
+	var cardNo = 0;
 	data.forEach((el) => {
 		if (el.constructor === Array) {
 			// multiple cards
@@ -18,7 +19,12 @@ function parse(id, onButtonClick, replaceTokens) {
 						if (text[0] == "[") {
 							return parseSpecial(text, id);
 						} else if (text[0] == "/") {
-							return parseButtons(text, id, onButtonClick);
+							return parseButtons(
+								text,
+								id,
+								onButtonClick,
+								cardNo
+							);
 						}
 						text = replaceTokens(text);
 						return (
@@ -51,6 +57,7 @@ function parse(id, onButtonClick, replaceTokens) {
 				);
 			}
 		}
+		cardNo++;
 	});
 	return cards;
 }
@@ -135,7 +142,7 @@ function parseSpecial(special, id) {
 	return <div></div>;
 }
 
-function parseButtons(text, id, onButtonClick) {
+function parseButtons(text, id, onButtonClick, cardNo) {
 	var buttons = text.split("/");
 
 	return (
@@ -152,7 +159,7 @@ function parseButtons(text, id, onButtonClick) {
 						className={"button env-button env-button-" + i}
 						key={"env-button-" + id + "-" + i}
 						onClick={() => {
-							onButtonClick(id);
+							onButtonClick(id + "-" + cardNo + "-" + i);
 						}}
 					>
 						{button}

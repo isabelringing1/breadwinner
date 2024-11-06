@@ -18,7 +18,12 @@ function useInterval(callback, delay) {
 }
 
 //https://stackoverflow.com/a/19700358
-function msToTime(duration, clipZeroes = false, noSeconds = false) {
+function msToTime(
+	duration,
+	clipZeroes = false,
+	noSeconds = false,
+	showMs = false
+) {
 	var milliseconds = Math.floor((duration % 1000) / 100),
 		seconds = Math.floor((duration / 1000) % 60),
 		minutes = Math.floor((duration / (1000 * 60)) % 60),
@@ -36,6 +41,9 @@ function msToTime(duration, clipZeroes = false, noSeconds = false) {
 	}
 	if (!noSeconds || strtime == "") {
 		strtime += strseconds + "s";
+	}
+	if (showMs) {
+		strtime += " " + milliseconds + "ms";
 	}
 
 	return strtime;

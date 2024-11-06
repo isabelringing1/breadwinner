@@ -11,33 +11,41 @@
 }
 
 .blocking-div{
-    width: 550px;
+    width: 50vh;
     min-height: 100px;
-    margin-bottom: 150px;
+    margin-bottom: 15vh;
     background-color: white;
-    padding: 10px;
-    font-size: 20px;
+    padding: 1vh;
+    font-size: 1.6vh;
     filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
     line-height: 1.5;
+    z-index: 101;
 }
 
 .blocking-screen-title{
-    font-size: 30px;
+    font-size: 2.3vh;
     width: 100%;
-    padding-bottom: 20px;
+    padding-bottom: 1.4vh;
 }
 
 .blocking-screen-hint{
-    padding-top: 10px;
-    font-size: 15px;
+    padding-top: .7vh;
+    font-size: 1.1vh;
     width: 100%;
-    text-align: center;
     color: #565656;
 }
 
+.question{
+    font-weight: 600;
+}
+
+.blocking-screen-text.answer{
+    margin-bottom: 2vh;
+}
+
 .inner-border{
-    padding: 30px;
-    border: 5px solid #92D2FF;
+    padding: 2.5vh;
+    border: .5vh solid #92D2FF;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -45,12 +53,12 @@
 }
 
 .blocking-screen-text{
-    margin-bottom: 10px;
+    margin-bottom: 1vh;
 }
 
 .blocking-screen-link{
     width: 100%;
-    padding: 10px 0;
+    padding: 1.7vh 0;
     text-align: center;
 }
 
@@ -95,7 +103,7 @@ a{
 }
 
 .extension-link{
-    padding: 0 10px;
+    padding: 0 3vh;
     
 }
 
@@ -122,11 +130,25 @@ a:hover{
 }
 
 .reset-button{
-    background-color:  rgb(57, 151, 202);
+    background-color:  #c54141;
 }
 
 .reset-button:after{
-    background-color: rgb(127, 199, 238);
+    background-color: #ef5c5c;
+}
+
+.never-mind{
+    background-color:  #4c9d27;
+}
+
+.never-mind:after{
+    background-color: #6EE835;
+}
+
+.blocking-screen-buttons{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
 }
 
 .info-button-div{

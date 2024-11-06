@@ -94,6 +94,10 @@
     background-color: #EB8080;
 }
 
+#misc_1:not(.locked){
+    background-color: #EDE269;
+}
+
 #misc_2:not(.locked){
     background-color: #f276c9;
 }
@@ -108,6 +112,10 @@
 
 #misc_5:not(.locked){
     background-color: #EEC993;
+}
+
+#stretch_5:not(.locked){
+    background-color: #63EAA4;
 }
 
 .locked{
@@ -237,8 +245,8 @@
     width: 50%;
     height: fit-content;
     position: relative;
-    top: -30%;
-    left: -30%;
+    top: -32%;
+    left: -33%;
 }
 
 .ready-to-claim{

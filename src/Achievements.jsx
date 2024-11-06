@@ -271,6 +271,7 @@ function Achievements(props) {
 			for (var i in category) {
 				if (category[i].id == achievement.id) {
 					category[i].save.claimed = true;
+					category[i].save.claim_time = Date.now();
 					//console.log("Claiming ", achievement);
 				}
 				numAchievements += category[i].save.claimed ? 1 : 0;
