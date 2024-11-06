@@ -48,5 +48,12 @@ function reportAchievementClaimed(achievement, achievementSize) {
     });
 }
 
+function reportEnvelopeAnswer(buttonId) {
+    gtag("event", "select_content", {
+        content_type: "envelope-button-selection",
+        content_id: buttonId
+    });
+}
 
-export { reportLoafBought, reportSupplyBought, reportLoafSold, reportTimerUsed, reportAchievementClaimed }
+
+export { reportLoafBought, reportSupplyBought, reportLoafSold, reportTimerUsed, reportAchievementClaimed, reportEnvelopeAnswer }

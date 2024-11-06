@@ -11,4 +11,11 @@ function setClicksCheat(amount){
     });
 }
 
-export { resetCheat, setClicksCheat }
+function setKeysCheat(amount) {
+    window.postMessage({
+        id: "setKeys",
+        amount: amount
+    });
+}
+
+export { resetCheat, setClicksCheat, setKeysCheat }
