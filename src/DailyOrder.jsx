@@ -110,7 +110,7 @@ function DailyOrder(props) {
 		}
 		var now = new Date();
 		var refreshTimeToday = new Date().setHours(9, 0, 0, 0);
-		var nextRefreshTime = dailyOrderNextRefreshTime - 7408138;
+		var nextRefreshTime = dailyOrderNextRefreshTime;
 		console.log(
 			"updating daily order: next refresh time is " + nextRefreshTime
 		);
@@ -167,6 +167,11 @@ function DailyOrder(props) {
 				getRandomInt(0, 2) == 0
 					? createSuborder(lowerWeights, 4, 10)
 					: createSuborder(higherWeights, 1, 3);
+			if (i > 0 && suborder[0] == order[0][0]) {
+				//same bread type
+				i--;
+				continue;
+			}
 			suborder.push(cards[i]);
 			totalBcReward += suborder[3];
 			totalTimerReward += suborder[4];
