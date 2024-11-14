@@ -9,6 +9,8 @@ import Markdown from "react-markdown";
 import spiral from "/images/spiral.png";
 import bookmarkBody from "/images/bookmark-body.png";
 import bookmarkRibbon from "/images/bookmark-ribbon.png";
+import star1 from "/images/yellow_star_1.png";
+import star2 from "/images/yellow_star_2.png";
 
 function Achievements(props) {
 	const {
@@ -30,6 +32,7 @@ function Achievements(props) {
 		timersUnlocked,
 		setTimersUnlocked,
 		unlockEnvelope,
+		busyStartTime,
 	} = props;
 
 	const animating = useRef(false);
@@ -66,8 +69,7 @@ function Achievements(props) {
 
 					productivityAchievements.forEach((a, i) => {
 						if (i < 3 && !a.save.achieved && a.amount != null) {
-							var newAchievements = { ...AchievementsObject };
-							newAchievements["productivity"][i].progress =
+							newAchievements["productivity"][i].save.progress =
 								event.amount;
 							if (event.amount >= a.amount) {
 								achieve("productivity", i, newAchievements);
@@ -76,6 +78,7 @@ function Achievements(props) {
 					});
 
 					var convertAchievement = AchievementsObject["misc"][1];
+					convertAchievement.save.progress = event.value;
 					if (event.value == convertAchievement.amount) {
 						//Overload value to be the total times convert has been pressed
 						achieve("misc", 1, newAchievements, false);
@@ -89,14 +92,14 @@ function Achievements(props) {
 				case "keys-converted":
 					var keyAchievements = AchievementsObject["keys"].slice(1);
 					keyAchievements.forEach((a, i) => {
-						newAchievements["keys"][i].progress = event.amount;
+						newAchievements["keys"][i].save.progress = event.amount;
 						if (event.amount >= a.amount) {
 							achieve("keys", i, newAchievements);
 						}
 					});
 
 					// Stretch 3
-					newAchievements["stretch"][2].progress = event.amount;
+					newAchievements["stretch"][2].save.progress = event.amount;
 					if (
 						event.amount >= newAchievements["stretch"][2].amount &&
 						!newAchievements["stretch"][2].save.epilogue
@@ -104,11 +107,20 @@ function Achievements(props) {
 						achieve("stretch", 2, newAchievements, false);
 					}
 					break;
+				case "oven-mid":
+					newAchievements["unlocking"][0].save.revealed = true;
+					break;
 				case "oven-finished":
 					achieve("unlocking", 0, newAchievements);
 					break;
+				case "bread-mid":
+					newAchievements["unlocking"][2].save.revealed = true;
+					break;
 				case "bread-finished":
 					achieve("unlocking", 2, newAchievements);
+					break;
+				case "supply-mid":
+					newAchievements["unlocking"][1].save.revealed = true;
 					break;
 				case "supply-finished":
 					achieve("unlocking", 1, newAchievements);
@@ -116,7 +128,8 @@ function Achievements(props) {
 				case "bread-baked":
 					var loafAchievements = AchievementsObject["loaves"];
 					loafAchievements.forEach((a, i) => {
-						newAchievements["loaves"][i].progress = event.amount;
+						newAchievements["loaves"][i].save.progress =
+							event.amount;
 						if (event.amount >= a.amount) {
 							achieve("loaves", i, newAchievements);
 						}
@@ -131,7 +144,8 @@ function Achievements(props) {
 						newAchievements["medals"][0].save.revealed = true;
 					}
 					medalAchievements.forEach((a, i) => {
-						newAchievements["medals"][i].progress = event.amount;
+						newAchievements["medals"][i].save.progress =
+							event.amount;
 						if (event.amount >= a.amount) {
 							achieve("medals", i, newAchievements);
 						}
@@ -189,8 +203,8 @@ function Achievements(props) {
 				case "sell-oven":
 					achieve("misc", 2, newAchievements, false);
 					break;
-				case "hour-timeout":
-					achieve("misc", 0, newAchievements, false);
+				case "busy-reset":
+					newAchievements["misc"][0].progress = "0m/60m";
 					break;
 				case "productivity":
 					if (event.value >= 4 && event.value <= 6) {
@@ -205,12 +219,12 @@ function Achievements(props) {
 					} else if (event.value >= 7 && event.value <= 8) {
 						if (
 							event.amount <
-							AchievementsObject["productivity"][event.value - 1]
+							newAchievements["productivity"][event.value - 1]
 								.amount
 						) {
-							AchievementsObject["productivity"][
+							newAchievements["productivity"][
 								event.value - 1
-							].progress = event.amount;
+							].save.progress = event.amount;
 						} else {
 							achieve(
 								"productivity",
@@ -242,9 +256,11 @@ function Achievements(props) {
 					) {
 						achieve("stretch", 4, newAchievements, false);
 					}
-					newAchievements["stretch"][4].progress = event.amount;
+					newAchievements["stretch"][4].save.progress = event.amount;
+					break;
 			}
 		}
+		updateBusyAchievement(newAchievements);
 		setAchievementsObject(newAchievements);
 	}, [events]);
 
@@ -314,7 +330,6 @@ function Achievements(props) {
 				totalLateNight += 1;
 			}
 		});
-		console.log(total, totalLastHour, totalLateNight);
 		return [total, totalLastHour, totalLateNight];
 	};
 
@@ -340,6 +355,29 @@ function Achievements(props) {
 	var bookmarkBod = document.getElementById("bookmark-body");
 	var achievementAlert = document.getElementById("achievement-alert");
 	var dailyOrdersContainer = document.getElementById("daily-order-container");
+
+	const updateBusyAchievement = (newAchievements) => {
+		if (
+			busyStartTime.current == 0 ||
+			newAchievements["misc"][0].save.achieved
+		) {
+			return;
+		}
+		var duration = Date.now() - busyStartTime.current;
+
+		if (duration >= 3600000) {
+			achieve("misc", 0, newAchievements, false);
+		}
+
+		if (duration > 6000 && !newAchievements["misc"][0].save.revealed) {
+			newAchievements["misc"][0].save.revealed = true;
+		}
+		var minutes = Math.floor(duration / 60000);
+		console.log(duration, minutes);
+		if (minutes > 0) {
+			newAchievements["misc"][0].progress = minutes + "m/60m";
+		}
+	};
 
 	useEffect(() => {
 		if (loaded && !AchievementsObject["productivity"][0].save.revealed) {

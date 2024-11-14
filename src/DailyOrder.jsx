@@ -196,12 +196,13 @@ function DailyOrder(props) {
 			sum += weight;
 			if (sum >= roll) {
 				weights[id] = 0;
-				var bc_reward = Math.floor(
-					BreadObject[id].save.cost * BreadObject[id].markup
-				);
-				var timer_reward = Math.ceil(
-					(1000 * BreadObject[id].bake_time) / timerUnit / 2
-				);
+				var bc_reward =
+					Math.floor(
+						BreadObject[id].save.cost * BreadObject[id].markup
+					) * 3;
+				var timer_reward =
+					3 *
+					Math.ceil((1000 * BreadObject[id].bake_time) / timerUnit);
 				return [id, numLoaves, 0, bc_reward, timer_reward];
 			}
 		}
@@ -236,6 +237,16 @@ function DailyOrder(props) {
 		newTotalDailyOrders.push([new Date(), timeSinceGeneration]);
 		setTotalDailyOrders(newTotalDailyOrders);
 		emitEvent("daily-order-claim", newTotalDailyOrders, null);
+		confetti({
+			particleCount: 150,
+			spread: 340,
+			startVelocity: 28,
+			origin: {
+				x: 0.5,
+				y: 0.65,
+			},
+			ticks: 100,
+		});
 		e.stopPropagation();
 	};
 

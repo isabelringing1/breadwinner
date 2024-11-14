@@ -193,6 +193,7 @@ function Envelope(props) {
 					x: 0.5,
 					y: 0.4,
 				},
+				ticks: 100,
 			});
 		}
 	}, [cardIndex]);

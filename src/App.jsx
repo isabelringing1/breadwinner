@@ -98,15 +98,15 @@ function App() {
 	const [envelopeUnlocks, setEnvelopeUnlocks] = useState([]);
 	const [useTimerMode, setUseTimerMode] = useState(false);
 	const [timerButtonHovered, setTimerButtonHovered] = useState(false);
-	const [loavesSinceLastBreadUnlock, setLoavesSinceLastBreadUnlock] =
-		useState(0);
+	const [percentToNextLoaf, setPercentToNextLoaf] = useState(0);
 	const [storyState, setStoryState] = useState(0); //start
 	const [inTrialMode, setInTrialMode] = useState(false);
 
-	const hourTimeout = useRef(null);
 	const onInfoScreenButtonPressed = useRef(null);
 	const onAchievementClaimButtonPressed = useRef(null);
 	const trialModeJiggleInterval = useRef(null);
+	const idleTimeout = useRef(null);
+	const busyStartTime = useRef(0);
 
 	const isMobile = window.innerWidth <= 768;
 
@@ -135,7 +135,6 @@ function App() {
 			timers: timers,
 			timers_unlocked: timersUnlocked,
 			envelope_unlocks: envelopeUnlocks,
-			loaves_since_last_bread_unlock: loavesSinceLastBreadUnlock,
 			story_state: storyState,
 			start_time: playerStartTime,
 			in_trial_mode: inTrialMode,
@@ -284,36 +283,17 @@ function App() {
 			//3rd loaf of bread
 			unlockEnvelope("timer");
 		}
-
-		if (
-			newBread["potato"].save.purchase_count > 0 &&
-			newBread["brioche"].save.purchase_count == 0 &&
-			loavesSinceLastBreadUnlock == 1
-		) {
-			unlockEnvelope("potato2");
-		}
-		if (
-			newBread["brioche"].save.purchase_count > 0 &&
-			newBread["banana"].save.purchase_count == 0
-		) {
-			if (loavesSinceLastBreadUnlock == 2) {
-				unlockEnvelope("brioche2");
-			} else if (loavesSinceLastBreadUnlock == 5) {
-				unlockEnvelope("brioche3");
-			}
-		}
-
+		checkForPercentNextLoafEnvelopes(newBread);
 		if (newBread[id].save.purchase_count == 1) {
 			var event = null;
 			if (id == "challah") {
 				event = "unlock-daily-order";
+			} else if (id == "cinnamon_raisin") {
+				emitEvent("bread-mid", null, null);
 			} else if (id == "banana") {
 				event = "reveal-epilogue";
 			}
 			unlockEnvelope(id, event);
-			setLoavesSinceLastBreadUnlock(0);
-		} else {
-			setLoavesSinceLastBreadUnlock(loavesSinceLastBreadUnlock + 1);
 		}
 
 		reportLoafBought(loaf, breadBaked + 1, newOvenQueue.length, playerId);
@@ -359,12 +339,20 @@ function App() {
 			if (allOvenSlotsPurchased) {
 				emitEvent("oven-finished", null, null);
 			}
+			if (ovenSize == 8) {
+				emitEvent("oven-mid", null, null);
+			}
 		}
-		var allPurchased = Object.entries(newSupply).every((item) => {
+		var allPurchased = Object.entries(newSupply).filter((item) => {
 			return item[1].save.purchased;
 		});
-		if (allPurchased) {
+		if (allPurchased.length == Object.entries(newSupply).length) {
 			emitEvent("supply-finished", null, null);
+		} else if (
+			allPurchased.length >=
+			Object.entries(newSupply).length / 2
+		) {
+			emitEvent("supply-mid", null, null);
 		}
 		if (id == "secret_spread") {
 			unlockEnvelope("secret_spread");
@@ -570,27 +558,35 @@ function App() {
 				if (achievement.save.achieved) {
 					tooltipArray.push("\nClick to claim!");
 				} else if (achievement.save.revealed) {
-					if (achievement.progress != null) {
+					if (achievement.save.progress != null) {
 						if (achievement.timer) {
-							if (achievement.progress > 0) {
+							if (achievement.save.progress > 0) {
 								tooltipArray.push(
 									"\nTime Remaining: " +
 										msToTime(
 											(achievement.timer -
-												achievement.progress) *
+												achievement.save.progress) *
 												1000,
 											true
 										)
 								);
 							}
-						} else {
+						} else if (
+							typeof achievement.save.progress === "number"
+						) {
 							tooltipArray.push(
 								"\nProgress: " +
-									formatNumber(achievement.progress) +
+									formatNumber(achievement.save.progress) +
 									"/" +
 									formatNumber(achievement.amount)
 							);
 						}
+					}
+					if (achievement.progress != null) {
+						//special case for what extension-- we want to forget it after reload
+						tooltipArray.push(
+							"\nProgress: " + achievement.progress
+						);
 					}
 				}
 			}
@@ -719,8 +715,8 @@ function App() {
 		setEvents([newEvent]);
 	};
 
-	const emitEvents = (events) => {
-		setEvents(events);
+	const emitEvents = (e) => {
+		setEvents(e);
 	};
 
 	const updateDailyOrder = (id) => {
@@ -854,6 +850,7 @@ function App() {
 	};
 
 	const onContentClick = (e) => {
+		updateBusy();
 		if (!inTrialMode) {
 			return;
 		}
@@ -868,11 +865,78 @@ function App() {
 	};
 
 	const onKeyDown = (e) => {
+		updateBusy();
 		if (!inTrialMode || e.repeat) {
 			return;
 		}
 		setKeys(keys + 1);
 	};
+
+	const updateBusy = () => {
+		if (busyStartTime.current == 0) {
+			busyStartTime.current = Date.now();
+		}
+
+		if (idleTimeout.current != null) {
+			clearTimeout(idleTimeout.current);
+		}
+		idleTimeout.current = setTimeout(() => {
+			console.log("inactive for a full minute");
+			busyStartTime.current = 0;
+			emitEvent("busy-reset", null);
+		}, 60000);
+	};
+
+	const calculatePercentToNextLoaf = (breadObj) => {
+		var nextBreadCost = null;
+		for (const [id, data] of Object.entries(breadObj)) {
+			if (data.save.purchase_count == 0) {
+				nextBreadCost = data.save.cost;
+				break;
+			}
+		}
+
+		if (nextBreadCost == null) {
+			console.log("at last loaf");
+			return 0;
+		}
+
+		var netWorth = breadCoin;
+		for (var i = 0; i < OvenQueue.length; i++) {
+			if (OvenQueue[i] != null) {
+				netWorth += OvenQueue[i].sell_value;
+			}
+		}
+		console.log("Net worth: ", netWorth);
+		return netWorth / nextBreadCost;
+	};
+
+	const checkForPercentNextLoafEnvelopes = (breadObj) => {
+		var percentToNextLoaf = calculatePercentToNextLoaf(breadObj);
+		console.log("Percent to next loaf is " + percentToNextLoaf);
+		if (
+			breadObj["potato"].save.purchase_count > 0 &&
+			breadObj["brioche"].save.purchase_count == 0 &&
+			percentToNextLoaf >= 0.5
+		) {
+			unlockEnvelope("potato2");
+		}
+		if (
+			breadObj["brioche"].save.purchase_count > 0 &&
+			breadObj["banana"].save.purchase_count == 0
+		) {
+			if (percentToNextLoaf >= 0.25) {
+				unlockEnvelope("brioche2");
+			}
+			if (percentToNextLoaf >= 0.5) {
+				unlockEnvelope("brioche3");
+			}
+		}
+	};
+
+	useEffect(() => {
+		checkForPercentNextLoafEnvelopes(BreadObject);
+	}, [breadCoin]);
 
 	useEffect(() => {
 		registerForMessages(
@@ -915,9 +979,6 @@ function App() {
 			setTimers(playerData.timers);
 			setTimersUnlocked(playerData.timers_unlocked);
 			setEnvelopeUnlocks(playerData.envelope_unlocks);
-			setLoavesSinceLastBreadUnlock(
-				playerData.loaves_since_last_bread_unlock
-			);
 			setStoryState(playerData.story_state);
 			setPlayerStartTime(playerData.start_time);
 			setVisited(true);
@@ -957,17 +1018,6 @@ function App() {
 			setPlayerStartTime(Date.now());
 		}
 		setLoaded(true);
-
-		hourTimeout.current = setTimeout(() => {
-			emitEvent("hour-timeout");
-		}, 3600000);
-
-		window.onblur = function (e) {
-			clearTimeout(hourTimeout.current);
-			hourTimeout.current = setTimeout(() => {
-				emitEvent("hour-timeout");
-			}, 3600000);
-		};
 
 		document.addEventListener("click", (e) => {
 			if (e.target.id != "timer-icon" && e.target.id != "timers-wallet") {
@@ -1116,6 +1166,7 @@ function App() {
 				setTimers={setTimers}
 				timersUnlocked={timersUnlocked}
 				setTimersUnlocked={setTimersUnlocked}
+				busyStartTime={busyStartTime}
 			/>
 			<DailyOrder
 				showDailyOrder={showDailyOrder}

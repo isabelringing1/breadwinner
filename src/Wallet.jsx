@@ -182,7 +182,6 @@ function Wallet(props) {
 					}}
 				>
 					{timers}{" "}
-					<img src={timer} id="timer-icon" className={"timer-icon"} />
 					<img
 						src={timer}
 						id="timer-icon-copy"
@@ -191,6 +190,7 @@ function Wallet(props) {
 							(canUseTimers() ? "" : " timer-icon-gray")
 						}
 					/>
+					<img src={timer} id="timer-icon" className={"timer-icon"} />
 				</div>
 			) : null}
 		</div>
