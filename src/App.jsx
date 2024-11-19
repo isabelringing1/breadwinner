@@ -970,6 +970,16 @@ function App() {
 		checkForPercentNextLoafEnvelopes(BreadObject);
 	}, [breadCoin]);
 
+	const convertArrayToSuborder = (arr) => {
+		return {
+			id: arr[0],
+			amount: arr[1],
+			counter: arr[2],
+			bc_reward: arr[3],
+			timer_reward: arr[4],
+			card: arr[5],
+		};
+	};
 	useEffect(() => {
 		registerForMessages(
 			setClicks,
@@ -1007,7 +1017,19 @@ function App() {
 			setOrderBoardLastRefreshTime(
 				playerData.order_board_last_refresh_time
 			);
-			setDailyOrderObject(playerData.daily_order);
+			if (Array.isArray(playerData.daily_order)) {
+				setDailyOrderObject({
+					bc_reward: playerData.daily_order[0],
+					timer_reward: playerData.daily_order[1],
+					suborders: [
+						convertArrayToSuborder(playerData.daily_order[2]),
+						convertArrayToSuborder(playerData.daily_order[3]),
+					],
+				});
+			} else {
+				setDailyOrderObject(playerData.daily_order);
+			}
+
 			setTotalDailyOrders(playerData.total_daily_orders);
 			setTotalTimelyDailyOrders(playerData.total_daily_orders);
 			setConvertPresses(playerData.convert_presses);

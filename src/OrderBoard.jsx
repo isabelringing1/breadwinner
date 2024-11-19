@@ -102,6 +102,9 @@ function OrderBoard(props) {
 
 	const calculateNotifs = (orderBoard, dailyOrders) => {
 		console.log("Calculating notifs");
+		if (orderBoard == null) {
+			return;
+		}
 		var count = orderBoard.filter(function (order) {
 			return canClaim(order) || !order.started;
 		}).length;
