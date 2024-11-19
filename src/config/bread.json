@@ -25,7 +25,7 @@
       "initial_cost": 1200,
       "bake_time": 180,
       "markup": 1.15,
-      "increase_rate": 1.15,
+      "increase_rate": 1.1,
       "starting_color": "#debd9f",
       "ending_color": "#986844",
       "save": {

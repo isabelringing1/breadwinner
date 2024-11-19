@@ -31,7 +31,7 @@ import InfoScreen from "./InfoScreen";
 import FloatingText from "./FloatingText";
 import SpeechBubble from "./SpeechBubble";
 import Achievements from "./Achievements";
-import DailyOrder from "./DailyOrder";
+import OrderBoard from "./OrderBoard";
 import Envelope from "./Envelope";
 
 import tile from "/images/tile.png";
@@ -84,7 +84,7 @@ function App() {
 	const [events, setEvents] = useState([]);
 	const [dailyOrderNextRefreshTime, setDailyOrderNextRefreshTime] =
 		useState(null);
-	const [dailyOrderArray, setDailyOrderArray] = useState([]);
+	const [dailyOrderObject, setDailyOrderObject] = useState({ suborders: [] });
 	const [dailyOrderEvent, setDailyOrderEvent] = useState(null);
 	const [totalDailyOrders, setTotalDailyOrders] = useState([]);
 	const [totalTimelyDailyOrders, setTotalTimelyDailyOrders] = useState(0);
@@ -98,9 +98,11 @@ function App() {
 	const [envelopeUnlocks, setEnvelopeUnlocks] = useState([]);
 	const [useTimerMode, setUseTimerMode] = useState(false);
 	const [timerButtonHovered, setTimerButtonHovered] = useState(false);
-	const [percentToNextLoaf, setPercentToNextLoaf] = useState(0);
 	const [storyState, setStoryState] = useState(0); //start
 	const [inTrialMode, setInTrialMode] = useState(false);
+	const [orderBoardOrders, setOrderBoardOrders] = useState([]);
+	const [orderBoardLastRefreshTime, setOrderBoardLastRefreshTime] =
+		useState(null);
 
 	const onInfoScreenButtonPressed = useRef(null);
 	const onAchievementClaimButtonPressed = useRef(null);
@@ -128,7 +130,8 @@ function App() {
 			key_unlocked: keyUnlocked,
 			bread_baked: breadBaked,
 			daily_order_next_refresh_time: dailyOrderNextRefreshTime,
-			daily_order: dailyOrderArray,
+			order_board_last_refresh_time: orderBoardLastRefreshTime,
+			daily_order: dailyOrderObject,
 			total_daily_orders: totalDailyOrders,
 			total_timely_daily_orders: totalTimelyDailyOrders,
 			convert_presses: convertPresses,
@@ -138,6 +141,7 @@ function App() {
 			story_state: storyState,
 			start_time: playerStartTime,
 			in_trial_mode: inTrialMode,
+			order_board: orderBoardOrders,
 		};
 		return player;
 	};
@@ -203,7 +207,7 @@ function App() {
 		if (id == "mixing_bowl") {
 			return !isSupplyPurchased(id);
 		} else if (supply.oven_increase) {
-			var index = parseInt(supply.id.slice(-1));
+			var index = parseInt(supply.id.split("_").at(-1));
 			if (
 				index > 1 &&
 				!SupplyObject["oven_slot_" + (index - 1)].save.purchased
@@ -290,6 +294,8 @@ function App() {
 				event = "unlock-daily-order";
 			} else if (id == "cinnamon_raisin") {
 				emitEvent("bread-mid", null, null);
+			} else if (id == "potato") {
+				event = "unlock-order-board";
 			} else if (id == "banana") {
 				event = "reveal-epilogue";
 			}
@@ -647,7 +653,7 @@ function App() {
 				setTotalEarned(totalEarned + loaf.sell_value);
 				animateGainOrLoss(loaf.sell_value);
 				setShowTooltip(false);
-				updateDailyOrder(loaf.id);
+				updateOrderBoard(loaf.id);
 				setSpeechBubble("SELL");
 				if (
 					allLoavesDone &&
@@ -719,17 +725,30 @@ function App() {
 		setEvents(e);
 	};
 
-	const updateDailyOrder = (id) => {
-		var newDailyOrderArray = [...dailyOrderArray];
+	const updateOrderBoard = (id) => {
+		var newDailyOrderObject = { ...dailyOrderObject };
+		var newOrderBoardObject = [...orderBoardOrders];
+		console.log("orderBoardOrders: ", newOrderBoardObject);
 		var changed = false;
-		newDailyOrderArray.forEach((entry) => {
-			if (entry[0] == id) {
-				entry[2]++;
+		newDailyOrderObject.suborders.forEach((order) => {
+			if (order.id == id) {
+				order.counter++;
 				changed = true;
 			}
 		});
+		newOrderBoardObject.forEach((order) => {
+			if (order.started) {
+				order.suborders.forEach((suborder) => {
+					if (suborder.id == id) {
+						suborder.counter++;
+						changed = true;
+					}
+				});
+			}
+		});
 		if (changed) {
-			setDailyOrderArray(newDailyOrderArray);
+			setDailyOrderObject(newDailyOrderObject);
+			setOrderBoardOrders(newOrderBoardObject);
 		}
 	};
 
@@ -795,22 +814,35 @@ function App() {
 			var event = events[i];
 			switch (event.id) {
 				case "unlock-daily-order":
-					setDailyOrderEvent(true);
+					setDailyOrderEvent("daily-order");
+					break;
+				case "unlock-order-board":
+					setDailyOrderEvent("order-board");
+					break;
+				case "daily-order-update":
+					saveData(convertForSave());
+					break;
+				case "order-board-update":
+					saveData(convertForSave());
+					setOrderBoardOrders(orderBoardOrders);
 					break;
 			}
 		}
 	}, [events]);
 
 	const unlockEnvelope = (category, eventName) => {
-		console.log("Unlocking envelope ", category);
 		for (var i in envelopeUnlocks) {
-			if (envelopeUnlocks[i][0] == category) {
+			if (envelopeUnlocks[i].category == category) {
 				//already unlocked
 				return;
 			}
 		}
 		var newEnvelopeUnlocks = [
-			[category, eventName, false],
+			{
+				category: category,
+				event: eventName,
+				finish_time: false,
+			},
 			...envelopeUnlocks,
 		];
 		setEnvelopeUnlocks(newEnvelopeUnlocks);
@@ -897,7 +929,6 @@ function App() {
 		}
 
 		if (nextBreadCost == null) {
-			console.log("at last loaf");
 			return 0;
 		}
 
@@ -907,13 +938,11 @@ function App() {
 				netWorth += OvenQueue[i].sell_value;
 			}
 		}
-		console.log("Net worth: ", netWorth);
 		return netWorth / nextBreadCost;
 	};
 
 	const checkForPercentNextLoafEnvelopes = (breadObj) => {
 		var percentToNextLoaf = calculatePercentToNextLoaf(breadObj);
-		console.log("Percent to next loaf is " + percentToNextLoaf);
 		if (
 			breadObj["potato"].save.purchase_count > 0 &&
 			breadObj["brioche"].save.purchase_count == 0 &&
@@ -930,6 +959,9 @@ function App() {
 			}
 			if (percentToNextLoaf >= 0.5) {
 				unlockEnvelope("brioche3");
+			}
+			if (percentToNextLoaf >= 0.75) {
+				unlockEnvelope("brioche4");
 			}
 		}
 	};
@@ -972,15 +1004,33 @@ function App() {
 			setDailyOrderNextRefreshTime(
 				playerData.daily_order_next_refresh_time
 			);
-			setDailyOrderArray(playerData.daily_order);
+			setOrderBoardLastRefreshTime(
+				playerData.order_board_last_refresh_time
+			);
+			setDailyOrderObject(playerData.daily_order);
 			setTotalDailyOrders(playerData.total_daily_orders);
 			setTotalTimelyDailyOrders(playerData.total_daily_orders);
 			setConvertPresses(playerData.convert_presses);
 			setTimers(playerData.timers);
 			setTimersUnlocked(playerData.timers_unlocked);
-			setEnvelopeUnlocks(playerData.envelope_unlocks);
+			if (playerData.envelope_unlocks != null) {
+				if (Array.isArray(playerData.envelope_unlocks[0])) {
+					var unlocks = [];
+					playerData.envelope_unlocks.forEach((arr) => {
+						unlocks.push({
+							category: arr[0],
+							event: arr[1],
+							finish_time: arr[2],
+						});
+					});
+					setEnvelopeUnlocks(unlocks);
+				} else {
+					setEnvelopeUnlocks(playerData.envelope_unlocks);
+				}
+			}
 			setStoryState(playerData.story_state);
 			setPlayerStartTime(playerData.start_time);
+			setOrderBoardOrders(playerData.order_board);
 			setVisited(true);
 
 			var newSupply = { ...SupplyObject };
@@ -1054,6 +1104,7 @@ function App() {
 		timers,
 		OvenQueue,
 		inTrialMode,
+		orderBoardOrders,
 	]);
 
 	useEffect(() => {
@@ -1168,13 +1219,15 @@ function App() {
 				setTimersUnlocked={setTimersUnlocked}
 				busyStartTime={busyStartTime}
 			/>
-			<DailyOrder
+			<OrderBoard
 				showDailyOrder={showDailyOrder}
 				setShowDailyOrder={setShowDailyOrder}
 				dailyOrderNextRefreshTime={dailyOrderNextRefreshTime}
 				setDailyOrderNextRefreshTime={setDailyOrderNextRefreshTime}
-				dailyOrderArray={dailyOrderArray}
-				setDailyOrderArray={setDailyOrderArray}
+				orderBoardLastRefreshTime={orderBoardLastRefreshTime}
+				setOrderBoardLastRefreshTime={setOrderBoardLastRefreshTime}
+				dailyOrderObject={dailyOrderObject}
+				setDailyOrderObject={setDailyOrderObject}
 				loaded={loaded}
 				breadCoin={breadCoin}
 				setBreadCoin={setBreadCoin}
@@ -1190,6 +1243,8 @@ function App() {
 				timers={timers}
 				setTimers={setTimers}
 				timerUnit={timer_unit}
+				orderBoardOrders={orderBoardOrders}
+				setOrderBoardOrders={setOrderBoardOrders}
 			/>
 			<FloatingText
 				text={floatingText}

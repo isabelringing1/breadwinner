@@ -3,14 +3,22 @@ import dough_logo from "/images/dough-logo.png";
 import timer_img from "/images/timer.png";
 import Markdown from "react-markdown";
 
-function parse(id, onButtonClick, replaceTokens) {
+function getPrerequisites(id) {
 	var data = envelopeData[id];
-	var cards = [];
 	if (!data) {
 		return null;
 	}
+	return data.prerequisites;
+}
+
+function parse(id, onButtonClick, replaceTokens) {
+	var data = envelopeData[id];
+	var cards = [];
+	if (!data || !data.cards) {
+		return null;
+	}
 	var cardNo = 0;
-	data.forEach((el) => {
+	data.cards.forEach((el) => {
 		if (el.constructor === Array) {
 			// multiple cards
 			var card = (
@@ -170,4 +178,4 @@ function parseButtons(text, id, onButtonClick, cardNo) {
 	);
 }
 
-export { parse };
+export { parse, getPrerequisites };

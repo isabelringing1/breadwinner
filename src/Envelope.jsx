@@ -32,6 +32,7 @@ function Envelope(props) {
 	const animating = useRef(false);
 	const animatingTimer = useRef(false);
 	const jiggleInterval = useRef(null);
+	const unlockDict = useRef({});
 
 	const [currentEntry, setCurrentEntry] = useState(null);
 	const [cards, setCards] = useState([]);
@@ -43,12 +44,19 @@ function Envelope(props) {
 		}
 		for (var i in unlocks) {
 			var entry = unlocks[i];
-			if (entry[2]) {
-				//envelope is seen
+			unlockDict.current[entry.category] = entry;
+		}
+
+		for (var i in unlocks) {
+			var entry = unlocks[i];
+			if (entry.finish_time) {
+				continue;
+			}
+			if (!hasPrerequisites(entry)) {
 				continue;
 			}
 			var parsedEntry = Parser.parse(
-				entry[0],
+				entry.category,
 				on_button_click,
 				replace_tokens
 			);
@@ -59,6 +67,23 @@ function Envelope(props) {
 			}
 		}
 	}, [unlocks]);
+
+	const hasPrerequisites = (envelope) => {
+		var prereqs = Parser.getPrerequisites(envelope.category);
+		if (!prereqs) {
+			return true;
+		}
+		for (var i = 0; i < prereqs.length; i++) {
+			var cat = prereqs[i];
+			if (
+				unlockDict.current[cat] == null ||
+				!unlockDict.current[cat].finish_time
+			) {
+				return false;
+			}
+		}
+		return true;
+	};
 
 	const peek_in_envelope = () => {
 		if (animating.current || showEnvelope) return;
@@ -284,20 +309,20 @@ function Envelope(props) {
 	const try_finish_envelope = (newUnlocks, emitCurrentEvent = true) => {
 		for (var i in newUnlocks) {
 			var entry = newUnlocks[i];
-			if (entry[0] == currentEntry[0]) {
-				if (entry[2]) {
+			if (entry.category == currentEntry.category) {
+				if (entry.finish_time) {
 					// Already finished
 					return newUnlocks;
 				} else {
-					entry[2] = Date.now();
+					entry.finish_time = Date.now();
 					break;
 				}
 			}
 		}
-		if (currentEntry[1] != null && emitCurrentEvent) {
-			emitEvent(currentEntry[1]);
+		if (currentEntry.event != null && emitCurrentEvent) {
+			emitEvent(currentEntry.event);
 		}
-		var state = getState(entry[0]);
+		var state = getState(entry.category);
 		if (state > storyState) {
 			setStoryState(state);
 		}
@@ -334,8 +359,8 @@ function Envelope(props) {
 		animating.current = true;
 		document.getElementById("big-envelope").classList.add("bounce-out-big");
 
-		if (currentEntry[1] != null) {
-			emitEvent(currentEntry[1]);
+		if (currentEntry.event != null) {
+			emitEvent(currentEntry.event);
 		}
 		var newUnlocks = [...unlocks];
 		newUnlocks = try_finish_envelope(newUnlocks);

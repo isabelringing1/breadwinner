@@ -9,8 +9,6 @@ import Markdown from "react-markdown";
 import spiral from "/images/spiral.png";
 import bookmarkBody from "/images/bookmark-body.png";
 import bookmarkRibbon from "/images/bookmark-ribbon.png";
-import star1 from "/images/yellow_star_1.png";
-import star2 from "/images/yellow_star_2.png";
 
 function Achievements(props) {
 	const {
@@ -48,6 +46,14 @@ function Achievements(props) {
 	}
 
 	const [alertAchievement, setAlertAchievement] = useState(achievements[0]);
+	const [numNotifs, setNumNotifs] = useState(0);
+
+	useEffect(() => {
+		var count = achievements.filter(function (a) {
+			return a.save.achieved && !a.save.claimed;
+		}).length;
+		setNumNotifs(count);
+	}, [AchievementsObject]);
 
 	useEffect(() => {
 		var newAchievements = { ...AchievementsObject };
@@ -369,11 +375,11 @@ function Achievements(props) {
 			achieve("misc", 0, newAchievements, false);
 		}
 
-		if (duration > 6000 && !newAchievements["misc"][0].save.revealed) {
+		if (duration > 1200000 && !newAchievements["misc"][0].save.revealed) {
+			// 20 minutes
 			newAchievements["misc"][0].save.revealed = true;
 		}
 		var minutes = Math.floor(duration / 60000);
-		console.log(duration, minutes);
 		if (minutes > 0) {
 			newAchievements["misc"][0].progress = minutes + "m/60m";
 		}
@@ -505,11 +511,14 @@ function Achievements(props) {
 				</div>
 			</div>
 			<div className="bookmark-div" id="bookmark-div-1">
-				<img
-					id="bookmark-body"
-					className="bookmark-img"
-					src={bookmarkBody}
-				/>
+				<div id="bookmark-body" className="bookmark-img">
+					{numNotifs > 0 ? (
+						<div id="achievements-notif" className="bookmark-notif">
+							{numNotifs}
+						</div>
+					) : null}
+					<img className="bookmark-body-img" src={bookmarkBody} />
+				</div>
 			</div>
 			<div className="bookmark-div" id="bookmark-div-2">
 				<img
