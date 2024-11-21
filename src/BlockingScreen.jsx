@@ -70,7 +70,15 @@ function BlockingScreen(props) {
 					>
 						feedback
 					</a>{" "}
-					is welcome.
+					is welcome. Or, check out the{" "}
+					<a
+						onClick={() => {
+							goToFAQ();
+						}}
+					>
+						FAQ
+					</a>
+					.
 				</div>
 				<div className="blocking-screen-text">v1.0.0b</div>
 			</div>

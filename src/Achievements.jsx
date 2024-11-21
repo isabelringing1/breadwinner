@@ -213,30 +213,35 @@ function Achievements(props) {
 					newAchievements["misc"][0].progress = "0m/60m";
 					break;
 				case "productivity":
-					if (event.value >= 4 && event.value <= 6) {
-						achieve(
-							"productivity",
-							event.value - 1,
-							newAchievements
+					if (event.value == "stretch_4") {
+						console.log(
+							"achieving ",
+							AchievementsObject["stretch"][3]
 						);
+						achieve("stretch", 3, newAchievements);
+						claimAchievement(AchievementsObject["stretch"][3]);
+						break;
+					}
+					var index = Number(event.value.slice(-1)) - 1;
+					if (index >= 3 && index <= 5) {
+						console.log(
+							index,
+							AchievementsObject["productivity"][index]
+						);
+						achieve("productivity", index, newAchievements);
 						claimAchievement(
-							AchievementsObject["productivity"][event.value - 1]
+							AchievementsObject["productivity"][index]
 						);
-					} else if (event.value >= 7 && event.value <= 8) {
+					} else if (index >= 6 && index <= 7) {
 						if (
 							event.amount <
-							newAchievements["productivity"][event.value - 1]
-								.amount
+							newAchievements["productivity"][index].amount
 						) {
 							newAchievements["productivity"][
-								event.value - 1
+								index
 							].save.progress = event.amount;
 						} else {
-							achieve(
-								"productivity",
-								event.value - 1,
-								newAchievements
-							);
+							achieve("productivity", index, newAchievements);
 						}
 					}
 					break;

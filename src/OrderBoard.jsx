@@ -373,10 +373,35 @@ function OrderBoard(props) {
 		setDailyOrderObject(newDailyOrderObject);
 		var timeSinceGeneration =
 			Date.now() - (dailyOrderNextRefreshTime - 86400000);
-		var newTotalDailyOrders = [...totalDailyOrders];
+		var newTotalDailyOrders = [];
+		if (totalDailyOrders != null && totalDailyOrders != 0) {
+			newTotalDailyOrders = [...totalDailyOrders];
+		}
 		newTotalDailyOrders.push([new Date(), timeSinceGeneration]);
 		setTotalDailyOrders(newTotalDailyOrders);
 		emitEvent("daily-order-claim", newTotalDailyOrders, null);
+
+		// subtract the amount of bread from any other active orders that have this type
+		var breadDict = {};
+		newDailyOrderObject.suborders.forEach((suborder) => {
+			breadDict[suborder.id] = suborder.amount;
+		});
+
+		var newOrderBoardOrders = [...orderBoardOrders];
+		newOrderBoardOrders.forEach((o) => {
+			if (o.started) {
+				o.suborders.forEach((suborder) => {
+					if (breadDict[suborder.id] > 0) {
+						suborder.counter = Math.max(
+							0,
+							suborder.counter - breadDict[suborder.id]
+						);
+					}
+				});
+			}
+		});
+		setOrderBoardOrders(newOrderBoardOrders);
+
 		confetti({
 			particleCount: 150,
 			spread: 340,
@@ -413,7 +438,6 @@ function OrderBoard(props) {
 		newOrderBoardOrders.forEach((o) => {
 			if (o.started) {
 				o.suborders.forEach((suborder) => {
-					console.log(suborder, breadDict);
 					if (breadDict[suborder.id] > 0) {
 						suborder.counter = Math.max(
 							0,
@@ -424,14 +448,16 @@ function OrderBoard(props) {
 			}
 		});
 		var newDailyOrderObject = { ...dailyOrderObject };
-		newDailyOrderObject.suborders.forEach((suborder) => {
-			if (breadDict[suborder.id] > 0) {
-				suborder.counter = Math.max(
-					0,
-					suborder.counter - breadDict[suborder.id]
-				);
-			}
-		});
+		if (newDailyOrderObject.bc_reward != -1) {
+			newDailyOrderObject.suborders.forEach((suborder) => {
+				if (breadDict[suborder.id] > 0) {
+					suborder.counter = Math.max(
+						0,
+						suborder.counter - breadDict[suborder.id]
+					);
+				}
+			});
+		}
 
 		setOrderBoardOrders(newOrderBoardOrders);
 		setDailyOrderObject(newDailyOrderObject);

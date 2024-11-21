@@ -633,7 +633,7 @@ function App() {
 			"We're going off the honor system for this one. Are you sure you want to mark this as done?"
 		);
 		onInfoScreenButtonPressed.current = () => {
-			emitEvent(a.category, Number(a.id.slice(-1)));
+			emitEvent(a.category, a.id);
 		};
 	};
 
@@ -728,14 +728,15 @@ function App() {
 	const updateOrderBoard = (id) => {
 		var newDailyOrderObject = { ...dailyOrderObject };
 		var newOrderBoardObject = [...orderBoardOrders];
-		console.log("orderBoardOrders: ", newOrderBoardObject);
 		var changed = false;
-		newDailyOrderObject.suborders.forEach((order) => {
-			if (order.id == id) {
-				order.counter++;
-				changed = true;
-			}
-		});
+		if (dailyOrderObject.bc_reward != -1) {
+			newDailyOrderObject.suborders.forEach((order) => {
+				if (order.id == id) {
+					order.counter++;
+					changed = true;
+				}
+			});
+		}
 		newOrderBoardObject.forEach((order) => {
 			if (order.started) {
 				order.suborders.forEach((suborder) => {
@@ -929,7 +930,7 @@ function App() {
 		}
 
 		if (nextBreadCost == null) {
-			return 0;
+			return 100;
 		}
 
 		var netWorth = breadCoin;
@@ -945,15 +946,11 @@ function App() {
 		var percentToNextLoaf = calculatePercentToNextLoaf(breadObj);
 		if (
 			breadObj["potato"].save.purchase_count > 0 &&
-			breadObj["brioche"].save.purchase_count == 0 &&
 			percentToNextLoaf >= 0.5
 		) {
 			unlockEnvelope("potato2");
 		}
-		if (
-			breadObj["brioche"].save.purchase_count > 0 &&
-			breadObj["banana"].save.purchase_count == 0
-		) {
+		if (breadObj["brioche"].save.purchase_count > 0) {
 			if (percentToNextLoaf >= 0.25) {
 				unlockEnvelope("brioche2");
 			}

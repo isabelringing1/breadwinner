@@ -57,11 +57,7 @@ function WaitCircle(props) {
 
 			eventInterval.current = setInterval(() => {
 				counter.current += 1;
-				emitEvent(
-					"productivity",
-					Number(id.slice(-1)),
-					counter.current
-				);
+				emitEvent("productivity", id, counter.current);
 			}, 1000);
 
 			setTimeout(() => {
@@ -83,7 +79,7 @@ function WaitCircle(props) {
 		if (wakeLock.current == null || finished.current) {
 			setInWait(false);
 			clearInterval(eventInterval.current);
-			emitEvent("productivity", Number(id.slice(-1)), 0);
+			emitEvent("productivity", id, 0);
 			onCancel();
 			return;
 		}
@@ -94,7 +90,7 @@ function WaitCircle(props) {
 			wakeLock.current = null;
 			setInWait(false);
 			clearInterval(eventInterval.current);
-			emitEvent("productivity", Number(id.slice(-1)), 0);
+			emitEvent("productivity", id, 0);
 			//setEndingText(<p>{defaultText}</p>)
 			//document.getElementById("ending-text").className = "ending-text"
 		});
