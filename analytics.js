@@ -55,5 +55,42 @@ function reportEnvelopeAnswer(buttonId) {
     });
 }
 
+function reportTrialMode() {
+    gtag("event", "trial_mode", {
+        "toggled": true,
+    });
+}
 
-export { reportLoafBought, reportSupplyBought, reportLoafSold, reportTimerUsed, reportAchievementClaimed, reportEnvelopeAnswer }
+function reportExtensionAcquired() {
+    gtag("event", "extension_acquired", {
+        "toggled": false,
+    });
+}
+
+function reportDailyOrderFulfilled(totalDailyOrders, timeSinceGeneration) {
+    gtag("event", "daily_order", {
+        "total_daily_orders": totalDailyOrders,
+        "hours_since_generation": Math.floor(timeSinceGeneration / 3600000),
+    });
+}
+
+function reportOrderBoardOrderFulfilled(totalOrderBoard) {
+    gtag("event", "order_board", {
+        "total_order_board": totalOrderBoard,
+    });
+}
+
+function reportEnvelopeCompleted(envelopeId) {
+    gtag("event", "tutorial_complete", {
+        "envelope_id": envelopeId,
+    });
+}
+
+function reportFAQOpened() {
+    gtag("event", "faq_opened", {
+        "envelope_id": envelopeId,
+    });
+}
+
+
+export { reportLoafBought, reportSupplyBought, reportLoafSold, reportTimerUsed, reportAchievementClaimed, reportEnvelopeAnswer, reportTrialMode, reportExtensionAcquired, reportDailyOrderFulfilled, reportOrderBoardOrderFulfilled, reportEnvelopeCompleted, reportFAQOpened }
