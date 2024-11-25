@@ -5,7 +5,7 @@
       "display_name": "Mixing Bowl",
       "desc": "Doubles Bread Coin conversion rate.",
       "image_path": "/images/red_bowl.png",
-      "cost": 500,
+      "cost": 200,
       "multiplier": 2.0,
       "save": {
         "purchased": false,
@@ -18,7 +18,7 @@
       "desc": "Doubles Bread Coin conversion rate.",
       "image_path": "/images/measuring_cup.png",
       "previous": "mixing_bowl",
-      "cost": 2000,
+      "cost": 800,
       "multiplier": 2.0,
       "save": {
         "purchased": false,
@@ -31,7 +31,7 @@
       "desc": "Doubles Bread Coin conversion rate.",
       "image_path": "/images/whisk.png",
       "previous": "measuring_cup",
-      "cost": 8000,
+      "cost": 3200,
       "multiplier": 2.0,
       "save": {
         "purchased": false,
@@ -44,7 +44,7 @@
       "desc": "Doubles Bread Coin conversion rate.",
       "image_path": "/images/stand_mixer.png",
       "previous": "whisk",
-      "cost": 32000,
+      "cost": 12800,
       "multiplier": 2.0,
       "save": {
         "purchased": false,
@@ -57,7 +57,7 @@
       "desc": "Doubles Bread Coin conversion rate.",
       "image_path": "/images/dutch_oven.png",
       "previous": "stand_mixer",
-      "cost": 128000,
+      "cost": 51200,
       "multiplier": 2.0,
       "save": {
         "purchased": false,
@@ -70,7 +70,7 @@
       "desc": "Doubles Bread Coin conversion rate.",
       "image_path": "/images/dough_whisk.png",
       "previous": "dutch_oven",
-      "cost": 256000,
+      "cost": 102400,
       "multiplier": 2.0,
       "save": {
         "purchased": false,
@@ -83,7 +83,7 @@
       "desc": "Doubles Bread Coin conversion rate.",
       "image_path": "/images/bench_knife.png",
       "previous": "dough_whisk",
-      "cost": 1024000 ,
+      "cost": 409600,
       "multiplier": 2.0,
       "save": {
         "purchased": false,
@@ -96,7 +96,7 @@
       "desc": "Doubles Bread Coin conversion rate.",
       "image_path": "/images/bowl_scraper.png",
       "previous": "bench_knife",
-      "cost": 4096000,
+      "cost": 1638400,
       "multiplier": 2.0,
       "save": {
         "purchased": false,
@@ -109,7 +109,7 @@
       "desc": "Doubles Bread Coin conversion rate.",
       "image_path": "/images/proofing_basket.png",
       "previous": "bowl_scraper",
-      "cost": 16384000,
+      "cost": 6553600,
       "multiplier": 2.0,
       "save": {
         "purchased": false,
@@ -122,7 +122,7 @@
       "desc": "Doubles Bread Coin conversion rate.",
       "image_path": "/images/serrated_knife.png",
       "previous": "proofing_basket",
-      "cost": 65536000,
+      "cost": 26214400,
       "multiplier": 2.0,
       "save": {
         "purchased": false,

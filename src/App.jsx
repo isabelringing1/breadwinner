@@ -7,6 +7,12 @@ import {
 	reportLoafSold,
 	reportTimerUsed,
 	reportEnvelopeAnswer,
+	reportTrialMode,
+	reportExtensionAcquired,
+	reportDailyOrderFulfilled,
+	reportOrderBoardOrderFulfilled,
+	reportEnvelopeCompleted,
+	reportFAQOpened,
 } from "../public/analytics";
 import {
 	requestClickCount,
@@ -103,14 +109,14 @@ function App() {
 	const [orderBoardOrders, setOrderBoardOrders] = useState([]);
 	const [orderBoardLastRefreshTime, setOrderBoardLastRefreshTime] =
 		useState(null);
+	const [isMobile, setIsMobile] = useState(false);
+	const [totalOrderBoardOrders, setTotalOrderBoardOrders] = useState(0);
 
 	const onInfoScreenButtonPressed = useRef(null);
 	const onAchievementClaimButtonPressed = useRef(null);
 	const trialModeJiggleInterval = useRef(null);
 	const idleTimeout = useRef(null);
 	const busyStartTime = useRef(0);
-
-	const isMobile = window.innerWidth <= 768;
 
 	const convertForSave = () => {
 		var player = {
@@ -142,6 +148,7 @@ function App() {
 			start_time: playerStartTime,
 			in_trial_mode: inTrialMode,
 			order_board: orderBoardOrders,
+			total_order_board_orders: totalOrderBoardOrders,
 		};
 		return player;
 	};
@@ -345,7 +352,7 @@ function App() {
 			if (allOvenSlotsPurchased) {
 				emitEvent("oven-finished", null, null);
 			}
-			if (ovenSize == 8) {
+			if (ovenSize >= 5) {
 				emitEvent("oven-mid", null, null);
 			}
 		}
@@ -354,10 +361,7 @@ function App() {
 		});
 		if (allPurchased.length == Object.entries(newSupply).length) {
 			emitEvent("supply-finished", null, null);
-		} else if (
-			allPurchased.length >=
-			Object.entries(newSupply).length / 2
-		) {
+		} else if (allPurchased.length >= 2) {
 			emitEvent("supply-mid", null, null);
 		}
 		if (id == "secret_spread") {
@@ -588,7 +592,10 @@ function App() {
 							);
 						}
 					}
-					if (achievement.progress != null) {
+					if (
+						achievement.progress != null &&
+						achievement.progress != 0
+					) {
 						//special case for what extension-- we want to forget it after reload
 						tooltipArray.push(
 							"\nProgress: " + achievement.progress
@@ -877,6 +884,7 @@ function App() {
 
 		console.log("Starting trial mode");
 		setInTrialMode(true);
+		reportTrialMode();
 		trialModeJiggleInterval.current = setInterval(() => {
 			jiggleTrialMode();
 		}, 8000);
@@ -996,11 +1004,16 @@ function App() {
 
 		var playerData = loadData();
 		if (playerData != null) {
-			console.log(playerData.playerId);
 			setPlayerId(playerData.playerId);
-			setMultiplier(playerData.multiplier);
-			broadcastBc(playerData.bread_coin);
-			setBreadCoin(playerData.bread_coin);
+			setMultiplier(
+				Number.isNaN(playerData.multiplier) ? 1 : playerData.multiplier
+			);
+			setBreadCoin(
+				Number.isNaN(playerData.bread_coin) ? 0 : playerData.bread_coin
+			);
+			broadcastBc(
+				Number.isNaN(playerData.bread_coin) ? 0 : playerData.bread_coin
+			);
 			setOvenQueue(playerData.oven_queue);
 			setTotalSpent(playerData.total_spent);
 			setTotalEarned(playerData.total_earned);
@@ -1050,6 +1063,7 @@ function App() {
 			setStoryState(playerData.story_state);
 			setPlayerStartTime(playerData.start_time);
 			setOrderBoardOrders(playerData.order_board);
+			setTotalOrderBoardOrders(playerData.total_order_board_orders);
 			setVisited(true);
 
 			var newSupply = { ...SupplyObject };
@@ -1094,6 +1108,11 @@ function App() {
 			}
 		});
 
+		window.addEventListener("resize", () => {
+			setIsMobile(window.innerHeight / window.innerWidth > 1);
+		});
+		setIsMobile(window.innerHeight / window.innerWidth > 1);
+
 		return () => {
 			document.removeEventListener("click", (e) => {
 				if (
@@ -1108,6 +1127,9 @@ function App() {
 					requestClickCount();
 					requestKeyCount();
 				}
+			});
+			window.removeEventListener("resize", () => {
+				setIsMobile(window.innerHeight / window.innerWidth > 1);
 			});
 		};
 	}, []);
@@ -1147,6 +1169,23 @@ function App() {
 	}, [keys, inTrialMode]);
 
 	useEffect(() => {
+		document.getElementById("column-1").style.opacity = isMobile
+			? "0"
+			: "1";
+		document.getElementById("column-2").style.opacity = isMobile
+			? "0"
+			: "1";
+		document.getElementById("column-3").style.opacity = isMobile
+			? "0"
+			: "1";
+		document.getElementById("envelope-container").style.opacity = isMobile
+			? "0"
+			: "1";
+		document.getElementById("achievements-container").style.opacity =
+			isMobile ? "0" : "1";
+	}, [isMobile]);
+
+	useEffect(() => {
 		var playerData = loadData();
 		if (extensionDetected && playerData != null) {
 			setSpeechBubble("RETURN");
@@ -1158,6 +1197,7 @@ function App() {
 				}
 				setClicksCheat(playerData.clicks);
 				setInTrialMode(false);
+				reportExtensionAcquired();
 			}
 
 			if (playerData.keys != null) {
@@ -1216,6 +1256,7 @@ function App() {
 				storyState={storyState}
 				setStoryState={setStoryState}
 				reportEnvelopeAnswer={reportEnvelopeAnswer}
+				reportEnvelopeCompleted={reportEnvelopeCompleted}
 			/>
 			<Achievements
 				showAchievements={showAchievements}
@@ -1255,6 +1296,7 @@ function App() {
 				BreadObject={BreadObject}
 				unlockEvent={dailyOrderEvent}
 				emitEvent={emitEvent}
+				emitEvents={emitEvents}
 				totalDailyOrders={totalDailyOrders}
 				setTotalDailyOrders={setTotalDailyOrders}
 				totalTimelyDailyOrders={totalTimelyDailyOrders}
@@ -1264,6 +1306,10 @@ function App() {
 				timerUnit={timer_unit}
 				orderBoardOrders={orderBoardOrders}
 				setOrderBoardOrders={setOrderBoardOrders}
+				reportDailyOrderFulfilled={reportDailyOrderFulfilled}
+				reportOrderBoardOrderFulfilled={reportOrderBoardOrderFulfilled}
+				totalOrderBoardOrders={totalOrderBoardOrders}
+				setTotalOrderBoardOrders={setTotalOrderBoardOrders}
 			/>
 			<FloatingText
 				text={floatingText}
@@ -1287,6 +1333,7 @@ function App() {
 				totalKeys={totalKeys}
 				breadBaked={breadBaked}
 				AchievementsObject={AchievementsObject}
+				reportFAQOpened={reportFAQOpened}
 			/>
 
 			{showInfo ? (

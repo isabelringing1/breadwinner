@@ -28,6 +28,7 @@ function Envelope(props) {
 		storyState,
 		setStoryState,
 		reportEnvelopeAnswer,
+		reportEnvelopeCompleted,
 	} = props;
 	const animating = useRef(false);
 	const animatingTimer = useRef(false);
@@ -319,6 +320,7 @@ function Envelope(props) {
 				}
 			}
 		}
+		reportEnvelopeCompleted(currentEntry.category);
 		if (currentEntry.event != null && emitCurrentEvent) {
 			emitEvent(currentEntry.event);
 		}

@@ -9,7 +9,7 @@
             "amount": 500,
             "image_path": "/images/headband.png",
             "reward": 500,
-            "timers": 1,
+            "timers": 3,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -25,7 +25,7 @@
             "amount": 2000,
             "image_path": "/images/water.png",
             "reward": 2500,
-            "timers": 5,
+            "timers": 10,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -41,7 +41,7 @@
             "amount": 5000,
             "image_path": "/images/dumbell.png",
             "reward": 10000,
-            "timers": 20,
+            "timers": 50,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -237,10 +237,10 @@
             "id": "loaves_1",
             "category": "loaves",
             "display_name": "Mouth-Feeder",
-            "desc": "Bake 5 loaves.",
+            "desc": "Bake 10 loaves.",
             "image_path": "/images/loaves_1.png",
-            "amount": 5,
-            "reward": 100,
+            "amount": 10,
+            "reward": 500,
             "timers": 1,
             "save": {
                 "revealed": false,
@@ -255,7 +255,7 @@
             "desc": "Bake 50 loaves.",
             "image_path": "/images/loaves_2.png",
             "amount": 50,
-            "reward": 500,
+            "reward": 50000,
             "timers": 10,
             "save": {
                 "revealed": false,
@@ -270,7 +270,7 @@
             "desc": "Bake 500 loaves.",
             "image_path": "/images/loaves_3.png",
             "amount": 500,
-            "reward": 10000,
+            "reward": 1000000,
             "timers": 50,
             "save": {
                 "revealed": false,
@@ -414,7 +414,7 @@
             "desc": "Click the Green Convert Button 1,000 times.",
             "image_path": "/images/button.png",
             "amount": 1000,
-            "reward": 500,
+            "reward": 2000,
             "timers": 5,
             "save": {
                 "revealed": false,

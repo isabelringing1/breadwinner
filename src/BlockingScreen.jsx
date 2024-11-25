@@ -21,6 +21,7 @@ function BlockingScreen(props) {
 		totalClicks,
 		totalKeys,
 		AchievementsObject,
+		reportFAQOpened,
 	} = props;
 
 	var shouldShow =
@@ -30,8 +31,14 @@ function BlockingScreen(props) {
 
 	const [delayPassed, setDelayPassed] = useState(false);
 
-	const mobileInfo =
-		"Sorry, but Bread Winner does not work on mobile!\nPlease visit on Desktop to play.";
+	const mobileInfo = (
+		<div className="blocking-screen-mobile">
+			Sorry, but Bread Winner does not work with this screen size!
+			<br />
+			<br />
+			Please use a bigger screen to play.
+		</div>
+	);
 
 	const questionMarkInfo = (
 		<div>
@@ -368,6 +375,7 @@ function BlockingScreen(props) {
 
 	const goToFAQ = () => {
 		setBlockingCategory("FAQ");
+		reportFAQOpened();
 	};
 
 	const goToResetCheck = () => {

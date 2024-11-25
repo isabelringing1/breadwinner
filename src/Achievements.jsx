@@ -47,6 +47,7 @@ function Achievements(props) {
 
 	const [alertAchievement, setAlertAchievement] = useState(achievements[0]);
 	const [numNotifs, setNumNotifs] = useState(0);
+	const [peekIn, setPeekIn] = useState(0);
 
 	useEffect(() => {
 		var count = achievements.filter(function (a) {
@@ -64,10 +65,10 @@ function Achievements(props) {
 				case "total-conversions":
 					var productivityAchievements =
 						AchievementsObject["productivity"];
-					// if we've reached half of 1st goal, show the bookmark for the first time.
+					// if we've reached third of 1st goal, show the bookmark for the first time.
 					if (
 						!productivityAchievements[0].save.revealed &&
-						event.amount >= productivityAchievements[0].amount / 2
+						event.amount >= productivityAchievements[0].amount / 3
 					) {
 						newAchievements["productivity"][0].save.revealed = true;
 						peek_in();
@@ -88,7 +89,7 @@ function Achievements(props) {
 					if (event.value == convertAchievement.amount) {
 						//Overload value to be the total times convert has been pressed
 						achieve("misc", 1, newAchievements, false);
-					} else if (event.value >= convertAchievement.amount / 2) {
+					} else if (event.value >= convertAchievement.amount / 4) {
 						convertAchievement.save.revealed = true;
 					}
 					break;
@@ -97,10 +98,12 @@ function Achievements(props) {
 					break;
 				case "keys-converted":
 					var keyAchievements = AchievementsObject["keys"].slice(1);
+					console.log(keyAchievements);
 					keyAchievements.forEach((a, i) => {
-						newAchievements["keys"][i].save.progress = event.amount;
+						newAchievements["keys"][i + 1].save.progress =
+							event.amount;
 						if (event.amount >= a.amount) {
-							achieve("keys", i, newAchievements);
+							achieve("keys", i + 1, newAchievements);
 						}
 					});
 
@@ -276,6 +279,7 @@ function Achievements(props) {
 	}, [events]);
 
 	const achieve = (category, index, newAchievements, revealNext = true) => {
+		console.log(newAchievements[category][index]);
 		if (newAchievements[category][index].save.achieved) {
 			return;
 		}
@@ -285,6 +289,9 @@ function Achievements(props) {
 			newAchievements[category][index + 1].save.revealed = true;
 		}
 		queue_alert(newAchievements[category][index]);
+		if (!peekIn) {
+			peek_in();
+		}
 	};
 
 	const claimAchievement = (achievement) => {
@@ -400,6 +407,10 @@ function Achievements(props) {
 	}, [loaded]);
 
 	var peek_in = () => {
+		if (peekIn) {
+			return;
+		}
+		setPeekIn(true);
 		document
 			.getElementById("bookmark-div-1")
 			.classList.add("peek-in-bookmark");
@@ -422,6 +433,7 @@ function Achievements(props) {
 
 	var animate_in = () => {
 		if (animating.current || showAchievements) return;
+		setPeekIn(false);
 		achievementsDiv.classList.add("bounce-in");
 		bookmarkDiv1.classList.add("bounce-in-bookmark");
 		bookmarkDiv2.classList.add("bounce-in-bookmark");
@@ -443,6 +455,7 @@ function Achievements(props) {
 
 	var animate_out = () => {
 		if (animating.current || !showAchievements) return;
+		setPeekIn(true);
 		achievementsDiv.classList.add("bounce-out");
 		bookmarkDiv1.classList.add("bounce-out-bookmark");
 		bookmarkDiv2.classList.add("bounce-out-bookmark");

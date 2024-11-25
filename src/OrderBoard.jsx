@@ -52,6 +52,7 @@ function OrderBoard(props) {
 		BreadObject,
 		unlockEvent,
 		emitEvent,
+		emitEvents,
 		totalDailyOrders,
 		setTotalDailyOrders,
 		timers,
@@ -59,6 +60,10 @@ function OrderBoard(props) {
 		timerUnit,
 		orderBoardOrders,
 		setOrderBoardOrders,
+		reportDailyOrderFulfilled,
+		reportOrderBoardOrderFulfilled,
+		totalOrderBoardOrders,
+		setTotalOrderBoardOrders,
 	} = props;
 
 	const animating = useRef(false);
@@ -366,7 +371,16 @@ function OrderBoard(props) {
 		var newDailyOrderObject = { ...dailyOrderObject };
 		setBreadCoin(breadCoin + newDailyOrderObject.bc_reward);
 		setTimers(timers + newDailyOrderObject.timer_reward);
-		emitEvent("breadcoin-gain", newDailyOrderObject.bc_reward, null);
+		var breadcoinGainEvent = {
+			id: "breadcoin-gain",
+			amount: newDailyOrderObject.bc_reward,
+		};
+		var dailyOrderClaimEvent = {
+			id: "daily-order-claim",
+			value: totalDailyOrders,
+		};
+		emitEvents([breadcoinGainEvent, dailyOrderClaimEvent]);
+
 		setTotalEarned(totalEarned + newDailyOrderObject.bc_reward);
 		animateReward(newDailyOrderObject.bc_reward);
 		newDailyOrderObject.bc_reward = -1;
@@ -379,7 +393,10 @@ function OrderBoard(props) {
 		}
 		newTotalDailyOrders.push([new Date(), timeSinceGeneration]);
 		setTotalDailyOrders(newTotalDailyOrders);
-		emitEvent("daily-order-claim", newTotalDailyOrders, null);
+		reportDailyOrderFulfilled(
+			newTotalDailyOrders.length,
+			timeSinceGeneration
+		);
 
 		// subtract the amount of bread from any other active orders that have this type
 		var breadDict = {};
@@ -418,7 +435,17 @@ function OrderBoard(props) {
 	const tryClaimOrderBoardReward = (e, order, i) => {
 		setBreadCoin(breadCoin + order.bc_reward);
 		setTimers(timers + order.timer_reward);
-		emitEvent("breadcoin-gain", order.bc_reward, null);
+		var breadcoinGainEvent = {
+			id: "breadcoin-gain",
+			amount: order.bc_reward,
+		};
+		var orderBoardOrderClaimEvent = {
+			id: "order-board-order-claim",
+			value: totalOrderBoardOrders + 1,
+		};
+		emitEvents([breadcoinGainEvent, orderBoardOrderClaimEvent]);
+		setTotalOrderBoardOrders(totalOrderBoardOrders + 1);
+		reportOrderBoardOrderFulfilled(totalOrderBoardOrders + 1);
 		setTotalEarned(totalEarned + order.bc_reward);
 		animateReward(order.bc_reward, "order-board-button-" + i);
 		if (orderBoardOrders.length == 3) {
