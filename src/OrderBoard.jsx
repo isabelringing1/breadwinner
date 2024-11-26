@@ -32,6 +32,28 @@ const higherBreadWeights = {
 	brioche: 0.05,
 };
 
+const normalBreadBounds = {
+	white: [10, 25],
+	whole_wheat: [7, 15],
+	sourdough: [5, 10],
+	challah: [5, 10],
+	cinnamon_raisin: [5, 10],
+	pumpernickel: [3, 8],
+	potato: [2, 7],
+	brioche: [1, 3],
+};
+
+const easyBreadBounds = {
+	white: [5, 10],
+	whole_wheat: [3, 8],
+	sourdough: [2, 5],
+	challah: [2, 5],
+	cinnamon_raisin: [2, 5],
+	pumpernickel: [2, 5],
+	potato: [2, 5],
+	brioche: [2, 5],
+};
+
 const ORDER_BOARD_REFRESH = 21600000;
 
 function OrderBoard(props) {
@@ -129,7 +151,7 @@ function OrderBoard(props) {
 	useEffect(() => {
 		if (unlockEvent == "daily-order") {
 			peek_in();
-			updateDailyOrder();
+			updateDailyOrder(true);
 		} else if (unlockEvent == "order-board") {
 			initializeOrderBoard();
 		}
@@ -145,11 +167,11 @@ function OrderBoard(props) {
 	};
 
 	const orderBoardUnlocked = () => {
-		return BreadObject["potato"].save.purchase_count > 0;
+		return BreadObject["pumpernickel"].save.purchase_count > 0;
 	};
 
 	/* Daily orders refresh at 9 a.m. */
-	const updateDailyOrder = () => {
+	const updateDailyOrder = (easy_order = false) => {
 		if (!dailyOrderUnlocked()) {
 			return;
 		}
@@ -164,7 +186,7 @@ function OrderBoard(props) {
 			dailyOrderNextRefreshTime == 0
 		) {
 			console.log("Creating new daily order");
-			setDailyOrderObject(createNewDailyOrder());
+			setDailyOrderObject(createNewDailyOrder(easy_order));
 			nextRefreshTime =
 				new Date(refreshTimeToday) >= now
 					? refreshTimeToday
@@ -253,21 +275,25 @@ function OrderBoard(props) {
         1st bool determines whether or not reward has been claimed
         50% Chance to get Lower Bread suborder (lower tier loaf, higher count)
         50% Chance to get Higher bread suborder (higher tier loaf, lower count)
-        50% chance to get 1 timer, 50% to get 2 timers
     */
-	const createNewDailyOrder = () => {
+	const createNewDailyOrder = (easy_order) => {
 		var order = {
 			suborders: [],
 		};
 		shuffleArray(cards);
 		var totalBcReward = 0;
 		var totalTimerReward = 0;
+		var bounds =
+			easy_order || getRandomInt(0, 100) > 90
+				? easyBreadBounds
+				: normalBreadBounds;
+
 		var [lowerWeights, higherWeights] = prepBreadWeights();
 		for (var i = 0; i < 2; i++) {
 			var suborder =
 				getRandomInt(0, 2) == 0
-					? createSuborder(lowerWeights, 10, 25)
-					: createSuborder(higherWeights, 5, 10);
+					? createSuborder(lowerWeights, bounds)
+					: createSuborder(higherWeights, bounds);
 			if (i > 0 && suborder.id == order.suborders[0].id) {
 				//same bread type
 				i--;
@@ -305,11 +331,13 @@ function OrderBoard(props) {
 		var totalTimerReward = 0;
 		var [lowerWeights, higherWeights] = prepBreadWeights();
 		var numSuborders = getRandomInt(2, 5);
+		var bounds =
+			getRandomInt(0, 100) > 90 ? easyBreadBounds : normalBreadBounds;
 		for (var i = 0; i < numSuborders; i++) {
 			var suborder =
 				getRandomInt(0, 2) == 0
-					? createSuborder(lowerWeights, 10, 25)
-					: createSuborder(higherWeights, 5, 10);
+					? createSuborder(lowerWeights, bounds)
+					: createSuborder(higherWeights, bounds);
 			lowerWeights[suborder.id] = 0;
 			higherWeights[suborder.id] = 0;
 			suborder.card = cards[i];
@@ -325,8 +353,7 @@ function OrderBoard(props) {
 		return order;
 	};
 
-	const createSuborder = (weights, min, max) => {
-		var amount = getRandomInt(min, max);
+	const createSuborder = (weights, boundsDict) => {
 		var total_weight = 0;
 		for (const [_, weight] of Object.entries(weights)) {
 			total_weight += weight;
@@ -343,6 +370,7 @@ function OrderBoard(props) {
 				var timer_reward = Math.ceil(
 					(1000 * BreadObject[id].bake_time) / timerUnit
 				);
+				var amount = getRandomInt(boundsDict[id][0], boundsDict[id][1]);
 				return {
 					id: id,
 					amount: amount,

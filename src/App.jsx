@@ -82,6 +82,8 @@ function App() {
 	const [showInfo, setShowInfo] = useState(false);
 	const [infoScreenTitle, setInfoScreenTitle] = useState("");
 	const [infoScreenBody, setInfoScreenBody] = useState("");
+	const [infoScreenConfirmOverrideText, setInfoScreenConfirmOverrideText] =
+		useState(null);
 	const [breadBaked, setBreadBaked] = useState(0);
 	const [showAchievements, setShowAchievements] = useState(false);
 	const [AchievementsObject, setAchievementsObject] =
@@ -213,13 +215,19 @@ function App() {
 		var supply = SupplyObject[id];
 		if (id == "mixing_bowl") {
 			return !isSupplyPurchased(id);
+		} else if (id == "secret_spread") {
+			return (
+				BreadObject["sourdough"].save.purchase_count > 0 &&
+				!isSupplyPurchased(id)
+			);
 		} else if (supply.oven_increase) {
 			var index = parseInt(supply.id.split("_").at(-1));
-			if (
-				index > 1 &&
-				!SupplyObject["oven_slot_" + (index - 1)].save.purchased
-			) {
-				return false;
+			if (index > 1) {
+				if (!SupplyObject["oven_slot_" + (index - 1)].save.purchased) {
+					return false;
+				} else {
+					supply.save.unlocked = true;
+				}
 			}
 			if (!supply.save.unlocked && breadCoin >= supply.cost * 0.5) {
 				supply.save.unlocked = true;
@@ -301,7 +309,7 @@ function App() {
 				event = "unlock-daily-order";
 			} else if (id == "cinnamon_raisin") {
 				emitEvent("bread-mid", null, null);
-			} else if (id == "potato") {
+			} else if (id == "pumpernickel") {
 				event = "unlock-order-board";
 			} else if (id == "banana") {
 				event = "reveal-epilogue";
@@ -314,6 +322,7 @@ function App() {
 
 	const TryBuySupply = (id, mousePos) => {
 		setInSellAllSequence(false);
+		var eventsToEmit = [];
 		var supply = SupplyObject[id];
 		if (!supply || supply.cost > breadCoin) {
 			return false;
@@ -327,7 +336,9 @@ function App() {
 		setSupplyObject(newSupply);
 		if (supply.keys) {
 			setKeyUnlocked(true);
-			emitEvent("keys-unlocked", null, null);
+			eventsToEmit.push({
+				id: "keys-unlocked",
+			});
 			unlockKeys();
 			if (inTrialMode) {
 				setKeys(0);
@@ -350,22 +361,33 @@ function App() {
 				}
 			);
 			if (allOvenSlotsPurchased) {
-				emitEvent("oven-finished", null, null);
+				eventsToEmit.push({
+					id: "oven-finished",
+				});
 			}
 			if (ovenSize >= 5) {
-				emitEvent("oven-mid", null, null);
+				eventsToEmit.push({
+					id: "oven-mid",
+				});
 			}
 		}
 		var allPurchased = Object.entries(newSupply).filter((item) => {
 			return item[1].save.purchased;
 		});
 		if (allPurchased.length == Object.entries(newSupply).length) {
-			emitEvent("supply-finished", null, null);
+			eventsToEmit.push({
+				id: "supply-finished",
+			});
 		} else if (allPurchased.length >= 2) {
-			emitEvent("supply-mid", null, null);
+			eventsToEmit.push({
+				id: "supply-mid",
+			});
 		}
 		if (id == "secret_spread") {
 			unlockEnvelope("secret_spread");
+		}
+		if (eventsToEmit.length > 0) {
+			emitEvents(eventsToEmit);
 		}
 		reportSupplyBought(supply, breadBaked + 1, ovenSize, playerId);
 	};
@@ -552,6 +574,7 @@ function App() {
 
 				if (achievement.desc_after) {
 					var text2 = achievement.desc_after + "\nReward: ";
+					tooltipArray.push(" ");
 					tooltipArray.push("[BC]");
 					tooltipArray.push(text2);
 				} else {
@@ -633,12 +656,25 @@ function App() {
 		}
 	};
 
+	const toggleBCTooltip = (show, mousePos = [0, 0]) => {
+		show = show && breadCoin > 1000000000;
+		setupTooltip(show, mousePos);
+		var formatted = formatNumber(breadCoin, false, false);
+		setTooltipContentArray(["[BC]", formatted]);
+	};
+
 	const showAchievementInfoDialog = (a) => {
 		setShowInfo(true);
 		setInfoScreenTitle("Are you sure?");
 		setInfoScreenBody(
-			"We're going off the honor system for this one. Are you sure you want to mark this as done?"
+			"We're going off the honor system for this one. Do you really want to mark this as done?"
 		);
+		console.log(a.id);
+		if (a.id == "productivity_6") {
+			setInfoScreenConfirmOverrideText("Yes, Stop Guilt Tripping Me");
+		} else {
+			setInfoScreenConfirmOverrideText(null);
+		}
 		onInfoScreenButtonPressed.current = () => {
 			emitEvent(a.category, a.id);
 		};
@@ -1341,6 +1377,7 @@ function App() {
 					setShowInfo={setShowInfo}
 					title={infoScreenTitle}
 					body={infoScreenBody}
+					confirmOverrideText={infoScreenConfirmOverrideText}
 					onConfirmButtonClicked={onInfoScreenButtonPressed.current}
 				/>
 			) : null}
@@ -1399,7 +1436,19 @@ function App() {
 				<div id="bc-container">
 					<div id="bread-coin">
 						<BCSymbol color="black" />
-						<span id="bc-num">
+						<span
+							id="bc-num"
+							onMouseMove={(e) => {
+								var x =
+									e.clientX < window.innerWidth - 300
+										? e.clientX + 30
+										: e.clientX - 240;
+								toggleBCTooltip(true, [x, e.clientY + 30]);
+							}}
+							onMouseLeave={() => {
+								toggleBCTooltip(false);
+							}}
+						>
 							<span id="bc-anim">100</span>
 							{formatNumber(breadCoin) ?? "?"}{" "}
 						</span>

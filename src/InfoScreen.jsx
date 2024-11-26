@@ -2,12 +2,13 @@ import { useState } from "react";
 import "./BlockingScreen.css";
 
 function InfoScreen(props) {
-	const { title, body, setShowInfo, onConfirmButtonClicked } = props;
-
-	const onButtonClick = () => {
-		onConfirmButtonClicked();
-		setShowInfo(false);
-	};
+	const {
+		title,
+		body,
+		setShowInfo,
+		onConfirmButtonClicked,
+		confirmOverrideText,
+	} = props;
 
 	const onCancel = () => {
 		setShowInfo(false);
@@ -27,7 +28,9 @@ function InfoScreen(props) {
 							className="green button"
 							onClick={onConfirmButtonClicked}
 						>
-							Confirm
+							{confirmOverrideText
+								? confirmOverrideText
+								: "Confirm"}
 						</div>
 					</div>
 				</div>

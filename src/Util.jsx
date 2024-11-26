@@ -49,7 +49,7 @@ function msToTime(
 	return strtime;
 }
 
-function formatNumber(num, isDecimal = false) {
+function formatNumber(num, isDecimal = false, addSuffix = true) {
 	if (num == null) return false;
 	if (isDecimal) {
 		return num.toLocaleString("en-US", {
@@ -57,6 +57,25 @@ function formatNumber(num, isDecimal = false) {
 			maximumFractionDigits: 8,
 		});
 	}
+	if (addSuffix) {
+		// quintillion
+		if (num > 1000000000000000000) {
+			return +(num / 1e18).toFixed(1) + "Qn";
+		}
+		// quadrillion
+		if (num > 1000000000000000) {
+			return +(num / 1e15).toFixed(1) + "Qd";
+		}
+		// trillion
+		if (num > 1000000000000) {
+			return +(num / 1e12).toFixed(1) + "Tr";
+		}
+		// billion
+		if (num > 1000000000) {
+			return +(num / 1e9).toFixed(1) + "B";
+		}
+	}
+
 	return num.toLocaleString();
 }
 

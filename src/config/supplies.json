@@ -134,7 +134,6 @@
       "display_name": "Secret Spread",
       "desc": "Proprietary Dough & Co technology. Unlocks the ability to convert your keystrokes into small additions to the multiplier.",
       "image_path": "/images/secret_spread.png",
-      "previous": "whisk",
       "cost": 4321,
       "keys": true,
       "save": {

@@ -80,6 +80,11 @@ function Achievements(props) {
 								event.amount;
 							if (event.amount >= a.amount) {
 								achieve("productivity", i, newAchievements);
+								if (i == 2) {
+									newAchievements[
+										"productivity"
+									][3].save.revealed = true;
+								}
 							}
 						}
 					});
@@ -177,13 +182,18 @@ function Achievements(props) {
 						newAchievements["daily_orders"][0].save.revealed = true;
 					}
 					dailyOrderAchievements.forEach((a, i) => {
-						if (a.id == "daily_order_1" && total >= a.amount) {
-							achieve("daily_orders", i, newAchievements);
-						} else if (
-							a.id == "daily_order_2" &&
-							totalLastHour >= a.amount
-						) {
-							achieve("daily_orders", i, newAchievements);
+						if (a.id == "daily_order_1") {
+							if (total >= a.amount) {
+								achieve("daily_orders", i, newAchievements);
+							} else {
+								a.save.progress = total;
+							}
+						} else if (a.id == "daily_order_2") {
+							if (totalLastHour >= a.amount) {
+								achieve("daily_orders", i, newAchievements);
+							} else {
+								a.save.progress = totalLastHour;
+							}
 						} else if (
 							a.id == "daily_order_3" &&
 							totalLateNight >= a.amount
@@ -193,11 +203,12 @@ function Achievements(props) {
 					});
 
 					// Stretch 1
-					if (
-						total >= newAchievements["stretch"][0].amount &&
-						!newAchievements["stretch"][0].save.epilogue
-					) {
-						achieve("stretch", 0, newAchievements, false);
+					if (!newAchievements["stretch"][0].save.epilogue) {
+						if (total >= newAchievements["stretch"][0].amount) {
+							achieve("stretch", 0, newAchievements, false);
+						} else {
+							newAchievements["stretch"][0].save.progress = total;
+						}
 					}
 					break;
 				case "breadcoin-gain":
@@ -289,7 +300,7 @@ function Achievements(props) {
 			newAchievements[category][index + 1].save.revealed = true;
 		}
 		queue_alert(newAchievements[category][index]);
-		if (!peekIn) {
+		if (!peekIn && !showAchievements) {
 			peek_in();
 		}
 	};

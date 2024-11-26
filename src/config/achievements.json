@@ -5,7 +5,6 @@
             "category": "productivity",
             "display_name": "Productive",
             "desc": "Convert 500 Clicks to Bread Coin.",
-            "progress": 0,
             "amount": 500,
             "image_path": "/images/headband.png",
             "reward": 500,
@@ -21,8 +20,7 @@
             "category": "productivity",
             "display_name": "So Productive",
             "desc": "Convert 2,000 Clicks to Bread Coin.",
-            "progress": 0,
-            "amount": 2000,
+            "amount": 20000,
             "image_path": "/images/water.png",
             "reward": 2500,
             "timers": 10,
@@ -37,10 +35,9 @@
             "category": "productivity",
             "display_name": "Adderall-Level Productive",
             "desc": "Convert 5,000 Clicks to Bread Coin.",
-            "progress": 0,
             "amount": 5000,
             "image_path": "/images/dumbell.png",
-            "reward": 10000,
+            "reward": 5000000,
             "timers": 50,
             "save": {
                 "revealed": false,
@@ -54,7 +51,7 @@
             "display_name": "Actually Productive",
             "desc": "Complete a chore you've been procrastinating.",
             "image_path": "/images/plate.png",
-            "reward": 3000,
+            "reward": 20000,
             "timers": 3,
             "save": {
                 "revealed": false,
@@ -69,7 +66,7 @@
             "display_name": "Socially Productive",
             "desc": "Reply to a message that you've been neglecting.",
             "image_path": "/images/bubble.png",
-            "reward": 4000,
+            "reward": 30000,
             "timers": 5,
             "save": {
                 "revealed": false,
@@ -84,7 +81,7 @@
             "display_name": "Self-Improvingly Productive",
             "desc": "Say something nice to yourself in the mirror.",
             "image_path": "/images/mirror.png",
-            "reward": 5000,
+            "reward": 40000,
             "timers": 10,
             "save": {
                 "revealed": false,
@@ -99,7 +96,7 @@
             "display_name": "Grass-Touchingly Productive",
             "desc": "Go outside for half an hour while keeping your mouse here. Yes, seriously. We'll keep track.",
             "image_path": "/images/grass.png",
-            "reward": 6000,
+            "reward": 1000000,
             "timers": 50,
             "save": {
                 "revealed": false,
@@ -209,7 +206,7 @@
             "display_name": "Masterchef",
             "desc": "Buy every kitchen supply.",
             "image_path": "/images/chef.png",
-            "reward": 20000000,
+            "reward": 60000000,
             "timers": 50,
             "save": {
                 "revealed": false,
@@ -255,7 +252,7 @@
             "desc": "Bake 50 loaves.",
             "image_path": "/images/loaves_2.png",
             "amount": 50,
-            "reward": 50000,
+            "reward": 30000,
             "timers": 10,
             "save": {
                 "revealed": false,
@@ -266,11 +263,11 @@
         {
             "id": "loaves_3",
             "category": "loaves",
-            "display_name": "Income-Earner",
+            "display_name": "Bacon-Bringer",
             "desc": "Bake 500 loaves.",
             "image_path": "/images/loaves_3.png",
             "amount": 500,
-            "reward": 1000000,
+            "reward": 100000000,
             "timers": 50,
             "save": {
                 "revealed": false,
@@ -414,7 +411,7 @@
             "desc": "Click the Green Convert Button 1,000 times.",
             "image_path": "/images/button.png",
             "amount": 1000,
-            "reward": 2000,
+            "reward": 10000,
             "timers": 5,
             "save": {
                 "revealed": false,
