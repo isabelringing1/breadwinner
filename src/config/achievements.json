@@ -425,7 +425,7 @@
             "display_name": "Satisfying",
             "desc": "Sell a full oven at once.",
             "image_path": "/images/glowing_loaf.png",
-            "reward": 10000,
+            "reward": 10000000,
             "timers": 60,
             "save": {
                 "revealed": false,
