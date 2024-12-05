@@ -1064,14 +1064,18 @@ function App() {
 				playerData.order_board_last_refresh_time
 			);
 			if (Array.isArray(playerData.daily_order)) {
-				setDailyOrderObject({
-					bc_reward: playerData.daily_order[0],
-					timer_reward: playerData.daily_order[1],
-					suborders: [
-						convertArrayToSuborder(playerData.daily_order[2]),
-						convertArrayToSuborder(playerData.daily_order[3]),
-					],
-				});
+				if (playerData.daily_order.length == 0) {
+					setDailyOrderObject({ suborders: [] });
+				} else {
+					setDailyOrderObject({
+						bc_reward: playerData.daily_order[0],
+						timer_reward: playerData.daily_order[1],
+						suborders: [
+							convertArrayToSuborder(playerData.daily_order[2]),
+							convertArrayToSuborder(playerData.daily_order[3]),
+						],
+					});
+				}
 			} else {
 				setDailyOrderObject(playerData.daily_order);
 			}
