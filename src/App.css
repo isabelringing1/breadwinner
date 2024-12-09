@@ -17,6 +17,7 @@ p{
     font-size: 2.1vh;
     position: absolute;
     bottom: 2.615vh;
+    z-index: 22;
 }
 
 #info{
