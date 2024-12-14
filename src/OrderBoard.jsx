@@ -195,7 +195,10 @@ function OrderBoard(props) {
 			console.log("setting next refresh time to " + nextRefreshTime);
 		} else if (now >= new Date(dailyOrderNextRefreshTime)) {
 			setDailyOrderObject(createNewDailyOrder());
-			nextRefreshTime = dailyOrderNextRefreshTime + 86400000;
+			do {
+				nextRefreshTime += 86400000;
+			} while (now >= new Date(nextRefreshTime));
+
 			setDailyOrderNextRefreshTime(nextRefreshTime);
 		}
 		var timeTilRefresh = nextRefreshTime - now.getTime();

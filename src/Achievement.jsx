@@ -1,5 +1,5 @@
 import "./Achievements.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import WaitCircle from "./WaitCircle";
 
@@ -62,9 +62,12 @@ function Achievement(props) {
 		}, 1000);
 	};
 
-	const onWaitCircleFinished = (achievement) => {
-		onWaitCircleCancel();
-		emitEvent(achievement.category, Number(achievement.id.slice(-1)));
+	const onWaitCircleFinished = (a) => {
+		setInWait(false);
+		clearInterval(updateTooltipInterval.current);
+		setTimeout(() => {
+			toggleTooltip(true, lastTooltipPos.current, a);
+		}, 10);
 	};
 
 	const onWaitCircleCancel = () => {
@@ -88,6 +91,7 @@ function Achievement(props) {
 			onMouseLeave={() => {
 				onHoverEnd();
 				toggleTooltip(false);
+				setInWait(false);
 			}}
 			onClick={onClick}
 		>

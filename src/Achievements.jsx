@@ -247,15 +247,19 @@ function Achievements(props) {
 							AchievementsObject["productivity"][index]
 						);
 					} else if (index >= 6 && index <= 7) {
-						if (
+						if (event.amount == "DONE") {
+							achieve("productivity", index, newAchievements);
+							newAchievements["productivity"][
+								index
+							].save.progress =
+								newAchievements["productivity"][index].amount;
+						} else if (
 							event.amount <
 							newAchievements["productivity"][index].amount
 						) {
 							newAchievements["productivity"][
 								index
 							].save.progress = event.amount;
-						} else {
-							achieve("productivity", index, newAchievements);
 						}
 					}
 					break;

@@ -113,6 +113,7 @@ function App() {
 		useState(null);
 	const [isMobile, setIsMobile] = useState(false);
 	const [totalOrderBoardOrders, setTotalOrderBoardOrders] = useState(0);
+	const [debugEnvelope, setDebugEnvelope] = useState(null);
 
 	const onInfoScreenButtonPressed = useRef(null);
 	const onAchievementClaimButtonPressed = useRef(null);
@@ -1272,6 +1273,7 @@ function App() {
 				emitEvent={emitEvent}
 				inTrialMode={inTrialMode}
 				setClicks={setClicks}
+				setDebugEnvelope={setDebugEnvelope}
 			/>
 			<Tooltip
 				show={showTooltip}
@@ -1297,6 +1299,8 @@ function App() {
 				setStoryState={setStoryState}
 				reportEnvelopeAnswer={reportEnvelopeAnswer}
 				reportEnvelopeCompleted={reportEnvelopeCompleted}
+				debugEnvelope={debugEnvelope}
+				setDebugEnvelope={setDebugEnvelope}
 			/>
 			<Achievements
 				showAchievements={showAchievements}

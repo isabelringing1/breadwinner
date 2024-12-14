@@ -15,11 +15,13 @@ function Debug(props) {
 		emitEvent,
 		inTrialMode,
 		setClicks,
+		setDebugEnvelope,
 	} = props;
 	const [showDebug, setShowDebug] = useState(false);
 	const clickInputRef = useRef();
 	const BCInputRef = useRef();
 	const timersRef = useRef();
+	const envelopeIdRef = useRef();
 
 	const toggleShowDebug = () => {
 		setShowDebug((prevShowDebug) => !prevShowDebug);
@@ -127,7 +129,19 @@ function Debug(props) {
 				}}
 			>
 				Skip Envelope
-			</button> */}
+			</button> 
+            <input type="text" ref={envelopeIdRef} />{" "}
+			<button
+				id="show-envelope-button"
+				onClick={() => {
+					setDebugEnvelope(envelopeIdRef.current.value);
+				}}
+			>
+				{" "}
+				Show Envelope{" "}
+			</button>
+            
+            */}
 		</div>
 	) : null;
 }

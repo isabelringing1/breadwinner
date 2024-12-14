@@ -1,4 +1,5 @@
 import envelopeData from "./config/envelopes.json";
+import endingData from "./config/ending.json";
 import dough_logo from "/images/dough-logo.png";
 import timer_img from "/images/timer.png";
 import Markdown from "react-markdown";
@@ -11,8 +12,8 @@ function getPrerequisites(id) {
 	return data.prerequisites;
 }
 
-function parse(id, onButtonClick, replaceTokens) {
-	var data = envelopeData[id];
+function parse(id, onButtonClick, replaceTokens, setDating) {
+	var data = envelopeData[id] ?? endingData[id];
 	var cards = [];
 	if (!data || !data.cards) {
 		return null;
@@ -54,12 +55,20 @@ function parse(id, onButtonClick, replaceTokens) {
 						{parseSpecial(el, id)}
 					</div>
 				);
+			} else if (el[0] == "/") {
+				{
+					cards.push(
+						<div className="envelope-card-body">
+							{parseButtons(el, id, onButtonClick, cardNo)}
+						</div>
+					);
+				}
 			} else {
 				var text = replaceTokens(el);
 				cards.push(
 					<div className="envelope-card-body">
 						<div className="env-line">
-							<Markdown>{text}</Markdown>
+							<Markdown>{el}</Markdown>
 						</div>
 					</div>
 				);
@@ -67,11 +76,95 @@ function parse(id, onButtonClick, replaceTokens) {
 		}
 		cardNo++;
 	});
+	setDating(null);
+	if (data.dating) {
+		var datingCardNo = 0;
+		var datingCards = [];
+		data.dating.forEach((el) => {
+			if (el.constructor === Array) {
+				var title = null;
+				var buttons = false;
+				var card = (
+					<div className="dating-card-body">
+						{el.map((text, i) => {
+							if (text[0] == "[") {
+								title = parseDatingTitle(text);
+								return parseSpecialDating(text, id);
+							} else if (text[0] == "/") {
+								buttons = true;
+								return parseButtons(
+									text,
+									id,
+									onButtonClick,
+									datingCardNo,
+									true
+								);
+							}
+							return (
+								<div
+									key={"dating-env-line-" + id + "-" + i}
+									className="env-line"
+								>
+									<Markdown>{text}</Markdown>
+								</div>
+							);
+						})}
+					</div>
+				);
+				var data = {
+					body: card,
+					title: title,
+				};
+				datingCards.push(data);
+			} else {
+				var card;
+				var title;
+
+				if (el[0] == "[") {
+					title = parseDatingTitle(el);
+					card = (
+						<div className="dating-card-body">
+							{parseSpecialDating(el, id)}
+						</div>
+					);
+				} else if (el[0] == "/") {
+					buttons = true;
+					card = (
+						<div className="dating-card-body">
+							{parseButtons(el, id, onButtonClick, cardNo, true)}
+						</div>
+					);
+				} else {
+					card = (
+						<div className="dating-card-body">
+							<div
+								key={"dating-env-line-" + id}
+								className="env-line"
+							>
+								<Markdown>{el}</Markdown>
+							</div>
+						</div>
+					);
+				}
+				var data = {
+					body: card,
+					title: title,
+					buttons: buttons,
+				};
+				datingCards.push(data);
+			}
+			datingCardNo++;
+		});
+
+		setDating(datingCards);
+	}
 	return cards;
 }
 
 function parseSpecial(special, id) {
-	if (special == "[SIGNATURE]") {
+	var keyword = special.split("[").pop().split("]")[0];
+	var content = special.split("]")[1];
+	if (keyword == "SIGNATURE") {
 		return (
 			<div
 				className="env-signature-container"
@@ -83,7 +176,7 @@ function parseSpecial(special, id) {
 				</div>
 			</div>
 		);
-	} else if (special == "[SIGNATURE2]") {
+	} else if (keyword == "SIGNATURE2") {
 		return (
 			<div
 				className="env-signature-container"
@@ -93,7 +186,7 @@ function parseSpecial(special, id) {
 				<div className="env-line-signature">Dough</div>
 			</div>
 		);
-	} else if (special == "[TIMER1]") {
+	} else if (keyword == "TIMER1") {
 		return (
 			<div key={"env-timer-" + id}>
 				<div className="env-line">
@@ -108,7 +201,7 @@ function parseSpecial(special, id) {
 				</div>
 			</div>
 		);
-	} else if (special == "[TIMER2]") {
+	} else if (keyword == "TIMER2") {
 		return (
 			<div className="env-line" key={"env-timer-" + id}>
 				Thank you for your feedback! Here’s a small token for your
@@ -118,7 +211,7 @@ function parseSpecial(special, id) {
 				</span>
 			</div>
 		);
-	} else if (special == "[TIMER3]") {
+	} else if (keyword == "TIMER3") {
 		return (
 			<div className="env-line" key={"env-timer-" + id}>
 				Here’s a small token for your troubles:
@@ -131,43 +224,97 @@ function parseSpecial(special, id) {
 				</div>
 			</div>
 		);
-	} else if (special == "[SURVEY]") {
+	} else if (keyword == "CONFETTI") {
 		return (
 			<div
-				className="env-survey env-line-centered confetti-card"
-				key={"env-survey-line-" + id}
+				className="env-line-centered confetti-card"
+				key={"env-confetti-line-" + id}
 			>
-				SURVEY TIME!
+				{content}
 			</div>
 		);
-	} else if (special == "[CONGRATS]") {
+	} else if (keyword == "HTML") {
 		return (
-			<div className="env-line-centered confetti-card">
-				Congratulations!
-			</div>
+			<div
+				className="env-line"
+				dangerouslySetInnerHTML={{ __html: content }}
+				key={"env-line-html-" + content}
+			></div>
+		);
+	} else if (keyword == "HTML-NUM") {
+		return (
+			<div
+				className="env-line-centered"
+				dangerouslySetInnerHTML={{ __html: content }}
+				key={"env-line-num-" + id}
+			></div>
+		);
+	} else if (keyword == "HTML-CONFETTI") {
+		return (
+			<div
+				className="env-line-centered confetti-card"
+				dangerouslySetInnerHTML={{ __html: content }}
+				key={"env-line-num-" + id}
+			></div>
 		);
 	}
 	return <div></div>;
 }
 
-function parseButtons(text, id, onButtonClick, cardNo) {
-	var buttons = text.split("/");
+function parseDatingTitle(text) {
+	return text.split("[").pop().split("]")[0];
+}
 
+function parseSpecialDating(special, id) {
+	var keyword = special.split("[").pop().split("]")[0];
+	var content = special.split("]")[1];
+	if (keyword == "DOUGH") {
+		return (
+			<div
+				key={"dating-env-line-" + id}
+				className="env-line dating-dough"
+			>
+				{content}
+			</div>
+		);
+	}
+}
+
+function parseButtons(text, id, onButtonClick, cardNo, dating = false) {
+	var buttons = text.split("/");
+	var containerClass = "env-buttons-container";
+	var buttonClass = "button env-button";
+	if (text.includes("[")) {
+		containerClass = "env-buttons-text-container";
+	}
+	if (dating) {
+		containerClass = "dating-buttons-container";
+		buttonClass = "button dating-button dating-button-";
+	}
+
+	var buttonCt = 0;
 	return (
-		<div
-			className="env-buttons-container"
-			key={"env-buttons-container-" + id}
-		>
+		<div className={containerClass} key={containerClass + "-" + id}>
 			{buttons.map((button, i) => {
 				if (button == "") {
 					return null;
+				} else if (button[0] == "[") {
+					return (
+						<span
+							key={"env-button-text-" + id + "-" + i}
+							className={"env-buttons-text"}
+						>
+							{button.slice(1, -1)}
+						</span>
+					);
 				}
+				buttonCt++;
 				return (
 					<button
-						className={"button env-button env-button-" + i}
-						key={"env-button-" + id + "-" + i}
+						className={buttonClass + buttonCt}
+						key={"env-button-" + id + "-" + buttonCt}
 						onClick={() => {
-							onButtonClick(id + "-" + cardNo + "-" + i);
+							onButtonClick(id + "-" + cardNo + "-" + buttonCt);
 						}}
 					>
 						{button}

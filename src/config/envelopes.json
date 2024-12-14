@@ -30,7 +30,7 @@
 
             "That’s right, it’s...",
 
-            "[SURVEY]",
+            "[CONFETTI]SURVEY TIME!",
 
             "We just have a few questions for you! Please answer them to the best of your ability. Remember, there are no wrong answers!",
             
@@ -87,7 +87,7 @@
             ["And we’d love to learn more about what you do!",
             "So, if you wouldn’t mind..."],
 
-            "[SURVEY]",
+            "[CONFETTI]SURVEY TIME!",
             ["My work is **important**.", "/Agree/Disagree"],
             ["My work is **stressful**.", "/Agree/Disagree"],
             ["My work is **fulfilling**.", "/Agree/Disagree"],
@@ -146,7 +146,7 @@
             
             "...Well. We might as well ask what we’ve been wondering.",
             
-            "[SURVEY]",
+            "[CONFETTI]SURVEY TIME!",
 
             ["While on my computer, I feel **connected** to others.", "/Agree/Disagree"],
             ["While on my computer, I get **lonely**.", "/Agree/Disagree"],
@@ -189,7 +189,7 @@
         "cards": [
             "Dear Baker,",
 
-            "[SURVEY]",
+            "[CONFETTI]SURVEY TIME!",
 
             ["Do you believe Dough & Co. is **real**?", "/Yes/No"],
             ["Do you really believe in the **chefs**?", "/Yes/No"],
@@ -355,7 +355,7 @@
         "cards": [
         "Dear Baker,",
 
-            "[CONGRATS]",
+            "[SURVEY]Congradulations!",
 
             "You’ve unlocked every loaf in the game.",
 
@@ -372,7 +372,7 @@
             "You’ve only just begun."],
 
             ["There are still [ACHIEVEMENTS] achievements yet to be claimed.",
-            "What’s more, I’ve unlocked 6 **extra-tough** ones to keep you busy."],
+            "What’s more, I’ve unlocked 6 **extra-toug**h ones to keep you busy."],
 
             "So don’t be a stranger, alright?",
 

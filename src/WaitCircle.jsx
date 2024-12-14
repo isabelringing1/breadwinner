@@ -17,6 +17,7 @@ function WaitCircle(props) {
 		.style.setProperty("--wait-seconds-half", seconds / 2 + "s");
 
 	const wakeLock = useRef(null);
+	const waitTimeout = useRef(null);
 	const finished = useRef(false);
 	const eventInterval = useRef(null);
 	const counter = useRef(0);
@@ -35,13 +36,10 @@ function WaitCircle(props) {
 		try {
 			var wl = await navigator.wakeLock.request("screen");
 			wakeLock.current = wl;
-			//setEndingText(<p>Good.</p>)
 			setTimeout(() => {
 				if (!inWait) {
 					return;
 				}
-				//setEndingText(<p>Now go!</p>)
-				//document.getElementById("ending-text").className = "ending-text fade-out"
 			}, 2000);
 
 			document.getElementById("fill-left-" + id).className = "fill";
@@ -50,22 +48,28 @@ function WaitCircle(props) {
 				"wait-container wait-transition";
 			setHand(hand1);
 			setTimeout(() => {
+				if (document.getElementById("wait-container-" + id) == null) {
+					return;
+				}
 				document.getElementById("wait-container-" + id).className =
 					"wait-container wait-activated";
 				setHand(hand2);
 			}, 600);
 
+			counter.current = 1;
+			emitEvent("productivity", id, counter.current);
 			eventInterval.current = setInterval(() => {
 				counter.current += 1;
 				emitEvent("productivity", id, counter.current);
 			}, 1000);
 
-			setTimeout(() => {
+			waitTimeout.current = setTimeout(() => {
 				if (!inWait) {
 					return;
 				}
 				onFinished();
-				breakWait();
+				emitEvent("productivity", id, "DONE");
+				breakWait(true);
 				clearInterval(eventInterval.current);
 			}, seconds * 1000);
 		} catch (err) {
@@ -75,30 +79,32 @@ function WaitCircle(props) {
 		}
 	};
 
-	const breakWait = () => {
+	const breakWait = (success = false) => {
+		if (!success) {
+			//Reset tooltip progress
+			console.log("Emitting event");
+			emitEvent("productivity", id, 0);
+		}
+		clearTimeout(waitTimeout.current);
 		if (wakeLock.current == null || finished.current) {
 			setInWait(false);
 			clearInterval(eventInterval.current);
-			emitEvent("productivity", id, 0);
-			onCancel();
+			if (!success) {
+				onCancel();
+			}
 			return;
 		}
-
 		onCancel();
 		setHand(null);
 		wakeLock.current.release().then(() => {
 			wakeLock.current = null;
 			setInWait(false);
 			clearInterval(eventInterval.current);
-			emitEvent("productivity", id, 0);
-			//setEndingText(<p>{defaultText}</p>)
-			//document.getElementById("ending-text").className = "ending-text"
 		});
 		document.getElementById("fill-left-" + id).className = "";
 		document.getElementById("fill-right-" + id).className = "";
 		document.getElementById("wait-container-" + id).className =
 			"wait-container";
-		//document.getElementById("ending-text").className = "ending-text"
 	};
 
 	return finished.current ? (
@@ -110,7 +116,9 @@ function WaitCircle(props) {
 			className={"wait-container"}
 			id={"wait-container-" + id}
 			onMouseEnter={trySetWait}
-			onMouseLeave={breakWait}
+			onMouseLeave={(e) => {
+				breakWait();
+			}}
 		>
 			{hand != null ? (
 				<div className="hand-container">
