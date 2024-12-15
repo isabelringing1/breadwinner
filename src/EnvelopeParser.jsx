@@ -283,7 +283,7 @@ function parseSpecialDating(special, id) {
 function parseButtons(text, id, onButtonClick, cardNo, dating = false) {
 	var buttons = text.split("/");
 	var containerClass = "env-buttons-container";
-	var buttonClass = "button env-button";
+	var buttonClass = "button env-button env-button-";
 	if (text.includes("[")) {
 		containerClass = "env-buttons-text-container";
 	}
