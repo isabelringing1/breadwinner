@@ -91,6 +91,7 @@ function Achievement(props) {
 			onMouseLeave={() => {
 				onHoverEnd();
 				toggleTooltip(false);
+				clearInterval(updateTooltipInterval.current);
 				setInWait(false);
 			}}
 			onClick={onClick}

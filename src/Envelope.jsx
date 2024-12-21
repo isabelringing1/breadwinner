@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { formatNumber } from "./Util";
 
 import * as Parser from "./EnvelopeParser";
 
@@ -45,6 +46,8 @@ function Envelope(props) {
 	const [datingMode, setDatingMode] = useState(false);
 	const [datingIndex, setDatingIndex] = useState(0);
 
+	const [datingChoiceDict, setDatingChoiceDict] = useState({});
+
 	useEffect(() => {
 		if (unlocks == null || currentEntry != null) {
 			return;
@@ -64,7 +67,8 @@ function Envelope(props) {
 			}
 			var parsedEntry = Parser.parse(
 				entry.category,
-				on_button_click,
+				onButtonClick,
+				onDatingButtonClick,
 				replace_tokens,
 				setDatingCards
 			);
@@ -80,7 +84,8 @@ function Envelope(props) {
 		if (debugEnvelope != null) {
 			var parsedEntry = Parser.parse(
 				debugEnvelope,
-				on_button_click,
+				onButtonClick,
+				onDatingButtonClick,
 				replace_tokens,
 				setDatingCards
 			);
@@ -194,6 +199,17 @@ function Envelope(props) {
 				setDatingMode(true);
 				document.querySelectorAll(".envelope-card").forEach((card) => {
 					card.style.opacity = 0;
+					card.style.zIndex = -1;
+					card.style.pointerEvents = "none";
+				});
+				document
+					.querySelectorAll(".dating-buttons-container")
+					.forEach((container) => {
+						console.log(container);
+						container.style.pointerEvents = "all";
+					});
+				document.querySelectorAll(".dating-card").forEach((card) => {
+					card.style.pointerEvents = "all";
 				});
 				animate_next_dating_card(
 					null,
@@ -215,8 +231,9 @@ function Envelope(props) {
 				"dating-cursor-" + (datingIndex + 1)
 			);
 			if (
-				prevCard.querySelectorAll(".env-buttons-container").length &&
-				!e.target.classList.contains("en-button")
+				prevCard != null &&
+				prevCard.querySelectorAll(".dating-buttons-container").length &&
+				!e.target.classList.contains("dating-button")
 			) {
 				return;
 			}
@@ -229,19 +246,55 @@ function Envelope(props) {
 		}
 	};
 
-	const on_button_click = (buttonId) => {
+	const onButtonClick = (buttonId) => {
 		reportEnvelopeAnswer(buttonId);
+	};
+
+	const onDatingButtonClick = (
+		id,
+		buttonId,
+		choiceId,
+		choice,
+		points,
+		newContent
+	) => {
+		console.log(buttonId, points, newContent);
+		emitEvent("dating-button-choice", [choiceId, choice, id]);
+	};
+
+	const createChoiceCards = (choiceId, choice, id) => {
+		var index = 0;
+		var card = null;
+		for (; index < datingCards.length; index++) {
+			if (datingCards[index].choiceId == choiceId) {
+				card = datingCards[index];
+				break;
+			}
+		}
+
+		var newCards = Parser.getChoiceCards(card, choice, id);
+		if (newCards.length > 0) {
+			var newDatingCards = [
+				...datingCards.slice(0, index + 1),
+				...newCards,
+				...datingCards.slice(index + 1),
+			];
+			setDatingCards(newDatingCards);
+		}
 	};
 
 	const replace_tokens = (text) => {
 		if (text.includes("[LOAVES]")) {
-			text = text.replace("[LOAVES]", getBreadTotal());
+			var formatted = formatNumber(getBreadTotal());
+			text = text.replace("[LOAVES]", formatted);
 		}
 		if (text.includes("[CLICKS]")) {
-			text = text.replace("[CLICKS]", totalClicks);
+			var formatted = formatNumber(totalClicks);
+			text = text.replace("[CLICKS]", formatted);
 		}
 		if (text.includes("[KEYS]")) {
-			text = text.replace("[KEYS]", totalKeys);
+			var formatted = formatNumber(totalKeys);
+			text = text.replace("[KEYS]", formatted);
 		}
 		if (text.includes("[ACHIEVEMENTS]")) {
 			text = text.replace("[ACHIEVEMENTS]", getUnclaimedAchievements());
@@ -262,7 +315,6 @@ function Envelope(props) {
 		for (var categoryName in AchievementsObject) {
 			var category = AchievementsObject[categoryName];
 			for (var a in category) {
-				console.log(category[a]);
 				if (!category[a].save.claimed && !category[a].save.epilogue) {
 					total += 1;
 				}
@@ -419,6 +471,13 @@ function Envelope(props) {
 					setUnlocks(newUnlocks);
 					animate_close();
 					break;
+				case "dating-button-choice":
+					createChoiceCards(
+						event.value[0], //choiceId
+						event.value[1], //choice
+						event.value[2] //id
+					);
+					break;
 			}
 		}
 	}, [events]);
@@ -453,6 +512,7 @@ function Envelope(props) {
 		if (prevCard != null) {
 			prevCard.style.opacity = 0;
 			prevCard.style.display = "none";
+			prevCard.style.zIndex = -1;
 		}
 		currentCard.style.opacity = 1;
 		if (cursor != null) {
@@ -460,6 +520,11 @@ function Envelope(props) {
 			setTimeout(() => {
 				cursor.style.opacity = 1;
 			}, 500);
+		}
+		if (currentCard.classList.contains("shake")) {
+			currentCard.classList.remove("shake");
+			void currentCard.offsetWidth;
+			currentCard.classList.add("shake");
 		}
 	};
 
@@ -494,7 +559,7 @@ function Envelope(props) {
 							key={"envelope-card-" + i}
 							id={"envelope-card-" + i}
 							style={{
-								zIndex: cards.length - i + 1,
+								zIndex: cards.length - i + 40,
 								filter:
 									"drop-shadow(0px 5px 6px rgba(0, 0, 0, " +
 									dropValue +
@@ -511,7 +576,10 @@ function Envelope(props) {
 							var innerBorderClass = "dating-inner-border";
 							if (cardData.buttons) {
 								cardClass += " dating-card-buttons";
-								innerBorderClass += " inner-border";
+								innerBorderClass += " env-inner-border";
+							}
+							if (cardData.shake) {
+								cardClass += " shake";
 							}
 							return (
 								<div
@@ -519,7 +587,7 @@ function Envelope(props) {
 									key={"dating-card-" + i}
 									id={"dating-card-" + i}
 									style={{
-										zIndex: datingCards.length - i + 1,
+										zIndex: datingCards.length - i + 40,
 									}}
 								>
 									{cardData.title ? (

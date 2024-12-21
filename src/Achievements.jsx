@@ -103,7 +103,6 @@ function Achievements(props) {
 					break;
 				case "keys-converted":
 					var keyAchievements = AchievementsObject["keys"].slice(1);
-					console.log(keyAchievements);
 					keyAchievements.forEach((a, i) => {
 						newAchievements["keys"][i + 1].save.progress =
 							event.amount;
@@ -176,8 +175,7 @@ function Achievements(props) {
 				case "daily-order-claim":
 					var dailyOrderAchievements =
 						AchievementsObject["daily_orders"];
-					var [total, totalLastHour, totalLateNight] =
-						parseDailyOrders(event.value);
+					var [total, totalLastHour] = parseDailyOrders(event.value);
 					if (total == 1) {
 						newAchievements["daily_orders"][0].save.revealed = true;
 					}
@@ -194,11 +192,6 @@ function Achievements(props) {
 							} else {
 								a.save.progress = totalLastHour;
 							}
-						} else if (
-							a.id == "daily_order_3" &&
-							totalLateNight >= a.amount
-						) {
-							achieve("daily_orders", i, newAchievements);
 						}
 					});
 
@@ -210,6 +203,20 @@ function Achievements(props) {
 							newAchievements["stretch"][0].save.progress = total;
 						}
 					}
+					break;
+				case "order-board-claim":
+					var orderBoardAchiemevent =
+						AchievementsObject["order-board"][0];
+					orderBoardAchiemevent.save.progress = event.value;
+					if (event.value >= orderBoardAchiemevent.amount) {
+						achieve("order-board", 0, newAchievements);
+					} else if (
+						event.value >=
+						orderBoardAchiemevent.amount / 4
+					) {
+						orderBoardAchiemevent.save.revealed = true;
+					}
+
 					break;
 				case "breadcoin-gain":
 					var spendAchievement = AchievementsObject["misc"][3];
@@ -228,20 +235,12 @@ function Achievements(props) {
 					break;
 				case "productivity":
 					if (event.value == "stretch_4") {
-						console.log(
-							"achieving ",
-							AchievementsObject["stretch"][3]
-						);
 						achieve("stretch", 3, newAchievements);
 						claimAchievement(AchievementsObject["stretch"][3]);
 						break;
 					}
 					var index = Number(event.value.slice(-1)) - 1;
 					if (index >= 3 && index <= 5) {
-						console.log(
-							index,
-							AchievementsObject["productivity"][index]
-						);
 						achieve("productivity", index, newAchievements);
 						claimAchievement(
 							AchievementsObject["productivity"][index]
@@ -279,6 +278,7 @@ function Achievements(props) {
 					}
 					break;
 				case "banana-baked": //stretch 5
+					console.log(event, newAchievements["stretch"][4]);
 					if (
 						event.amount >= newAchievements["stretch"][4].amount &&
 						!newAchievements["stretch"][4].save.epilogue
@@ -294,7 +294,6 @@ function Achievements(props) {
 	}, [events]);
 
 	const achieve = (category, index, newAchievements, revealNext = true) => {
-		console.log(newAchievements[category][index]);
 		if (newAchievements[category][index].save.achieved) {
 			return;
 		}
@@ -341,7 +340,6 @@ function Achievements(props) {
 	const parseDailyOrders = (dailyOrders) => {
 		var total = dailyOrders.length;
 		var totalLastHour = 0;
-		var totalLateNight = 0;
 		dailyOrders.forEach((entry, i) => {
 			var timeSinceGeneration = entry[1];
 			console.log(
@@ -356,14 +354,9 @@ function Achievements(props) {
 				timeSinceGeneration < 86400000
 			) {
 				totalLastHour += 1;
-			} else if (
-				timeSinceGeneration >= 64800000 &&
-				timeSinceGeneration <= 68400000
-			) {
-				totalLateNight += 1;
 			}
 		});
-		return [total, totalLastHour, totalLateNight];
+		return [total, totalLastHour];
 	};
 
 	const animateReward = (amount, id) => {
@@ -388,6 +381,7 @@ function Achievements(props) {
 	var bookmarkBod = document.getElementById("bookmark-body");
 	var achievementAlert = document.getElementById("achievement-alert");
 	var dailyOrdersContainer = document.getElementById("daily-order-container");
+	var version = document.getElementById("version");
 
 	const updateBusyAchievement = (newAchievements) => {
 		if (
@@ -456,6 +450,7 @@ function Achievements(props) {
 		achievementsContainer.style.pointerEvents = "auto";
 		bookmarkRibb.style.pointerEvents = "none";
 		dailyOrdersContainer.style.zIndex = 10;
+		version.style.zIndex = 10;
 		setTimeout(() => {
 			achievementsDiv.classList.remove("bounce-in");
 			bookmarkDiv1.classList.remove("bounce-in-bookmark");
@@ -486,6 +481,7 @@ function Achievements(props) {
 			bookmarkRibb.style.pointerEvents = "auto";
 			animating.current = false;
 			dailyOrdersContainer.style.zIndex = 20;
+			version.style.zIndex = 22;
 		}, 1000);
 		setShowAchievements(false);
 	};

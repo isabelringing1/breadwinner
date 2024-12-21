@@ -372,16 +372,18 @@
                 "achieved": false,
                 "claimed": false
             }
-        },
+        }
+    ],
+    "order-board": [
         {
-            "id": "daily_order_3",
-            "category": "daily_orders",
-            "display_name": "Witching Hour",
-            "desc": "Fulfill a Daily Order between the hours of 3am and 4am.",
-            "image_path": "/images/calendar_3.png",
-            "amount": 1,
-            "reward": 10000,
-            "timers": 60,
+            "id": "order_board_0",
+            "category": "order_board",
+            "display_name": "Order Up!",
+            "desc": "Fulfill 50 Order Board orders.",
+            "image_path": "/images/pancake.png",
+            "amount": 50,
+            "reward": 100000,
+            "timers": 45,
             "save": {
                 "revealed": false,
                 "achieved": false,

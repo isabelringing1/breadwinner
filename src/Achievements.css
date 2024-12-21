@@ -115,6 +115,10 @@
     background-color: #EB8080;
 }
 
+.order_board-category{
+    background-color: #36B852;
+}
+
 #misc_1:not(.locked){
     background-color: #EDE269;
 }

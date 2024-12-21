@@ -471,7 +471,7 @@ function OrderBoard(props) {
 			amount: order.bc_reward,
 		};
 		var orderBoardOrderClaimEvent = {
-			id: "order-board-order-claim",
+			id: "order-board-claim",
 			value: totalOrderBoardOrders + 1,
 		};
 		emitEvents([breadcoinGainEvent, orderBoardOrderClaimEvent]);
@@ -562,6 +562,7 @@ function OrderBoard(props) {
 	var dailyOrderContainer = document.getElementById("daily-order-container");
 	var bookmarkDiv = document.getElementById("do-bookmark-div");
 	var bookmarkBody = document.getElementById("do-bookmark-body");
+	var version = document.getElementById("version");
 	var achievementsContainer = document.getElementById(
 		"achievements-container"
 	);
@@ -574,6 +575,7 @@ function OrderBoard(props) {
 		dailyOrderContainer.style.pointerEvents = "auto";
 		bookmarkBody.style.pointerEvents = "none";
 		achievementsContainer.style.zIndex = 10;
+		version.style.zIndex = 10;
 		setTimeout(() => {
 			orderContainerDiv.classList.remove("do-bounce-in");
 			bookmarkDiv.classList.remove("do-bounce-in-bookmark");
@@ -598,6 +600,7 @@ function OrderBoard(props) {
 			bookmarkBody.style.pointerEvents = "auto";
 			animating.current = false;
 			achievementsContainer.style.zIndex = 20;
+			version.style.zIndex = 22;
 		}, 1000);
 		setShowDailyOrder(false);
 	};

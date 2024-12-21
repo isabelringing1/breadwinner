@@ -264,6 +264,7 @@ function App() {
 		} else if (!bread || bread.save.cost > breadCoin) {
 			return false;
 		}
+		var eventsToEmit = [];
 		var now = Date.now();
 		var loaf = {
 			id: id,
@@ -292,11 +293,20 @@ function App() {
 		setBreadObject(newBread);
 		updateBreadTooltip(newBread[id]);
 		setBreadBaked(breadBaked + 1);
-		emitEvent("bread-baked", null, breadBaked + 1);
+		eventsToEmit.push({
+			id: "bread-baked",
+			amount: breadBaked + 1,
+		});
 		if (id == "banana") {
-			emitEvent("banana-baked", null, newBread[id].save.purchase_count);
+			eventsToEmit.push({
+				id: "banana-baked",
+				amount: newBread[id].save.purchase_count,
+			});
+
 			if (newBread[id].save.purchase_count == 1) {
-				emitEvent("bread-finished", null, null);
+				eventsToEmit.push({
+					id: "bread-finished",
+				});
 			}
 		}
 		if (breadBaked == 2) {
@@ -309,7 +319,9 @@ function App() {
 			if (id == "challah") {
 				event = "unlock-daily-order";
 			} else if (id == "cinnamon_raisin") {
-				emitEvent("bread-mid", null, null);
+				eventsToEmit.push({
+					id: "bread-mid",
+				});
 			} else if (id == "pumpernickel") {
 				event = "unlock-order-board";
 			} else if (id == "banana") {
@@ -317,7 +329,9 @@ function App() {
 			}
 			unlockEnvelope(id, event);
 		}
-
+		if (eventsToEmit.length > 0) {
+			emitEvents(eventsToEmit);
+		}
 		reportLoafBought(loaf, breadBaked + 1, newOvenQueue.length, playerId);
 	};
 
@@ -1129,7 +1143,10 @@ function App() {
 				playerData.achievements_object
 			)) {
 				for (var i = 0; i < array.length; i++) {
-					if (newAchievements[categoryName] == null) {
+					if (
+						newAchievements[categoryName] == null ||
+						(categoryName == "daily_orders" && i == 2)
+					) {
 						continue;
 					}
 					newAchievements[categoryName][i].save =
