@@ -87,7 +87,7 @@ function BlockingScreen(props) {
 					</a>
 					.
 				</div>
-				<div className="blocking-screen-text">v1.0.0b</div>
+				<div className="blocking-screen-text">v1.0.0</div>
 			</div>
 		</div>
 	);
@@ -330,6 +330,23 @@ function BlockingScreen(props) {
 						rel="noreferrer"
 					>
 						known
+					</a>
+					!
+				</div>
+				<div className="blocking-screen-text question">
+					I installed the extension. Why aren't my clicks being
+					registered?
+				</div>
+				<div className="blocking-screen-text answer">
+					If you had the page open before installing the extension,
+					give it a refresh so that it picks up future clicks. If a
+					website is consistently not picking up activity, please{" "}
+					<a
+						href="https://forms.gle/XZsfyj8Vem2RhEYHA"
+						target="_blank"
+						rel="noreferrer"
+					>
+						report it
 					</a>
 					!
 				</div>

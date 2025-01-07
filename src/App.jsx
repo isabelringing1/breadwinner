@@ -542,7 +542,7 @@ function App() {
 		setupTooltip(show, mousePos);
 		if (show) {
 			var text1 = "Convert for +";
-			var text2 = Math.round(clicks * multiplier);
+			var text2 = formatNumber(Math.round(clicks * multiplier));
 			setTooltipContentArray([text1, "[BC]", text2]);
 		}
 	};
