@@ -54,7 +54,7 @@ function Wallet(props) {
 	};
 
 	return (
-		<div id="wallet">
+		<div id="wallet" className="glitchable">
 			<div id="click-wallet">
 				<div id="click-container">
 					<span id="click-num">

@@ -291,6 +291,7 @@ p{
     align-items: center;
     filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.45));
     z-index: 21;
+    pointer-events: none;
 }
 
 #speech-bubble{
@@ -344,15 +345,22 @@ p{
 }
 
 #ending-logo{
-    width: 3vh;
+    width: 3.7vh;
     position: fixed;
-    margin-left: -1vh;
-    margin-top: -1vh;
-    transform: rotateZ(-7deg);
+    margin-left: -1.6vh;
+    margin-top: -1.2vh;
+    transform: rotateZ(-14deg);
 }
 
 #ending-logo:active{
     filter: brightness(0.9);
+}
+
+#ending-logo-heart{
+    width: 1.7vh;
+    position: fixed;
+    margin-left: 1.65vh;
+    margin-top: -1.1vh;
 }
 
 #trial-mode-marker{
@@ -433,15 +441,15 @@ p{
 
 @keyframes jiggle-crown {
     0% {
-      transform: rotateZ(-7deg);
+      transform: rotateZ(-14deg);
     }
     20% {
-        transform: rotateZ(-14deg);
+        transform: rotateZ(-21deg);
     }
     75% {
-        transform: rotateZ(0deg);
+        transform: rotateZ(-7deg);
     }
-    100% { transform: rotateZ(-7deg); }
+    100% { transform: rotateZ(-14deg); }
 }
 
 @keyframes jiggle {

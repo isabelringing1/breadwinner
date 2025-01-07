@@ -17,6 +17,7 @@ function Envelope(props) {
 		showEnvelope,
 		setShowEnvelope,
 		emitEvent,
+		emitEvents,
 		timersUnlocked,
 		setTimersUnlocked,
 		setTimers,
@@ -32,6 +33,8 @@ function Envelope(props) {
 		reportEnvelopeCompleted,
 		debugEnvelope,
 		setDebugEnvelope,
+		datingScore,
+		setDatingScore,
 	} = props;
 	const animating = useRef(false);
 	const animatingTimer = useRef(false);
@@ -46,9 +49,11 @@ function Envelope(props) {
 	const [datingMode, setDatingMode] = useState(false);
 	const [datingIndex, setDatingIndex] = useState(0);
 
-	const [datingChoiceDict, setDatingChoiceDict] = useState({});
-
 	useEffect(() => {
+		checkForNextEnvelope();
+	}, [unlocks, currentEntry]);
+
+	const checkForNextEnvelope = () => {
 		if (unlocks == null || currentEntry != null) {
 			return;
 		}
@@ -70,15 +75,18 @@ function Envelope(props) {
 				onButtonClick,
 				onDatingButtonClick,
 				replace_tokens,
-				setDatingCards
+				datingScore
 			);
-			if (parsedEntry != null) {
-				setCurrentEntry(entry);
-				setCards(parsedEntry);
-				peek_in_envelope();
+			if (parsedEntry.cards != null && parsedEntry.cards.length) {
+				setCards(parsedEntry.cards);
 			}
+			if (parsedEntry.datingCards != null) {
+				setDatingCards(parsedEntry.datingCards);
+			}
+			setCurrentEntry(entry);
+			peek_in_envelope();
 		}
-	}, [unlocks]);
+	};
 
 	useEffect(() => {
 		if (debugEnvelope != null) {
@@ -87,18 +95,21 @@ function Envelope(props) {
 				onButtonClick,
 				onDatingButtonClick,
 				replace_tokens,
-				setDatingCards
+				datingScore
 			);
-			if (parsedEntry != null) {
-				setCurrentEntry({
-					category: debugEnvelope,
-					event: null,
-					finish_time: false,
-					debug: true,
-				});
-				setCards(parsedEntry);
-				peek_in_envelope();
+			if (parsedEntry.cards != null && parsedEntry.cards.length) {
+				setCards(parsedEntry.cards);
 			}
+			if (parsedEntry.datingCards != null) {
+				setDatingCards(parsedEntry.datingCards);
+			}
+			setCurrentEntry({
+				category: debugEnvelope,
+				event: null,
+				finish_time: false,
+				debug: true,
+			});
+			peek_in_envelope();
 		}
 	}, [debugEnvelope]);
 
@@ -151,6 +162,8 @@ function Envelope(props) {
 
 	const animate_open = () => {
 		if (animating.current || showEnvelope) return;
+
+		emitEvent("open-envelope");
 		setCardIndex(0);
 		jiggleInterval.current = null;
 
@@ -177,6 +190,9 @@ function Envelope(props) {
 					"envelope-container"
 				).style.pointerEvents = "auto";
 				setShowEnvelope(true);
+				if (!cards.length && datingCards != null) {
+					startDating(true);
+				}
 			}, 750);
 		}, 250);
 	};
@@ -186,9 +202,16 @@ function Envelope(props) {
 		if (!datingMode) {
 			var card = document.getElementById("envelope-card-" + cardIndex);
 			if (
-				card.querySelectorAll(".env-buttons-container").length &&
+				card.querySelectorAll(".fake-button").length &&
+				e.target.classList.contains("fake-button")
+			) {
+				return;
+			} else if (
+				card.querySelectorAll(".env-buttons-text-container").length &&
+				!card.querySelectorAll(".fake-button").length &&
 				!e.target.classList.contains("env-button")
 			) {
+				console.log("returning");
 				return;
 			}
 
@@ -196,26 +219,7 @@ function Envelope(props) {
 			if (cardIndex + 1 < cards.length) {
 				animate_next_card(card);
 			} else if (datingCards != null) {
-				setDatingMode(true);
-				document.querySelectorAll(".envelope-card").forEach((card) => {
-					card.style.opacity = 0;
-					card.style.zIndex = -1;
-					card.style.pointerEvents = "none";
-				});
-				document
-					.querySelectorAll(".dating-buttons-container")
-					.forEach((container) => {
-						console.log(container);
-						container.style.pointerEvents = "all";
-					});
-				document.querySelectorAll(".dating-card").forEach((card) => {
-					card.style.pointerEvents = "all";
-				});
-				animate_next_dating_card(
-					null,
-					document.getElementById("dating-card-0"),
-					document.getElementById("dating-cursor-0")
-				);
+				startDating();
 			} else {
 				animate_close();
 			}
@@ -246,6 +250,26 @@ function Envelope(props) {
 		}
 	};
 
+	const startDating = (overrideWait = false) => {
+		setDatingMode(true);
+		document.querySelectorAll(".envelope-card").forEach((card) => {
+			card.style.opacity = 0;
+			card.style.zIndex = -1;
+			card.style.pointerEvents = "none";
+		});
+		document
+			.querySelectorAll(".dating-buttons-container")
+			.forEach((container) => {
+				container.style.pointerEvents = "all";
+			});
+		animate_next_dating_card(
+			null,
+			document.getElementById("dating-card-0"),
+			document.getElementById("dating-cursor-0"),
+			overrideWait
+		);
+	};
+
 	const onButtonClick = (buttonId) => {
 		reportEnvelopeAnswer(buttonId);
 	};
@@ -256,10 +280,16 @@ function Envelope(props) {
 		choiceId,
 		choice,
 		points,
-		newContent
+		maxPoints
 	) => {
-		console.log(buttonId, points, newContent);
-		emitEvent("dating-button-choice", [choiceId, choice, id]);
+		// have to reroute info to events otherwise no states would have updated values
+		emitEvent("dating-button-choice", [
+			choiceId,
+			choice,
+			id,
+			points,
+			maxPoints,
+		]);
 	};
 
 	const createChoiceCards = (choiceId, choice, id) => {
@@ -272,7 +302,7 @@ function Envelope(props) {
 			}
 		}
 
-		var newCards = Parser.getChoiceCards(card, choice, id);
+		var newCards = Parser.getChoiceCards(card, choice, id, datingScore);
 		if (newCards.length > 0) {
 			var newDatingCards = [
 				...datingCards.slice(0, index + 1),
@@ -339,6 +369,22 @@ function Envelope(props) {
 		}
 	}, [cardIndex]);
 
+	useEffect(() => {
+		var card = document.getElementById("dating-card-" + datingIndex);
+		if (card != null && card.querySelector(".confetti-card")) {
+			confetti({
+				particleCount: 150,
+				spread: 340,
+				startVelocity: 28,
+				origin: {
+					x: 0.5,
+					y: 0.4,
+				},
+				ticks: 100,
+			});
+		}
+	}, [datingIndex]);
+
 	const animate_next_card = async (currentCard) => {
 		if (animating.current || !showEnvelope) return;
 		animating.current = true;
@@ -356,18 +402,40 @@ function Envelope(props) {
 		var nextCard = document.getElementById(
 			"envelope-card-" + (cardIndex + 1)
 		);
-		if (nextCard != null && nextCard.querySelector(".envelope-timer-div")) {
-			var firstTime = false;
-			if (!timersUnlocked) {
-				setTimersUnlocked(true);
-				firstTime = true;
+
+		if (nextCard != null) {
+			check_for_card_fx(nextCard);
+			if (nextCard.querySelector(".envelope-timer-div")) {
+				var firstTime = false;
+				if (!timersUnlocked) {
+					setTimersUnlocked(true);
+					firstTime = true;
+				}
+				animating.current = true;
+				animatingTimer.current = true;
+				await animate_timer(firstTime);
+				setTimers(timers + 1);
+				animating.current = false;
+				animatingTimer.current = false;
 			}
-			animating.current = true;
-			animatingTimer.current = true;
-			await animate_timer(firstTime);
-			setTimers(timers + 1);
-			animating.current = false;
-			animatingTimer.current = false;
+		}
+	};
+
+	const check_for_card_fx = (card) => {
+		if (card.querySelector(".achievements-in")) {
+			emitEvent("animate-achievements-in");
+		} else if (card.querySelector(".achievements-out")) {
+			emitEvent("animate-achievements-out");
+		} else if (card.querySelector(".achievements-scramble")) {
+			emitEvent("animate-achievements-scramble");
+		} else if (card.querySelector(".glitch-1")) {
+			emitEvent("animate-glitch", null, 1);
+		} else if (card.querySelector(".glitch-2")) {
+			emitEvent("animate-glitch", null, 2);
+		} else if (card.querySelector(".glitch-3")) {
+			emitEvent("animate-glitch", null, 3);
+		} else if (card.querySelector(".stop-glitch")) {
+			emitEvent("stop-glitch");
 		}
 	};
 
@@ -440,12 +508,22 @@ function Envelope(props) {
 			}
 		}
 		reportEnvelopeCompleted(currentEntry.category);
+		var eventsToEmit = [];
 		if (currentEntry.event != null && emitCurrentEvent) {
-			emitEvent(currentEntry.event);
+			eventsToEmit.push({
+				id: currentEntry.event,
+			});
 		}
 		var state = getState(entry.category);
 		if (state > storyState) {
 			setStoryState(state);
+			eventsToEmit.push({
+				id: "story-state-changed",
+				value: state,
+			});
+		}
+		if (eventsToEmit.length) {
+			emitEvents(eventsToEmit);
 		}
 
 		return newUnlocks;
@@ -458,6 +536,12 @@ function Envelope(props) {
 		if (id == "banana") {
 			return 2; //first endng
 		}
+		if (id == "orders_14") {
+			return 3; // dating sim
+		}
+		if (id == "ending") {
+			return 4; // second ending
+		}
 		return 0;
 	};
 
@@ -466,12 +550,19 @@ function Envelope(props) {
 			var event = events[i];
 			switch (event.id) {
 				case "skip-envelope":
-					var newUnlocks = [...unlocks];
-					try_finish_envelope(newUnlocks);
-					setUnlocks(newUnlocks);
 					animate_close();
 					break;
 				case "dating-button-choice":
+					if (event.value[3] != -1) {
+						setDatingScore([
+							datingScore[0] + event.value[3], //points
+							datingScore[1] + event.value[4], //max points
+						]);
+						console.log("New dating score: ", [
+							datingScore[0] + event.value[3],
+							datingScore[1] + event.value[4],
+						]);
+					}
 					createChoiceCards(
 						event.value[0], //choiceId
 						event.value[1], //choice
@@ -492,6 +583,7 @@ function Envelope(props) {
 		}
 		var newUnlocks = [...unlocks];
 		newUnlocks = try_finish_envelope(newUnlocks);
+		setUnlocks(newUnlocks);
 		setTimeout(() => {
 			document
 				.getElementById("big-envelope")
@@ -502,19 +594,24 @@ function Envelope(props) {
 				"none";
 			animating.current = false;
 			setShowEnvelope(false);
-			setUnlocks(newUnlocks);
 			setCurrentEntry(null);
 		}, 750);
 	};
 
-	const animate_next_dating_card = async (prevCard, currentCard, cursor) => {
-		if (animating.current || !showEnvelope) return;
+	const animate_next_dating_card = async (
+		prevCard,
+		currentCard,
+		cursor,
+		overrideWait
+	) => {
+		if (!overrideWait && (animating.current || !showEnvelope)) return;
 		if (prevCard != null) {
 			prevCard.style.opacity = 0;
 			prevCard.style.display = "none";
 			prevCard.style.zIndex = -1;
 		}
 		currentCard.style.opacity = 1;
+		currentCard.style.pointerEvents = "auto";
 		if (cursor != null) {
 			cursor.style.opacity = 0;
 			setTimeout(() => {
@@ -591,7 +688,14 @@ function Envelope(props) {
 									}}
 								>
 									{cardData.title ? (
-										<div className="title-card">Dough</div>
+										<div className="title-card">
+											{cardData.title
+												.charAt(0)
+												.toUpperCase() +
+												cardData.title
+													.slice(1)
+													.toLowerCase()}
+										</div>
 									) : null}
 									<div className={innerBorderClass}>
 										{cardData.body}

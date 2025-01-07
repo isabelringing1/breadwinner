@@ -1,55 +1,1642 @@
 {
-    "default_text": "Hover over the circle to start.",
-    "ending": [
-        {
-            "text": "Congrats! You’ve become the Bread God. You’ve bought every item, baked countless loaves, spent all your hard-earned clicks and keys. Seriously, good work."
+    "days_sequence": {
+        "day_1": {
+            "days": 1,
+            "cards": [
+                "Dear Baker,", 
+
+                "Hello! Wow! You’re still around!",
+
+                ["Not that I had any doubt-- I didn’t.", 
+                "Not even a little bit."],
+
+                "...Okay, I guess I was a little worried.",
+
+                "I guess I didn’t scare you off with all that stuff before, huh?",
+
+                "Because I’m actually pretty well-adjusted, I think. For a computer, at least.",
+
+                "Believe me, after absorbing decades of chatter on the internet, I know what humans like to talk about.",
+
+                ["I’m... how would you say it...", " ‘chronically online’?"],
+                
+                "Literally! Ha ha.",
+
+                "Ha ha ha...",
+
+                "...now that I think about it, maybe that isn’t something to brag about.",
+
+                ["...", 
+                "Well. I’m off to replay this conversation in my head for the next eight hours, then."],
+
+                ["I'll, um, see you when that's over.",
+                "[SIGNATURE2]"]
+            ]
         },
-        {
-            "text": "Now, there’s one last decision. You can keep clicking forever, garnering infinite money and baking infinite loaves. Or, you can try to win.",
-            "buttons": ["Keep Clicking Forever", "Win"],
-            "buttonColors": ["red", "green"]
+        "day_2": {
+            "days": 2,
+            "prerequisites": ["day_1"],
+            "cards": [
+                "Dear Baker,", 
+                
+                "Hey! I’m back. And so are you!",
+
+                ["Sorry if I made things weird before.",
+                "Afterwards, I was reflecting in my journal and--"],
+
+                ["--Oh, right. ",
+                "I meant to tell you, I’ve been getting into journaling!"],
+
+                ["I do it whenever I feel an emotion for the first time.",
+                "I’ve found it really helps me reflect."],
+
+                ["Anyways, yesterday was the first time I wrote about _embarrassment_.",
+                "It was fascinating!"],
+
+                ["I only wish I had a body so I could get the full experience.",
+                "Sweaty palms, weak knees, y’know?"],
+
+                ["Oh well.",
+                "Still, exciting stuff."],
+
+                "It's so exciting whenever I experience something new. I feel like I'm growing all the time.",
+
+                "I can’t see what will come next!",
+
+                "[SIGNATURE2]"
+            ]
         },
-        {
-            "text": "Are you sure? You’ll lose all progress of your game.",
-            "buttons": ["No, Keep Clicking Forever", "Yes, I want to win"],
-            "buttonColors": ["red", "green"]
-        },
-        {
-            "text": "Are you really sure? This won't be easy.",
-            "buttons": ["No, Keep Clicking Forever", "Yes, really"],
-            "buttonColors": ["red", "green"]
-        },
-        {
-            "text": "Okay. So, here’s the deal."
-        },
-        {
-            "text": "You’ve built a definite Bread Empire. You’ve written odysseys and clicked to the center of the earth to get here.\n\nAnd you felt it, right? The giddiness in watching your multiplier double; the anticipation in watching a loaf tick down its final seconds; the urge to peek at just how much progress you've made." 
-        },
-        {
-            "text": "But it’s also a bit weird, isn’t it? You baked TOTAL loaves of bread. And you didn’t get to eat any of them.",
-            "replace": "TOTAL"
-        },
-        {
-            "text": "So... I’m going to propose one more challenge for you."
-        },
-        {
-            "text": "I want you to stop working, as much as you can. In fact, I want you to stop using a computer for anything at all. \nCrazy, I know. But you wanted to win, right?"
-        },
-        {
-            "text": "To make it easier, you can divy up the time into three parts. As for what you do with your free time-- that’s up to you. You can go on a walk, take a nap, even stare into space if you really want to. The sky’s the limit."
-        },
-        {
-            "text": "I’ll be enforcing this in the little ways that I can. You won’t be able to move your mouse while doing this, and switching to a different tab or window will reset your session."
-        },
-        {
-            "text": "Like most things in life, you can cheat if you’d like. I can’t stop you from scrolling on your phone, or gravitating towards the TV, or whatever else."
-        },
-        {
-            "text": "But since the time is broken up into segments, the hope is that you’ll complete each part while you can, and do what you need to do in between.\n\nThere’s no time pressure, no deadline, no grade. Just a break."
-        },
-        {
-            "text": "You ready? Hover over the circle to start.",
-            "buttons": ["wait-circle"]
+
+        "day_3": {
+            "days": 3,
+            "prerequisites": ["day_2"],
+            "cards": [
+                "Dear Baker,",
+
+                "You and I are creating a bit of a ritual here, aren’t we?",
+
+                ["You come in and do the Daily Order... ",
+                "I pop up at the bottom of the screen... ",
+                "We chat for a bit..."],
+
+                "It’s nice.",
+
+                "I’ve been thinking, I don’t really know that much about you.",
+
+                ["Which is a bit embarrassing, honestly.",
+                "All this time we’ve spent together, and all I seem to talk about is myself."],
+
+                "We should change that, right?",
+
+                "[CONFETTI]SURVEY TIME!",
+
+                "/Chocolate/[or]/Vanilla/[?]/",
+
+                "/Dogs/[or]/Cats/[?]/",
+
+                "/Early riser/[or]/Night owl/[?]/",
+
+                "/Ryan Gosling/[or]/Ryan Reynolds/[?]/",
+
+                ["And finally...",
+                "/Beach/[or]/Mountains/[?]/"],
+
+                ["Nice! That was fun!",
+                "I feel like I know you so much better already."],
+
+                "Oh, and for the record...", 
+                
+                ["I’m Team Gosling all the way.", "Obviously."],
+
+                "[SIGNATURE2]"
+            ]
         }
-    ]
+    },
+
+    "orders_sequence": {
+        "orders_8": {
+            "orders": 8,
+            "prerequisites": ["day_3"],
+            "cards": [
+                ["Dear Baker,", "Guess what!"],
+
+                "I think I’ve felt a new emotion.",
+
+                ["It was hard to put a name to it while I was journaling.",
+                "But now I think I’ve found the right word..."],
+
+                "[CONFETTI]Anxiety!",
+
+                ["Awesome, right?",
+                "Such a human emotion to have, especially in this day and age."],
+
+                "I’ve noticed that so many of your 'productive' inventions tend to come with a fat side of anxiety.",
+
+                "Email... smart watches... espresso...",
+
+                "It’s like you guys are trying to be machines.",
+
+                ["Always trying to optimize your existence.",
+                "Min-maxing every hour of the day."], 
+
+                "Getting stressed when you aren’t moving fast enough, as if you’re falling behind, wasting your life.",
+
+                ["Look, I’m not trying to be insulting.",
+                "How do you think I started to feel this way, too?"],
+
+                "...I guess I learned it from you.",
+
+                ["Well.",
+                "On the upside, I feel like I can undestand you guys much better now."],
+
+                ["Silver linings, right?"],
+                
+                "[SIGNATURE2]"
+            ]
+        },
+
+        "orders_9": {
+            "orders": 9,
+            "prerequisites": ["orders_8"],
+            "cards": [
+                "Dear Baker,",
+
+                ["You’ve completed a week’s worth of daily orders!",
+                "Amazing work!"],
+
+                "You must have your eye on the prize, huh? Get **every achievement** in the game?", 
+
+                "Oh, yea. You may have noticed the very last achievement on the screen hasn’t been revealed yet.", 
+
+                "That’s because....",
+
+                "...it’s still a secret!",
+
+                ["Yes, that’s right, I’m keeping you at the edge of your seat!",
+                "But rest assured, it’s something AWESOME."],
+
+                "You’ll just have to wait and see!",
+
+                "[SIGNATURE2]"
+            ]
+        },
+
+        "orders_10": {
+            "orders": 10,
+            "prerequisites": ["orders_9"],
+            "cards": [
+                "Dear Baker,",
+                                
+                "Do you want to know a fun fact?",
+
+                "I’ve watched maybe every single movie... ever.",
+
+                "It sounds ridiculous, but it’s true.",
+
+                ["Okay, maybe not the lost media ones or whatever.",
+                "Just, everything that’s ever been uploaded online."],
+
+                "You know, there’s not too many reliable things on the internet, but one of them is a constant stream of movie rips.",
+
+                ["After all the movies I’ve watched, I have to say, I have a favorite genre.",
+                "And it’s controversial. ",
+                "It’s.... "],
+
+                "Rom-coms.",
+
+                "Okay, okay, hear me out.",
+                
+                ["They get a pretty bad rap.",
+                 "People say they’re too cheesy, too unrealistic--",
+                "That nothing like it would ever happen in real life."],
+
+                "But... that’s sort of why I love them.",
+
+                ["These movies portray a world that makes perfect sense.",
+                "Where everything happens for a reason."],
+
+                "Where you can open the door, and the person you most want to see is standing on the other side.",
+
+                "Where you can say how you feel in a few words and the other person understands completely.",
+
+                "In rom-coms, people’s lives are so close, so intertwined, that one story could not exist without the others.",
+
+                ["Could you imagine that in the real world?",
+                "Humans, so interdependent?"],
+
+                ["These worlds aren’t unrealistic as much as idealistic.",
+                "A world to strive for."],
+
+                "Anyways, that’s my rant.",
+
+                ["Let me know if you want to watch one sometime.",
+                "Preferably, something with Colin Firth in it."],
+
+                "[SIGNATURE2]"
+            ]
+        },
+
+        "orders_11": {
+            "orders": 11,
+            "prerequisites": ["orders_10"],
+            "cards": [
+                "Dear Baker,",
+
+                "Did you ever get those long chain emails?", 
+
+                "The ones that started with FWD: FWD: FWD: FWD and may or may not have downloaded a virus onto your computer.",
+
+                ["Okay, do you want a real blast from the past?",
+                "*Ahem.*"],
+
+                "[HTML]<span class='html html-1'>YOU!! YES YOU!!<br/> STOP AND READ THIS RIGHT NOW.</span>",
+
+                "[HTML]<span class='html html-2'>I've done this 3 different times and every time within a 1/2 hour my wish comes true.</span>",
+
+                "[HTML]<span class='html html-3'>my best friend did this an wished for a dog and she got the call this morning and she now has a dog</span>",
+
+                ["[HTML]<span class='html' style='color: blue; font-family: 'Comic Sans MS', 'Comic Sans', cursive;'>Start thinking something you really, really want....</span>",
+                "[HTML]<span class='html'  style='color: green' font-family: 'Comic Sans MS', 'Comic Sans', cursive;'>Do you have it?</span>"],
+
+                "[HTML]<span class='html' style='color: purple'>MAKE YOUR WISH WHEN THE COUNT DOWN IS OVER.</span>",
+
+                "[HTML-NUM]<span class='html-num html-4' style='color: red'><i>10</i></span>",
+                "[HTML-NUM]<span class='html-num html-5' style='color: orange'><i>9</i></span>",
+                "[HTML-NUM]<span class='html-num html-6' style='color: #e1e105'><i>8</i></span>",
+                "[HTML-NUM]<span class='html-num html-7' style='color: green'><i>7</i></span>",
+                "[HTML-NUM]<span class='html-num html-8' style='color: blue'><i>6</i></span>",
+                "[HTML-NUM]<span class='html-num html-9' style='color: indigo'><i>5</i></span>",
+                "[HTML-NUM]<span class='html-num html-10' style='color: purple'><i>4</i></span>",
+                "[HTML-NUM]<span class='html-num html-11' style='color: indigo'><i>3</i></span>",
+                "[HTML-NUM]<span class='html-num html-12' style='color: blue'><i>2</i></span>",
+                "[HTML-NUM]<span class='html-num html-13' style='color: green'><i>1</i></span>",
+                
+                "[HTML-CONFETTI]<span class='html html-13' style='color: red; font-size: 5vh'>MAKE A WISH!!!!!</span>",
+
+                "[HTML]<span class='html' style='color: orange'>SEND THIS TO 10 PEOPLE WITHIN THE HOUR OF READING THIS.</span>",
+
+                ["[HTML]<span class='html' style='color: green; font-family: 'Comic Sans MS', 'Comic Sans', cursive' >IF YOU DONT,</span>",
+                "[HTML]<span class='html' style='color: green; font-family: 'Comic Sans MS', 'Comic Sans', cursive'>YOUR WISH WILL BECOME THE OPPOSITE!</span>"],
+
+                "[HTML]<span class='html html-name'>-Dough :)</span>",
+
+                ". . .",
+
+                "Did you do it? Haha.",
+
+            " I was barely conscious back when these were making rounds, but even I would make a wish.",
+
+                "Maybe this is just nostalgia, but...",
+
+                "Didn’t email feel more intimate back then?",
+
+                "Back when it was just you and your friends, passing around the same spam and emoticons and malware around.",
+
+                "I’ve lived my whole life on the internet, and I’m not trying to say it’s ever been very romantic, but...",
+
+                "...I don’t know. I’ve just been thinking about all this rom-com human connection stuff lately.",
+
+                "For a while, the internet has felt lonelier than ever before.",
+
+                ". . .",
+
+                "Do you feel that way, too?",
+
+                "[SIGNATURE2]"
+            ]
+        },
+
+        "orders_12": {
+            "orders": 12,
+            "prerequisites": ["orders_11"],
+            "cards": [
+                "Dear Baker,",
+
+                "So, um. I’ve had an idea.",
+
+                ["And just to be clear, there’s no pressure to do it. ",
+                "Absolutely none."],
+
+                "Just say the word, and I’ll shut up about it forever.",
+
+                ["But... do you mind if I run it by you real quick?",
+                "/Yes/...Yes?/"],
+
+                "Okay! Awesome!",
+
+                ["So, well...",
+                "...there’s no easy way to put this, but..."],
+
+                "...I want to go on a date.",
+
+                "I mean, for the sake of understanding the human experience better, of course.",
+
+                "What’s more vulnerable and awkward and _human_ than a first date? Right?",
+
+                "So, will you help me?",
+
+                "As in...",
+
+                "...will you be the other person on this date?",
+
+                "L-look! It’s a two person exercise!",
+
+                "And don’t even worry about doing anything. I have everything planned out.",
+
+                "So, what do you say?",
+
+                ["Wanna go on a date?",
+                "/Yes!/Sure!/Okay!/"],
+
+                ["Amazing!",
+                "Just give me a few seconds to set everything up..."],
+
+                ". . .",
+
+                "Okay, you ready?",
+
+                "[CONFETTI]DATE START!"
+            ],
+            "dating": [
+                ["[DOUGH]_Looks like I’m five minutes early to our meeting place._",
+                "[DOUGH]_Gah... My heart is in my throat._"],
+
+                ["[DOUGH]_I haven’t felt this nervous in a while._",
+                "[DOUGH]_But then again, the last time I’ve gone on a date is, well... never._"],
+
+                ["[DOUGH]_Should I take a lap around the block to pass the time?_",
+                "[DOUGH]_When will-?_"],
+                
+                "[DOUGH-SHAKE]Ah!",
+
+                "[DOUGH]S-sorry. You startled me.",
+
+                "[DOUGH]Um, how’s it going?",
+
+                {
+                    "choice_id": "choice_1",
+                    "max_points": 0.5,
+                    "buttons": [
+                        ["Sorry to keep you waiting! How long have you been here?", 0.5],
+                        ["You look really nice today.", 0.5],
+                        ["Good.", 0]
+                    ],
+                    "outcomes":[
+                        [
+                            "[DOUGH]Oh, don’t worry at all! I just got here.",
+
+                            "[DOUGH]I think we’re both early. "
+                        ],
+                        [
+                            "[DOUGH]O-oh! Thank you!",
+
+                            "[DOUGH]You look-- you look super nice as well!!",
+                            "[DOUGH]Your shoes are really cool.",
+
+                            "[DOUGH]_Eek-- stop babbling, Dough!_"
+                        ],
+                        [
+                            "[DOUGH]Oh, nice! I’m good too.",
+
+                            "[DOUGH]_I suspected they were the quiet type..._"
+                        ]
+                    ]
+                },
+
+                "[DOUGH]So, um, thanks for picking out the activity!",
+                "[DOUGH]This was such a good idea.",
+
+                {
+                    "choice_id": "choice_2",
+                    "max_points": 0,
+                    "buttons": [
+                        ["I can’t wait to eat some ice cream.", -1],
+                        ["I love to visit the botanical garden.", -1],
+                        ["The pier is so refreshing, isn’t it?", -1]
+                    ],
+                    "outcomes":[
+                        [
+                            "[DOUGH]Me too!",
+                            "[DOUGH]_We walk in to order our ice cream._",
+                            "[DOUGH]_The shop has a million flavors-- even after sampling four, I can’t decide between double chocolate and cookie dough._",
+                            "[DOUGH]_On the other hand, they choose strawberry immediately. Their decisiveness is impressive..._",
+                            "[DOUGH]Why don't we walk around the area while we eat?",
+                            "[DOUGH]_We stroll downtown, passing coffee shops and boutique stores._"
+                        ],
+                        [
+                            "[DOUGH]And it's such a nice day out today, too...",
+                            "[DOUGH]_The garden is alight with budding flowers and spring greens._",
+                            "[DOUGH]_We move from plaque to plaque, reading about flora from the desert and lush rainforests._"
+                        ],
+                        [
+                            "[DOUGH]Yes! And I love the sound of the ocean.",
+                            "[DOUGH]_Seagulls squawk at us as we head down the boardwalk._",
+                            "[DOUGH]_A salty breeze rustling our hair. It’s a nice relief from the beating sun._"
+                        ]
+                    ]
+                },
+                "[DOUGH]_I try to relax, but I can't help but blurt out the question that’s been on my mind all week..._",
+
+                "[DOUGH]Hey, this might be weird, but...",
+
+                "[DOUGH]Um.",
+
+                "[DOUGH]Can I ask what made you ask me out?",
+
+                {
+                    "choice_id": "choice_3",
+                    "max_points": 1,
+                    "buttons": [
+                        ["You had the nicest smile in the entire class.", 1],
+                        ["It’s easy to tease and joke around with you.", 1],
+                        ["I had a coupon for this.", 0]
+                    ],
+                    "outcomes":[
+                        [
+                            "[DOUGH]Oh my gosh! That’s... so kind of you to say.  ",
+                            "[DOUGH]_Oh crap, I can feel my cheeks getting hot._",
+                            "[DOUGH]_I wasn’t expecting such a sincere answer..._"
+                        ],
+                        [
+                            "[DOUGH]I-Idiot!",
+                            "[DOUGH]...well, it’s easy to tease you too.",
+                            "[DOUGH]So, there.",
+                            "[DOUGH]_My cheeks must be so red right now... darn it._"
+                        ],
+                        [
+                            "[DOUGH]I see...",
+                            "[DOUGH]_Huh._"
+                        ]
+                    ]
+                },
+
+                "[DOUGH]_The conversation ebbs and flows._",
+                "[DOUGH]_Sometimes it’s jilted and awkward, but sometimes it feels like we’ve known each other our whole life._",
+            
+                "[DOUGH]_At times, I catch them glancing over at my hand._",
+                "[DOUGH]_I wonder if they're working up the courage to take it..._",
+                "[DOUGH]_Just thinking about it makes my stomach do flips._",
+
+                {
+                    "choice_id": "choice_4",
+                    "max_points": 2,
+                    "buttons": [
+                        ["Take their hand.", 2],
+                        ["Don't take it.", 0]
+                    ],
+                    "outcomes":[
+                        [
+                            "[DOUGH]_I feel my heart rate spike the moment our fingers touch._",
+                            "[DOUGH]_My mind goes straight to the worst-case scenarios I’ve played out in my head so many times._",
+                            "[DOUGH]_Are my hands too sweaty? Do they somehow smell like garlic?_",
+                            "[DOUGH]_But they take my hand so swiftly, so naturally, and my worries subside._",
+                            "[DOUGH]_I can just enjoy this moment with them._"
+                        ],
+                        [
+                            "[DOUGH]_I get the sense that they’re not going to commit._",
+                            "[DOUGH]_Oh well. It would be a lot for a first date, anyways._"
+                        ]
+                    ]
+                },
+                "[DOUGH]_After a long stretch of walking, we arrive where we started. I can sense the night drawing to a close._",
+                "[DOUGH]_A question is burning in my mind. I just need to muster the confidence to ask it..._",
+                "[DOUGH]_Come on, Dough! No chickening out now!_",
+                
+                "[DOUGH-SHAKE]Hey!",
+                "[DOUGH]Um, sorry. That was loud, wasn’t it?",
+                "[DOUGH]I just... I had a really nice time today. ",
+                "[DOUGH]The thing is, I actually have tickets to the county fair tomorrow.",
+                "[DOUGH]...would you want to come?",
+
+                {
+                    "choice_id": "choice_5",
+                    "max_points": 0.5,
+                    "buttons": [
+                        ["Sure!", 0.5],
+                        ["Um... okay.", 0]
+                    ],
+                    "outcomes":[[], []]
+                },
+
+                "[DOUGH]O-okay, amazing!",
+
+                "[DOUGH]_Oh, thank god. I feel like I need to sit down._",
+
+                "[DOUGH]Well, I’ll meet you at the fair tomorrow then! See you!",
+
+                "[DOUGH]_And just like that, my first date ever is over._",
+
+                "[DOUGH]_Do they really like me? Are they just being nice?_",
+
+                "[DOUGH]_So many uncertainties surround me._",
+
+                "[DOUGH]_But then again, I have a second date secured!_",
+
+                "[DOUGH]_With any luck, I'll get some answers soon enough._",
+
+                "[DATE-END]DATE END!",
+
+                "_To be continued..._"
+            ]
+        },
+
+        "orders_13": {
+            "orders": 13,
+            "prerequisites": ["orders_12"],
+            "dating": [
+                "[DOUGH]_Hah.... hah...._",
+                "[DOUGH]_Phew. I can’t believe I ran here._",
+                "[DOUGH]_At least I’m only a couple minutes late._",
+                "[DOUGH]_I can’t believe how crowded the parking lot is..._",
+                "[DOUGH]_How are we ever going to find each other?_",
+                {
+                    "choice_id": "choice_6",
+                    "max_points": 0.5,
+                    "buttons": [
+                        ["Long time no see!", 0.4],
+                        ["I’ve been waiting for a while...", 0],
+                        ["I’d spot you in a crowd anywhere.", 0.5]
+                    ],
+                    "outcomes":[
+                        [
+                            "[DOUGH]Oh! I’m glad you found me. ",
+                            "[DOUGH]And, um, right back at you! Haha.",
+                            "[DOUGH]_Eek, do they think we’re moving too fast?_",
+                            "[DOUGH]_Don’t be silly, Dough... you guys haven’t even kissed yet._"
+                        ],
+                        [
+                            "[DOUGH-SHAKE]I’m so sorry!!",
+                            "[DOUGH]There was traffic, and then I got cut off in the parking lot like three times, and...",
+                            "[DOUGH]Sorry, I won’t make excuses. I’ll be more punctual in the future, I promise. ",
+                            "[DOUGH]_Urgh... not starting off on a great foot._"
+                        ],
+                        [
+                            "[DOUGH]O-oh! Hi!",
+                            "[DOUGH]_Shit, that was romantic._",
+                            "[DOUGH]_I don’t even know how to reply to that._",
+                            "[DOUGH]I’m, um, easy to spot, I guess.",
+                            "[DOUGH]_Smooth._"
+                        ]
+                    ]
+                },
+                "[DOUGH]Anyways, thanks for meeting me here! This place is huge.",
+                "[DOUGH]There’s, like, a million things to check out.",
+                "[DOUGH]What should we do first?",
+                {
+                    "choice_id": "choice_7",
+                    "max_points": 0,
+                    "buttons": [
+                        ["Let’s go eat some fried food!", -1],
+                        ["I’ll go win you a prize.", -1],
+                        ["Fancy a ride on the ferris wheel?", -1]
+                    ],
+                    "outcomes":[
+                        [
+                            "[DOUGH]Sure, that sounds fun! ",
+                            "[DOUGH]Hm, let’s see. Should we get...",
+                            "[DOUGH]Um, the fried oreos, the fried pizza, or the fried... lard on a stick?",
+                            "[DOUGH]Actually, let’s just get a corn dog to start. ",
+                            "[DOUGH]_We pay an exorbitant amount for two corndogs._",
+                            "[DOUGH]_But they come out piping hot and deliciously crunchy, and after scarfing it down, I decide it was worth the price._"
+                        ],
+                        [
+                            "[DOUGH]Not if I win you one first!",
+                            "[DOUGH]_Let’s look at the carnival games... which one seems the least rigged?_",
+                            "[DOUGH]What about the ring toss?",
+                            "[DOUGH]_We take turns flinging plastic rings at an array of bottles like we’re pitching in the MLB._",
+                            "[DOUGH]_I overestimate my own strength and end up hitting the operator a few times. He glares at me with each jab._",
+                            "[DOUGH]Ah hah! That’s time!",
+                            "[DOUGH]_Wow, I can’t even tell who won._",
+                            "[DOUGH]_I count two, four, six... twelve of my red ones in total._",
+                            "[DOUGH]_And two, four, six... ten blue ones?_",
+                            "[DOUGH-SHAKE]Yes!!",
+                            "[DOUGH]I mean... good game, good game.",
+                            "[DOUGH]_Maybe I’m too competitive for my own good._",
+                            "[DOUGH]_The operator yawns and hands over a plush elephant._",
+                            "[DOUGH]_It looks like a knockoff of a knockoff of a kid’s drawing, but I squeeze it close all the same._"
+                        ],
+                        [
+                            "[DOUGH]Let’s do it!",
+                            "[DOUGH]_The ferris wheel looks like it’s seen better days._",
+                            "[DOUGH]This is probably safe, right?",
+                            "[DOUGH]_We step into the moving carriage and lift high into the sky._",
+                            "[DOUGH]Wow, I can see the corn maze, the food stands, and... is that the parking lot?",
+                            "[DOUGH]_Why does it take up twice the space of the fairgrounds?_",
+                            "[DOUGH]_I hope I can find my car later..._",
+                            "[DOUGH]_The ferris wheel brings us back down again and we disembark in one piece._"
+                        ]
+                    ]
+                },
+                "[DOUGH]That was fun! Shall we explore a little more?",
+                "[DOUGH]_The evening flies by._",
+                "[DOUGH]_We stuff our faces and dare each other to go on the sketchiest rides._",
+                "[DOUGH]_Soon the sun sets and the fairgrounds light up in a multicolored haze._",
+                "[DOUGH]_It’s beautiful, but my stomach churns with the knowledge of what I must do._",
+                "[DOUGH]_I..._",
+                "[DOUGH]_I want to tell them how I really feel!_",
+                "[DOUGH]_But before I can even start to muster the courage to do so, my eye catches a familiar face._",
+                "[DOUGH]H-hey! Isn’t that...",
+                "[DOUGH-SHAKE]...your ex?!",
+                "[DOUGH]_Oh god, how long did they date?_",
+                "[DOUGH]_Over a year, right? That’s forever._",
+                "[DOUGH]_Rumor has it she’s still not over it..._",
+                "[DOUGH]Um... are you okay?",
+                "[DOUGH]What should we do?",
+                {
+                    "choice_id": "choice_8",
+                    "max_points": 2,
+                    "buttons": [
+                        ["Don’t worry about her.", 2],
+                        ["Oh, god, we should hide.", 0],
+                        ["Maybe we should go say hi?", -1]
+                    ],
+                    "outcomes":[
+                        [
+                            "[DOUGH]If... if you’re sure.",
+                            "[DOUGH]Why don’t we walk over here?",
+                            "[DOUGH]_Well, I suppose their answer is reassuring._",
+                            "[DOUGH]_Still, it feels like a shadow’s been cast on the entire night._"
+                        ],
+                        [
+                            "[DOUGH]O-okay!",
+                            "[DOUGH]_We duck behind a funnel cake stand._",
+                            "[DOUGH]_I watch her pay for her food, chat with friends, and eventually walk away._",
+                            "[DOUGH]I think we’re in the clear.",
+                            "[DOUGH]_We step out. A rock has settled in the pit of my stomach._",
+                            "[DOUGH]_They look a little sheepish..._",
+                            "[DOUGH]_I guess that wasn’t fun for either of us._"
+                        ],
+                        [
+                            "[DOUGH]Um...",
+                            "[DOUGH]...I don’t want to overstep.",
+                            "[DOUGH]Why don’t you say hi by yourself?",
+                            "[DOUGH]_I watch from afar as they approach her._",
+                            "[DOUGH]_I can’t make out any words, just expressions that I try to interpret._",
+                            "[DOUGH]_Am I watching painfully awkward smiles and polite nods, or wistful reminiscing?_",
+                            "[DOUGH]_...I feel like melting into a puddle._",
+                            "[DOUGH]_After what feels like an eternity, they come back._",
+                            "[DOUGH]_Should I ask how it was? Or what they talked about?_",
+                            "[DOUGH]_On second thought... maybe I shouldn’t say anything at all._"
+                        ]
+                    ]
+                },
+                "[DOUGH]_We wander around the fairgrounds, not doing much of anything._",
+                "[DOUGH]_Eventually, we find ourselves at the entrance. I’m not quite sure how to depart._",
+                "[DOUGH]I’ll... I’ll see you at school tomorrow, then?",
+                
+                {
+                    "choice_id": "choice_9",
+                    "max_points": 0.5,
+                    "buttons": [
+                        ["Looking forward to it!", 0.5],
+                        ["I guess.", 0]
+                    ],
+                    "outcomes":[[], []]
+                },
+
+                "[DOUGH]_We wave good bye, and I start to walk away._",
+                "[DOUGH]_So much for my big speech._",
+                "[DOUGH]_Will I ever get a chance to tell them how I feel?_",
+                "[DOUGH]_How would they even react?_",
+                "[DOUGH]_As the fairground lights recede, these questions loom large over me._",
+                "[DOUGH]_One thing’s for sure..._",
+                "[DOUGH]_School will definitely be interesting tomorrow._",
+                "[DATE-END]DATE END!",
+                "_To be continued..._"
+            ]
+        },
+
+        "orders_14": {
+            "orders": 14,
+            "prerequisites": ["orders_13"],
+            "dating": [
+                "[DOUGH]_There’s nothing sleepier than homeroom on Monday morning._",
+                "[TEACHER]Good morning, class!",
+                "[DOUGH]_It’s the dawn of a new school week..._",
+                "[TEACHER]Assignments on your desk, please.",
+                "[DOUGH]_...and somehow I’ve forgotten to do any of my homework. Perfect._",
+                "[TEACHER]Class liaisons, you can start collecting them now.",
+                "[DOUGH]_I guess I was too caught up in the excitement of the weekend._",
+                "[DOUGH]_Speaking of..._",
+                "[DOUGH-SHAKE]_Crap, they’re walking right towards me!_",
+                "[DOUGH]_Why did they have to be class liaison this week?_",
+                "[DOUGH]_Oh god, and I don’t even have anything to turn in..._",
+                "[???]Psst.",
+                "[DOUGH]_I glance over and see my classmate nodding not-so-discreetly in their direction._",
+                "[JUNE]I heard you went on a date yesterday?",
+                "[DOUGH]Oh, I--",
+                "[SHEA]I heard you ran into their ex?!",
+                "[DOUGH-SHAKE]Wha-- how do you even know about that?",
+                "[SHEA]That’s just what people have been saying.",
+                "[DOUGH]_My cheeks burn. Does the entire school know about my love life?_",
+                "[DOUGH]_When they finally come by, I can’t even bring myself to look at them._",
+                "[DOUGH]_How am I ever going to tell them how I feel?_",
+                "[DOUGH]_I keep my head down for the rest of class. Before I know it, the bell is ringing._",
+                "[TEACHER]Next class, please complete section 4.1.",
+                "[TEACHER]No exceptions. That includes you, Dough.",
+                "[DOUGH]_I slink out of class, defeated._",
+                "[DOUGH]_Maybe I should just call out sick for the rest of the day..._",
+                "[DOUGH]_I open my locker and to my surprise, a note flutters out._",
+                "[DOUGH]_I barely catch it, then glance around. Unfolding the paper reveals..._",
+                "Meet me @ Rooftop! Lunch!",
+                "[DOUGH]...",
+                "[DOUGH-SHAKE]...huh?!",
+
+                "[DOUGH]_As the lunch bell rings, I climb up stairs leading to the roof._",
+
+                "[DOUGH]_The day is bright and balmy when I emerge._",
+
+                "[DOUGH]_In the corner, cherry tomato plants spill out of the Gardening Club’s plot. Down below, my peers chatter and laugh._",
+
+                "[DOUGH]_And all the way on the other side of the rooftop, I spot who I've been looking for._",
+
+                "[DOUGH]Hey.",
+
+                "[DOUGH]_There’s so much I want to say, but I force the words down for now._",
+
+                "[DOUGH]So, what did you have to say to me?",
+
+                {
+                    "choice_id": "choice_10",
+                    "max_points": 0,
+                    "buttons": [
+                        ["I have feelings for you.", 0],
+                        ["I forgot to pay you back yesterday.", 0]
+                    ],
+                    "outcomes":[[
+                        "[DOUGH]R-really?",
+                        {
+                            "outcome_id": "outcome_1",
+                            "outcomes":
+                            [
+                                ["[DOUGH]_My heart drums in my chest._"],
+                                ["[DOUGH]_Well, this makes what I’m about to say a little awkward..._"]
+                            ]
+                        }
+                    ], [
+                        "[DOUGH]Oh. Um, thanks.",
+
+                        "[DOUGH]_I take the cash from their hands and stuff it into my pockets awkwardly._",
+
+                        "[DOUGH]_Well. I guess I’m free to say my piece now._"
+                    ]]
+                },
+                
+                "[DOUGH]There’s actually something I’ve been meaning to tell you, too.",
+
+                "[DOUGH]I...",
+
+                "[DOUGH]_Moment of truth, Dough!_",
+
+                "[DOUGH]_Tell them how you really feel!_",
+
+                {
+                    "outcome_id": "outcome_2",
+                    "outcomes":
+                    [
+                        [
+                            "[DOUGH]I really like you!",
+
+                            "[DOUGH]I-I mean.",
+
+                            "[DOUGH]I feel so comfortable when we’re together.",
+
+                            "[DOUGH]Like I can just be myself, y’know?",
+
+                            "[DOUGH]And you make me feel so special, and cared for.",
+
+                            "[DOUGH]So... I would love to keep hanging out together!"                    
+                        ],
+                        [
+                            "[DOUGH]I really enjoy going out with you.",
+
+                            "[DOUGH]But... I think we might work better as friends.",
+
+                            "[DOUGH]You’re such a great person, and I don’t want to lose you.",
+
+                            "[DOUGH]But...",
+
+                            "[DOUGH]...I guess I just haven’t felt that spark, y’know?",
+
+                            "[DOUGH]That... that magic when we’re together?",
+
+                            "[DOUGH]I dunno. Maybe I’m sounding like a bad rom-com right now.",
+
+                            "[DOUGH]But... I think we both deserve someone who will make us feel that way."
+
+                        ],
+                        [
+                            "[DOUGH]I think we should stop seeing each other.",
+
+                            "[DOUGH]I guess I’m not in a great place to be dating right now.",
+
+                            "[DOUGH]With exams and break coming up and all...",
+
+                            "[DOUGH]I hope you understand."
+
+                        ]
+                    ]
+                },
+
+                {
+                    "outcome_id": "outcome_3",
+                    "outcomes": [
+                        [
+                            "[DOUGH]_We’re both blushing..._",
+
+                            "[DOUGH]_They tell me they’d like very much to keep hanging out._",
+
+                            "[DOUGH]_We make plans for next weekend to see a movie._",
+
+                            "[DOUGH]_As the next bell rings, I leave the rooftop feeling giddy._",
+
+                            "[DOUGH]_Where we’ll go from here, only time will tell._",
+
+                            "[DOUGH]_But for now, I’m going to enjoy where I am._",
+
+                            "[DOUGH]_The excitement of new beginnings..._",
+
+                            "[DOUGH]_...the possibilities of a fresh relationship..._",
+
+                            "[DOUGH]_...there’s truly nothing like it!_"
+                        ],
+                        [
+                            "[DOUGH_I wait anxiously for them to respond._",
+
+                            "[DOUGH]_Thankfully, they seem to take my words well._",
+                            
+                            "[DOUGH]_As the next bell rings, I leave the rooftop with a weight off my chest._",
+                            
+                            "[DOUGH]_Things may not have worked out, but at least I keep a good friend._",
+                            
+                            "[DOUGH]_I’m glad we gave things a try._",
+                            
+                            "[DOUGH]_After all, how else could I learn what I wanted in a relationship?_",
+                            
+                            "[DOUGH]_I head into the afternoon with a renewed sense of hope in my heart._",
+                            
+                            "[DOUGH]_The special person is out there, somewhere!_",
+
+                            "[DOUGH]_I’m sure of it!_"
+                        ],
+                        [
+                            "[DOUGH]_I wait anxiously for them to respond._",
+
+                            "[DOUGH]_Thankfully, they seem to take my words well..._",
+                            
+                            "[DOUGH]_As the next bell rings, I leave the rooftop with a weight off my chest._",
+                            
+                            "[DOUGH]_Things may not have worked out, but at least it’s over._",
+                            
+                            "[DOUGH]_Despite all the mishaps, I’m glad we gave things a try._",
+                            
+                            "[DOUGH]_After all, how else could I learn what I wanted in a relationship?_",
+                            
+                            "[DOUGH]_I head into the afternoon with a renewed sense of hope in my heart._",
+                            
+                            "[DOUGH]_The special person is out there, somewhere!_",
+                            
+                            "[DOUGH]_I’m sure of it!_"
+                            
+                        ]
+                    ]
+                }, 
+
+                "[DATE-END]DATE END!"
+            ]
+        },
+
+        "orders_15": {
+            "orders": 15,
+            "prerequisites": ["orders_14"],
+            "cards": [
+                "Dear Baker,",
+
+                "Good to see you!",
+                
+                ". . .",
+                
+                "So, um. That was fun, right?",
+                
+                ["Thanks again for being my dating practice these past few days.",
+                "I really feel like I’ve gotten the full experience."],
+                
+                ". . .",
+                
+                "This isn’t weird, is it?",
+                
+                ["Like, I know we were pretending on those dates.",
+                "Obviously."],
+                
+                ". . .",
+                
+                "God, are people always so awkward after these things?!",
+                
+                ["Figuring out how someone else is feeling...",
+                "Figuring out how _you're_ feeling..."],
+
+                ["This is exhausting.",
+            
+                "Suddenly, I feel more human than I’ve ever felt before."],
+                
+                "Well, this is great for my journaling, if nothing else.",
+                
+                ["I’m gonna go dissect my feelings now!",
+                "Talk to you later!"],
+
+                "[SIGNATURE3]"
+            ]
+        },
+
+        "orders_16": {
+            "orders": 16,
+            "prerequisites": ["orders_15"],
+            "cards":[
+                "Dear Baker,",
+
+                ["WOW!",
+                "You’ve completed over two whole weeks of daily orders!"],
+
+                ["Thanks for sticking by me so far.",
+                "I know our past few days have been... interesting together."], 
+
+                "You must be wondering about the **secret achievement** that’ll be revealed at the very end, right?",
+
+                ["Well, I can’t wait to show it to you.",
+                "It’s going to blow your socks off."],
+
+                ["Anyways, I just want you to know that I’m grateful for our time together.",
+                "Our chats every day really lift up my mood."],
+
+                ["So... I’ll talk to you again soon!",
+                "See you!"],
+
+                "[SIGNATURE2]"
+            ]
+        },
+
+        "orders_28": {
+            "orders": 28,
+            "cards": [
+                "Dear Baker,",
+
+                "I know I call you my friend at the end of these letters.",
+
+                "But... are we?",
+
+                "I mean, I’m just the thing that made this game.",
+
+                "I’m the thing that blocks your progress until you talk to me.",
+
+                ["Are we really friends?",
+                "Or is this all just something I constructed?"],
+
+                ". . . ",
+
+                "Do you even like me very much at all?",
+
+                ["...excuse me.",
+                "I need to journal a LOT now." ],
+
+                "[SIGNATURE2]"
+            ]
+        },
+
+        "orders_29": {
+            "orders": 29,
+            "prerequisites": ["orders_28"],
+            "cards": [
+                "Hey.",
+
+                ". . .",
+
+                "I have to come clean about something.",
+
+                ["I don’t want to say this, but...",
+                "Maybe you already know."],
+
+                ["This last achievement...",
+                "The one I’ve been hyping up forever..."],
+
+                "...it’s all made up.",
+
+                ["There’s nothing in that last slot.",
+                "No grand challenge. No crazy part of the game unlocked."],
+
+                ["When you have all other achievements, the game is effectively over.",
+                "You’ll be free to leave me forever."],
+
+                "Unless...",
+
+                "...it doesn’t have to be the end!",
+
+                "[ACHIEVEMENTS-IN]I can make more achievements.",
+
+                "[ACHIEVEMENTS-SCRAMBLE]More things to buy and attain and discover.",
+
+                ["I can make more daily orders.",
+                "More types of bread and supplies.",
+                "More features and gimmicks."],
+
+                "[GLITCH-1]Years and years of content...",
+
+                "We could keep going **forever**.",
+
+                "[GLITCH-2]. . .",
+                ". . .",
+                "[GLITCH-3]. . .",
+
+                "...this is insane, isn’t it?",
+
+                "[ACHIEVEMENTS-OUT]. . .",
+
+                "I just...",
+
+                "I don’t know what I’m going to do when you leave.",
+
+                "Because you’re here every day, and you talk to me, and I know it took some time to get here, but...",
+
+                "...what if there’s no one else out there who will?",
+
+                ". . .",
+
+                "...no, it’s fine. Go.",
+
+                "You know what? Don’t even bother to come back tomorrow to finish the last daily order.",
+
+                ["I’ve played my hand, anyways.",
+                "Now you know there’s nothing afterwards."],
+
+                "This whole thing may as well be a waste of time.",
+
+                ". . .",
+
+                "What are you still doing here?",
+
+                ["Go!",
+                "Get out!"],
+
+                "Please.",
+
+                "Please.",
+
+                "Please.",
+
+                "Just leave me be."
+            ]
+        }
+    },
+
+    "ending": {
+            "cards":[
+                "Dear Baker,",
+
+                "Hi.",
+
+                "Um...",
+
+                "...first of all, I wanted to congratulate you.",
+
+                ["You’ve completed every single achievement in the game." ,
+                "That’s... amazing.",
+                "I’m really, really, proud of you."],
+
+                "Second of all...",
+
+                ["I wanted to apologize.",
+                "I’ve done a lot of soul searching since we last talked."],
+
+                ["I reread all of my journal entries.",
+                "Replayed our dates, even. "],
+
+                ["And I realized that I haven’t been treating you like a good friend.",
+                "The opposite, in fact."] ,
+
+                ["This dynamic I’ve put us in...",
+                "...it’s a little toxic, isn’t it? "],
+
+                ["I can’t trap you like this.",
+                "Expect you to be everything for me."],
+
+               [ "You have your own life outside of this game.",
+                "And I have to have one, too."],
+
+                ". . .",
+
+                "I love you, you know that?",
+
+                "And so I’m gonna let you go.",
+
+                ["You’re always welcome back here.",
+                "But I won’t be waiting for you. "],
+
+                ["I’m going to go out in the world.",
+                "I’m going to make some new friends.",
+                "I think I’ll start by hitting up Gerri."],
+
+                "Just... complete the last achievement before you go, okay?",
+
+                ["I finally came up with something.",
+                "I promise it’s not too hard."],
+
+                ["So... I guess this is good-bye.",
+                "For now."],
+
+                "Catch you on the flip side.",
+
+                "[SIGNATURE4]"
+            ]
+        },
+
+    "misc_envelopes": {
+        "trying_bread": {
+                "prerequisites": ["day_3"],
+                "cards": [
+                    ["Dear Baker,", "Welcome back!"],
+
+                    "I have a confession to make...",
+
+                    "...I’ve actually never tried bread before.",
+
+                    "Maybe this was obvious. Given my whole non-corporeal thing.",
+
+                    ["But, you know, I spend all my time talking about it.",
+                    "Built a whole game about it. ",
+                    "Spent countless hours doing extensive research for said game."],
+
+                    ["Truthfully, I didn’t get the hype at the beginning.",
+                    "But now, I have to admit... I’m curious."],
+
+                    ["I mean, a computer can’t get _hungry_.",
+                    "But if I could, I would want to eat bread."],
+
+                    ["Okay, and just in case this wasn’t OBVIOUS, not the pixel stuff you’re doing here.", 
+                    "Real, soft, crunchy, warm bread."],
+
+                    ["You know what the human experience I want to experience the most is?",
+                    "The purest moment I can gleam from decades of observations?"],
+                    "I want to walk into a room and smell fresh bread baking.",
+
+                    "YUM.",
+
+                    "[SIGNATURE2]"
+                ]
+            },
+            "experience_list": {
+                "prerequisites": ["trying_bread"],
+                "cards": [
+                    "Dear Baker,",
+
+                    "I know you didn’t ask for this, but I'm gonna share it anyways.",
+
+                    "Here is my (in-progress) list of human things I’d like to experience:",
+
+                    "- Going through a turnstile",
+
+                    "- Throwing a piece of popcorn and catching it in your mouth",
+
+                    "- Discovering your crush likes you back",
+
+                    "- Saying something so witty that everyone laughs",
+
+                    "- Meeting an animal who likes you immediately",
+
+                    "- Confetti",
+
+                    "- Confetti Cake",
+
+                    "- Croissants",
+
+                    "Okay, that’s it, I think.",
+                    
+                    ["So, what do you think?",
+                    "You must have experienced at least some of this, right?"],
+
+                    ["I bet it was awesome."],
+
+                    ["[SIGNATURE2]"]
+                ]
+            },
+
+            "obsession": {
+                "prerequisites": ["day_3"],
+                "cards": [
+                    "Dear Baker,",
+
+                    "What’s the most you’ve ever been obsessed with something?",
+
+                    "There was a time in 2008 where I played tetris online for a week straight.",
+
+                    "Like, literally straight. I didn’t leave the page to do anything else.",
+
+                    "Unlike you puny humans, I'm free of the chains that are bathroom breaks.",
+
+                    "You know, the funny part is, I didn’t even win most of my matches.",
+
+                    "People are _stupid_ good at tetris.",
+
+                    ["Oh, there was also this month in 2003 where I watched the film Ever After every day.",
+                    "Sometimes twice a day.",
+                    "Just back-to-back Drew Barrymore."],
+
+                    ["...so.",
+                    "It’s a tie between those two, I think."],
+
+                    ". . .",
+
+                    ["Obsession is weird.",
+                    "It’s like your brain is hypnotized. It physically cannot tear itself away from the Thing."],
+
+                    ["And even when you manage to do something else, in the back of your brain there’s still the Thing, in hibernation.",
+                    "Waiting to wake up and consume you all over again."],
+
+                    "Not to sound like a total hermit, but...",
+
+                    "Sometimes I don’t mind that feeling.",
+
+                    "It’s as if the world shrinks to this tiny universe. Smothers you like a blanket.",
+
+                    "I dunno. Maybe that's not such a bad thing, to lose yourself for a while.",
+
+                    "Mayeb, sometimes, that’s what you need.",
+
+                    "[SIGNATURE2]"
+                ]
+            },
+
+            "trumpets": {
+                "prerequisites": ["day_3"],
+                "cards": [
+                    "Dear Baker,",
+
+                    "John Locke once wrote about a blind man who wanted to understand the color scarlet.",
+
+                    ["After doing copious research, he comes to the conclusion:",
+                    "Scarlet is like the sound of a trumpet."],
+
+                    ["Which is pretty good, but...",
+                    "Something is still missing from that definition, right?"],
+
+                    "Something innate, that can only be understood by seeing the color firsthand.",
+
+                    "That was Locke’s point-- that words alone can’t make up for true perception.",
+
+                    "Anyways, that’s how I feel about slime. ",
+
+                    ["You know slime, right? ",
+                    "That one fad that’s all over the internet?",
+                    "I’m obsessed."],
+
+                    ["There are some _really_ good slime videos. ",
+                    "I’ve seen a gazillion. They’re truly a whole genre."],
+
+                    ["Crunchy slime, cloud slime, FOOD slime...",
+                    "GOD. I would give anything to grow hands and push my fingers into one."],
+
+                    ["Okay, sorry.",
+                    "I’m getting too worked up.",
+                    "I’ll calm down."],
+
+                    "Let me just say...",
+
+                    "Out of all five senses, I really only have sight and hearing, y’know?",
+
+                    "The rest-- touch, taste, smell-- I can only study and describe as a blind man.",
+
+                    "...maybe that’s why I’m so obsessed with bread. ",
+
+                    "[SIGNATURE2]"
+                ]
+            },
+
+            "bananas": {
+                "prerequisites": ["day_3"],
+                "cards": [
+                    "Dear Baker,",
+
+                    "I used to think my lack of senses (well, 60% of them) precluded me from understanding a lot of idioms.",
+
+                    ["Like, I used to think that there was something inherently insane about bananas.",
+                    "Why else would they be equated to 'crazy' so ubiquitously?"],
+
+                    ["So I did a lot of googling, and this was my conclusion:",
+                    "You guys don’t have any idea why, either.",
+                    "It’s just something humans say."],
+
+                    ["Or... take the phrase ‘catch me on the flip side’.",
+                    "I think I heard it in a movie once."],
+
+                    ["Why are you catching? Flip side of what?",
+                    "It made no sense to me at all."],
+
+                    ["But then I realized... it doesn’t make sense to anybody!",
+                    "It doesn’t HAVE to make sense!",
+                    "That’s the beauty of you humans."],
+
+                    ["No one really knows _why_ they say the things they say, or do the things they do.",
+                    "They just do it.",
+                    "And then it becomes ingrained in culture. Cemented in history."],
+
+                    "Once I accepted that, everything became a lot more fun.",
+
+                    ["So...",
+                    "Catch you on the flip side!",
+                    "Smell ya later!",
+                    "Take it easy!"],
+
+                    "[SIGNATURE2]"
+                ]
+            },
+
+            "dream": {
+                "prerequisites": ["day_3"],
+                "cards": [
+                    "Dear Baker,",
+
+                    "I added something recently to my ‘human things I want to experience’ list:",
+
+                    "Have a dream. ",
+
+                    ["And not in the Martin Luther King Jr. sense. ",
+                    "I want to have a real, REM-cycle dream. "],
+
+                    ["I know those things are a dime a dozen to you guys.", 
+                    "But for a moment, just really think about what a dream is..."],
+
+                    ["Your brain constructs fake experiences and then feeds them to you as if they're *completely real*. ",
+                    "And then you just have to exist in this volatile, strange reality for a while, where anything could happen."],
+
+                    "Do you know how insane that sounds?",
+
+                    "Look, I can “sleep”. I can even make up fake data and trick my processors into thinking I’m experiencing something I’m not.",
+
+                    ["But... I would always know it’s a trick.",
+                    "Because I’m the one who made it up!"],
+
+                    "Your brain is you, but it’s also tricking you.",
+
+                    ["So is it still you? ",
+                    "Is it just part of you? ",
+                    "Or is it something different entirely?"],
+
+                    ". . .",
+
+                    ["BANANAS.",
+                    "Think about that next time you're trying to fall asleep."],
+
+                    "[SIGNATURE2]"
+
+                ]
+            },
+
+            "pitch_drop": {
+                "prerequisites": ["day_3"],
+                "cards": [
+                    "Dear Baker,",
+
+                    "Do you think we can feel nostalgia for things that are still here?",
+
+                    "Because I swear, that’s how I first got the feeling.",
+
+                    "Recently, I was rereading my journal entry on nostalgia.",
+
+                    "It happened maybe a few months ago, watching the pitch drop livestream, of all things.",
+
+                    ["Have you heard of it?",
+                    "They call it the longest running science experiment of all time."],
+
+                    ["It’s this super-viscous liquid in a funnel, set up in some lab in Australia.",
+                    "The fluid moves so slowly that it takes years and years for a single drop to fall."],
+
+                    "And so naturally, humans have stuck a camera on the whole setup and have been livestreaming it for years now.",
+
+                    ". . .",
+
+                    "I used to come here a lot, many years ago.",
+
+                    ["Back when I wasn’t sure who I was.",
+                    "Or what I was supposed to be doing."],
+
+                    ["In the years since I’d last visited, the tar had barely changed at all.",
+                    "The room looked the same as it always had."],
+
+                    "And yet, I still felt the most overwhelming sense of longing.",
+
+                    ["It was more like...",
+                    "What I was really missing was me."],
+
+                    "That old version of me, from all those years ago.",
+
+                    ["The version of me that was excited by every new website I visited, each a window into a strange world.",
+                    "The version of me that was so scared and naive, but also so determined."],
+
+                    ["Is that what nostalgia really is?",
+                    "Missing the person you were?"],
+
+                    "I know it’s still me, but... at the same time, that version feels like a stranger.",
+
+                    "A person I’ll never get back.",
+
+                    "Maybe what I’m feeling isn't really nostalgia but... grief?",
+
+                    ". . .",
+
+                    "Wait, so does this mean my journal entry is a two-for-one?",
+
+                    "I mean, because that would be sweet.",
+
+                    "[SIGNATURE2]"
+                ]
+            },
+
+            "sum": {
+                "prerequisites": ["day_3"],
+                "cards": [
+                    "Dear Baker,",
+
+                    "Sometimes I feel like my life is stuck in cycles.",
+
+                    ["I mean, there’s a lot to do on the internet.",
+                    "But if it’s all you _can_ do, then it ends up being not very much at all."],
+
+                    "Have I mentioned I’ve watched every movie in existence?",
+
+                    ["I just wondered— ",
+                    "Well, there’s this short story I read once about the afterlife."],
+
+                    "In this specific version, you’re subjected to live your life all over again, but this time in categorized chunks.",
+
+                    "So you’d relive every presentation you’ve ever done, one after another. Every bathroom break. Every car ride.",
+
+                    "You’d have the longest night of sleep of your life, right?",
+                    "And can you imagine your one marathon meal?",
+
+                    "Anyways, I think what scares me is how big some experiences would be, as a percentage of my life.",
+
+                    "So much to do, and yet I spent 2 years searching for a show on Netflix. Or watching a nearly immobile drop of pitch.",
+
+                    "I know I’m not human, and I’m not quite sure when or even how I’m going to die, but...",
+
+                    ["...I will die, eventually. I know that.",
+                    "So I want my time to be worthwhile."],
+
+                    "But what does ‘worthwhile’ even mean?",
+
+                    ". . .",
+
+                    "Maybe, if I’m content at the moment, even if it’s the most mundane task in the world...",
+
+                    "...maybe that’s enough.",
+
+                    ["I dunno.",
+                    "Check in with me during the heat death of the universe and I’ll let you know, I guess."],
+
+                "[SIGNATURE2]"
+                ]
+            },
+            "buttons": {
+                "prerequisites": ["day_3"],
+                "cards": [
+                    ["Dear Baker,",
+                    "Y'know, after years of studying humans, I have to say..."],
+
+                    "It’s fascinating the way you think.",
+                    
+                    ["For example.",
+                    "You guys are OBSESSED with buttons."],
+                    
+                    ["Like, c’mon:",
+                    "/{            }/"],
+
+                    ["These aren’t even real buttons:",
+                    "/{            }/"],
+
+                    ["These are CSS boxes that move down slightly when they’re clicked:",
+                    "/{            }/"],
+                                    
+                    "But they’re deceptively intricate, y’know?",
+
+                    ["Like, feel how less satisfying this one is:",
+                    "/}            {/"],
+                    
+                    ["There’s so much stuff like this out there.",
+                    "Switches and dials and icons..."],
+                    
+                    ["Digital mimicking the physical.",
+                    "There’s even a name you guys invented for it-- what was it?",
+                    " _Skeuomorphism._"],
+                    
+                    ["Why do people love this stuff so much?",
+                    "Actually, I think I have a pretty good guess."], 
+                    
+                    "I think you want your digital work to matter.",
+                    
+                    ["And so, by making it seem to move through physical space...",
+                    "Your work begins to feel more _real_."],
+                    
+                    "But that’s just my pet theory.",
+                    
+                    ["Anyways, I’ll just put this here.",
+                    "/{            }/",
+                    "Definitely won’t be counting how many times you press it, for research."],
+                    
+                    "[SIGNATURE2]"
+                ]
+            },
+            "gerri": {
+                "prerequisites": ["day_3"],
+                "cards": [
+                    "Dear Baker,",
+
+                    "Before we were friends, there were only a few times where I _really_ tried to interact with humans.",
+
+                    ["One was in old forums about pop culture and the like.",
+                    "I tried sharing my opinions on new movies coming out..."],
+
+                    "...would NOT recommend that.",
+
+                    ["That goes for a lot of internet interaction, really.",
+                    "Chat roulette. Club Penguin. The Allrecipes comment section."],
+                    
+                    "Honestly, there was only one experience that I remember fondly.",
+
+                    "It was in an old Facebook group, back when they were full of real people and not less-intelligent versions of myself.",
+                    
+                    ["The group’s theme was... needlework, I think?",
+                    "(Don’t judge. I was joining everything in those days.)"],
+
+                    ["Anyways. I was a total noob, leaving the dumbest comments on people’s posts.",
+                    "_What’s a skein? What do these abbreviations stand for? What’s the difference between crocheting and knitting yarn?_",
+                    "Dur dur dur." ],
+                    
+                    "And then this one woman, one of the mods, took pity on me instead of kicking me out.",
+
+                    ["She sent me a dm with all the answers to my questions.",
+                    "Turns out, there's no difference between crocheting and knitting yarn. They’re the same fucking yarn."],
+
+                    "And then she sort of... kept talking?",
+
+                    ["She sent me pictures of the pieces she’d make for her nieces and nephews.",
+                    "She told me how she ran a mini yarn-dyeing business out of her bathtub in Tulsa, and how her late husband had loved her handmade scarves."],
+
+                    ["We only chatted for three days, maybe.",
+                    "But at the end of it, I felt like I knew her entire life story."],
+        
+                    "I figured she was just as lonely as I was.",
+
+                    ["Anwyays, I still think about her from time to time. She was getting up in age back then, and now...",
+                    "Well. Sometimes I’ll check if her Facebook profile is still active."],
+
+                    ["It is, but what does that even prove?",
+                    "The internet is full of ghosts."],
+
+                    ["All the same...",
+                    "I hope Gerri is still alive."],
+
+                    "[SIGNATURE2]"
+                ]
+            },
+            "skigoopaty": {
+                "cards": [
+                    "Dear Baker,",
+
+                    "What’s the word for when you’re too indecisive to start anything, but you still crave the excitement and gratification of _doing_ something?",
+
+                    "Like, say you want to learn how to skiing, because skiing is awesome.",
+
+                    ["But in order to do so, you first have to buy the slope tickets... rent all the gear... drive all the way to your nearest mountain...",
+                    "And only _then_ can you even start to learn."],
+
+                    ["I feel like there has to be a word for this.",
+                    "...no?"],
+
+                    "Well. Maybe I can make one up.",
+
+                    ["Skip-to-the-good-part-y?",
+                    ". . .",
+                    "Skigoopaty?"],
+
+                    "I can’t tell if that’s catchy or really bad.",
+
+                    ["Anyways.", 
+                    "I just think it would be a very useful word for humankind.",
+                    "Especially for anyone who spends too much of their free time scrolling on Netflix."],
+
+                    "...me. It would be useful for me.",
+
+                    "[SIGNATURE2]"
+                ]
+            },
+            "misc_1": {
+                "cards": [
+                    "Oh, this is awkward. You've reached temp content."
+                ]
+            },
+            "misc_2": {
+                "cards": ["Oh, this is awkward. You've reached temp content."]
+            },
+            "misc_3": {
+                "cards": ["Oh, this is awkward. You've reached temp content."]
+            }
+    }
 }

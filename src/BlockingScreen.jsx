@@ -342,8 +342,8 @@ function BlockingScreen(props) {
 	const getEndingTime = () => {
 		var endTime = Date.now();
 		for (var i in envelopeUnlocks) {
-			if (envelopeUnlocks[i][0] == "banana") {
-				endTime = envelopeUnlocks[i][2];
+			if (envelopeUnlocks[i].category == "banana") {
+				endTime = envelopeUnlocks[i].finish_time;
 			}
 		}
 		var timeStr = msToTime(endTime - startTime, true, false, true);

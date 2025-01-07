@@ -3,8 +3,8 @@ import BCSymbol from "./BCSymbol";
 
 function Card(props) {
 	const { item, onClick, toggleTooltip, isDisabled } = props;
-	var className = isDisabled ? "card-container disabled" : "card-container";
-
+	var className = "glitchable ";
+	className += isDisabled ? "card-container disabled" : "card-container";
 	return (
 		<button
 			className={className}

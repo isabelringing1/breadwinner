@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { formatNumber } from "./Util";
+import { formatNumber, shuffleArray } from "./Util";
 import { reportAchievementClaimed } from "../public/analytics";
+
 import "./Achievements.css";
 
 import Achievement from "./Achievement";
@@ -29,32 +30,43 @@ function Achievements(props) {
 		setTimers,
 		timersUnlocked,
 		setTimersUnlocked,
-		unlockEnvelope,
 		busyStartTime,
+		storyState,
+		setStoryState,
 	} = props;
 
 	const animating = useRef(false);
 	const achievementQueue = useRef([]);
 	const isAnimatingBanner = useRef(false);
+	const scrambleInterval = useRef(null);
+	const scrambleDuration = useRef(200);
 
-	var achievements = [];
-	for (var categoryName in AchievementsObject) {
-		var category = AchievementsObject[categoryName];
-		for (var a in category) {
-			achievements.push(category[a]);
-		}
-	}
-
-	const [alertAchievement, setAlertAchievement] = useState(achievements[0]);
+	const [achievementsArray, setAchievementsArray] = useState([]);
+	const [alertAchievement, setAlertAchievement] = useState(
+		AchievementsObject["productivity"][0]
+	);
 	const [numNotifs, setNumNotifs] = useState(0);
-	const [peekIn, setPeekIn] = useState(0);
+	const [peekIn, setPeekIn] = useState(false);
 
 	useEffect(() => {
+		var achievements = initializeAchievementArray();
 		var count = achievements.filter(function (a) {
 			return a.save.achieved && !a.save.claimed;
 		}).length;
 		setNumNotifs(count);
 	}, [AchievementsObject]);
+
+	const initializeAchievementArray = () => {
+		var achievements = [];
+		for (var categoryName in AchievementsObject) {
+			var category = AchievementsObject[categoryName];
+			for (var a in category) {
+				achievements.push(category[a]);
+			}
+		}
+		setAchievementsArray(achievements);
+		return achievements;
+	};
 
 	useEffect(() => {
 		var newAchievements = { ...AchievementsObject };
@@ -175,16 +187,20 @@ function Achievements(props) {
 				case "daily-order-claim":
 					var dailyOrderAchievements =
 						AchievementsObject["daily_orders"];
+
 					var [total, totalLastHour] = parseDailyOrders(event.value);
-					if (total == 1) {
+					newAchievements["daily_orders"][0].save.progress = total;
+					newAchievements["stretch"][0].save.progress = total;
+					if (
+						total >= 1 &&
+						!newAchievements["daily_orders"][0].save.revealed
+					) {
 						newAchievements["daily_orders"][0].save.revealed = true;
 					}
 					dailyOrderAchievements.forEach((a, i) => {
 						if (a.id == "daily_order_1") {
 							if (total >= a.amount) {
 								achieve("daily_orders", i, newAchievements);
-							} else {
-								a.save.progress = total;
 							}
 						} else if (a.id == "daily_order_2") {
 							if (totalLastHour >= a.amount) {
@@ -199,8 +215,6 @@ function Achievements(props) {
 					if (!newAchievements["stretch"][0].save.epilogue) {
 						if (total >= newAchievements["stretch"][0].amount) {
 							achieve("stretch", 0, newAchievements, false);
-						} else {
-							newAchievements["stretch"][0].save.progress = total;
 						}
 					}
 					break;
@@ -263,13 +277,14 @@ function Achievements(props) {
 					}
 					break;
 				case "reveal-epilogue":
-					var achievements = AchievementsObject["stretch"];
-					achievements.forEach((a, i) => {
+					var stretchAchievements = AchievementsObject["stretch"];
+					stretchAchievements.forEach((a, i) => {
 						newAchievements["stretch"][i].save.epilogue = false;
 						if (i != 5) {
 							newAchievements["stretch"][i].save.revealed = true;
 						}
 					});
+					revealAchievements();
 					break;
 				case "stretch": //stretch 4, kickin it
 					if (!newAchievements["stretch"][3].save.epilogue) {
@@ -286,6 +301,35 @@ function Achievements(props) {
 						achieve("stretch", 4, newAchievements, false);
 					}
 					newAchievements["stretch"][4].save.progress = event.amount;
+					break;
+				case "animate-achievements-in":
+					animate_in();
+					break;
+				case "animate-achievements-scramble":
+					animate_scramble();
+					break;
+				case "stop-glitch":
+					stop_scramble();
+					break;
+				case "animate-achievements-out":
+					animate_out();
+					break;
+				case "story-state-changed":
+					if (event.value == 3) {
+						newAchievements["stretch"][5].save.revealed = true;
+					}
+					break;
+				case "ending":
+					if (event.value == "stretch_6") {
+						// last achievement claimed
+						setStoryState(5);
+						console.log(newAchievements["stretch"][5]);
+						achieve("stretch", 5, newAchievements);
+						claimAchievement(newAchievements["stretch"][5]);
+					}
+					break;
+				case "open-envelope":
+					animate_out();
 					break;
 			}
 		}
@@ -305,6 +349,9 @@ function Achievements(props) {
 		queue_alert(newAchievements[category][index]);
 		if (!peekIn && !showAchievements) {
 			peek_in();
+		}
+		if (storyState == 3) {
+			checkForAllAchievements(newAchievements);
 		}
 	};
 
@@ -337,17 +384,26 @@ function Achievements(props) {
 		reportAchievementClaimed(achievement, numAchievements);
 	};
 
+	const checkForAllAchievements = (newAchievements) => {
+		for (var categoryName in newAchievements) {
+			var category = newAchievements[categoryName];
+			for (var i in category) {
+				if (
+					!category[i].save.achieved &&
+					category[i].id != "stretch_6"
+				) {
+					return;
+				}
+			}
+		}
+		emitEvent("all-achievements");
+	};
+
 	const parseDailyOrders = (dailyOrders) => {
 		var total = dailyOrders.length;
 		var totalLastHour = 0;
 		dailyOrders.forEach((entry, i) => {
 			var timeSinceGeneration = entry[1];
-			console.log(
-				"Time since generation for entry ",
-				entry,
-				" is ",
-				timeSinceGeneration
-			);
 			// Check if generation was in the last 15 minutes of 24 hours
 			if (
 				timeSinceGeneration >= 85500000 &&
@@ -382,6 +438,7 @@ function Achievements(props) {
 	var achievementAlert = document.getElementById("achievement-alert");
 	var dailyOrdersContainer = document.getElementById("daily-order-container");
 	var version = document.getElementById("version");
+	var speechBubble = document.getElementById("speech-bubble-container");
 
 	const updateBusyAchievement = (newAchievements) => {
 		if (
@@ -414,6 +471,21 @@ function Achievements(props) {
 				"translateY(20vh)";
 		}
 	}, [loaded]);
+
+	const revealAchievements = () => {
+		var newAchievements = { ...AchievementsObject };
+		for (var categoryName in newAchievements) {
+			var category = newAchievements[categoryName];
+			for (var i in category) {
+				if (
+					category[i].id != "stretch_6" &&
+					!category[i].save.revealed
+				) {
+					category[i].save.revealed = true;
+				}
+			}
+		}
+	};
 
 	var peek_in = () => {
 		if (peekIn) {
@@ -451,6 +523,7 @@ function Achievements(props) {
 		bookmarkRibb.style.pointerEvents = "none";
 		dailyOrdersContainer.style.zIndex = 10;
 		version.style.zIndex = 10;
+		speechBubble.style.zIndex = 10;
 		setTimeout(() => {
 			achievementsDiv.classList.remove("bounce-in");
 			bookmarkDiv1.classList.remove("bounce-in-bookmark");
@@ -482,6 +555,11 @@ function Achievements(props) {
 			animating.current = false;
 			dailyOrdersContainer.style.zIndex = 20;
 			version.style.zIndex = 22;
+			speechBubble.style.zIndex = 21;
+			if (scrambleInterval.current) {
+				clearInterval(scrambleInterval.current);
+				initializeAchievementArray();
+			}
 		}, 1000);
 		setShowAchievements(false);
 	};
@@ -508,20 +586,45 @@ function Achievements(props) {
 	var show_alert_async = (achievement) => {
 		setAlertAchievement(achievement);
 		achievementAlert.classList.add("slide-in-out");
+		achievementAlert.style.opacity = 1;
 		jiggle_bookmark();
 		setTimeout(() => {
 			achievementAlert.classList.remove("slide-in-out");
 			achievementQueue.current.shift();
 			if (achievementQueue.current.length == 0) {
 				isAnimatingBanner.current = false;
+				achievementAlert.style.opacity = 0;
 			} else {
 				show_alert_async(achievementQueue.current[0]);
 			}
 		}, 2800);
 	};
 
+	const animate_scramble = () => {
+		scrambleInterval.current = setInterval(() => {
+			var newArray = [...achievementsArray];
+			shuffleArray(newArray);
+			setAchievementsArray(newArray);
+			scrambleDuration.current = Math.max(
+				20,
+				scrambleDuration.current * 0.75
+			);
+		}, scrambleDuration.current);
+	};
+
+	const stop_scramble = () => {
+		if (scrambleInterval.current) {
+			clearInterval(scrambleInterval.current);
+			initializeAchievementArray();
+		}
+	};
+
 	return (
-		<div id="achievements-container" onClick={() => animate_out()}>
+		<div
+			id="achievements-container"
+			className="glitchable"
+			onClick={() => animate_out()}
+		>
 			<span id="reward-anim">
 				<b>
 					<span id="reward-anim-text">100</span>
@@ -565,7 +668,7 @@ function Achievements(props) {
 					})}
 				</div>
 				<div id="achievement-grid">
-					{achievements.map((a, i) => {
+					{achievementsArray.map((a, i) => {
 						return (
 							<Achievement
 								key={"achievement-" + i}

@@ -11,7 +11,6 @@ function Debug(props) {
 		achievements,
 		setAchievements,
 		setTimers,
-		skipEnvelope,
 		emitEvent,
 		inTrialMode,
 		setClicks,
@@ -43,7 +42,10 @@ function Debug(props) {
 		for (var categoryName in newAchievements) {
 			var category = newAchievements[categoryName];
 			for (var i in category) {
-				if (category[i].save.epilogue) {
+				if (
+					category[i].save.epilogue ||
+					category[i].id == "stretch_6"
+				) {
 					continue;
 				}
 				category[i].save.revealed = true;
@@ -129,8 +131,8 @@ function Debug(props) {
 				}}
 			>
 				Skip Envelope
-			</button> 
-            <input type="text" ref={envelopeIdRef} />{" "}
+			</button>
+			<input type="text" ref={envelopeIdRef} />{" "}
 			<button
 				id="show-envelope-button"
 				onClick={() => {
@@ -140,8 +142,22 @@ function Debug(props) {
 				{" "}
 				Show Envelope{" "}
 			</button>
-            
-            */}
+			<button
+				id="refresh-daily-order"
+				onClick={() => {
+					emitEvent("refresh-daily-order");
+				}}
+			>
+				Refresh Daily Order
+			</button>
+			<button
+				id="complete-daily-order"
+				onClick={() => {
+					emitEvent("complete-daily-order");
+				}}
+			>
+				Complete Daily Order
+			</button>*/}
 		</div>
 	) : null;
 }

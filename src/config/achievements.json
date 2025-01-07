@@ -552,8 +552,8 @@
         {
             "id": "stretch_6",
             "category": "ending",
-            "display_name": "Epilogue 6",
-            "desc": "NYI",
+            "display_name": "One Last Challenge",
+            "desc": "Try to be happy, okay?",
             "image_path": "/images/hand-hold.png",
             "reward": 1,
             "timers": 1,
@@ -562,7 +562,8 @@
                 "achieved": false,
                 "claimed": false,
                 "epilogue": true
-            }
+            },
+            "manual": true
         }
     ]
 }

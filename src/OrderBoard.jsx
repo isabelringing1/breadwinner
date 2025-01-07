@@ -75,6 +75,7 @@ function OrderBoard(props) {
 		unlockEvent,
 		emitEvent,
 		emitEvents,
+		events,
 		totalDailyOrders,
 		setTotalDailyOrders,
 		timers,
@@ -128,7 +129,6 @@ function OrderBoard(props) {
 	}, [dailyOrderObject, orderBoardOrders]);
 
 	const calculateNotifs = (orderBoard, dailyOrders) => {
-		console.log("Calculating notifs");
 		if (orderBoard == null) {
 			return;
 		}
@@ -293,22 +293,29 @@ function OrderBoard(props) {
 
 		var [lowerWeights, higherWeights] = prepBreadWeights();
 		for (var i = 0; i < 2; i++) {
-			var suborder =
-				getRandomInt(0, 2) == 0
-					? createSuborder(lowerWeights, bounds)
-					: createSuborder(higherWeights, bounds);
-			if (i > 0 && suborder.id == order.suborders[0].id) {
-				//same bread type
-				i--;
-				continue;
+			var suborder;
+			if (i == 1 && totalDailyOrders == 4) {
+				// Force player to reach banana before getting 5 daily orders
+				suborder = getBananaBreadOrder();
+			} else {
+				// Make regular order
+				suborder =
+					getRandomInt(0, 2) == 0
+						? createSuborder(lowerWeights, bounds)
+						: createSuborder(higherWeights, bounds);
+				if (i > 0 && suborder.id == order.suborders[0].id) {
+					//same bread type
+					i--;
+					continue;
+				}
 			}
 			suborder.card = cards[i];
 			totalBcReward += suborder.bc_reward;
 			totalTimerReward += suborder.timer_reward;
 			order.suborders.push(suborder);
 		}
-		totalTimerReward *= 3;
-		totalBcReward *= 3;
+		totalTimerReward *= 2;
+		totalBcReward *= 2;
 		order.bc_reward = totalBcReward;
 		order.timer_reward = totalTimerReward;
 		order.started = true;
@@ -367,13 +374,17 @@ function OrderBoard(props) {
 		for (const [id, weight] of Object.entries(weights)) {
 			sum += weight;
 			if (sum >= roll) {
-				var bc_reward = Math.floor(
-					BreadObject[id].save.cost * BreadObject[id].markup
-				);
-				var timer_reward = Math.ceil(
-					(1000 * BreadObject[id].bake_time) / timerUnit
-				);
 				var amount = getRandomInt(boundsDict[id][0], boundsDict[id][1]);
+
+				var bc_reward =
+					amount *
+					Math.floor(
+						BreadObject[id].save.cost * BreadObject[id].markup
+					);
+				var timer_reward =
+					amount *
+					Math.ceil((1000 * BreadObject[id].bake_time) / timerUnit);
+
 				return {
 					id: id,
 					amount: amount,
@@ -385,6 +396,46 @@ function OrderBoard(props) {
 		}
 		return null;
 	};
+
+	const getBananaBreadOrder = () => {
+		var bc_reward = Math.floor(
+			BreadObject["banana"].save.cost * BreadObject["banana"].markup
+		);
+		var timer_reward = Math.ceil(
+			(1000 * BreadObject["banana"].bake_time) / timerUnit
+		);
+		return {
+			id: "banana",
+			amount: 1,
+			bc_reward: bc_reward,
+			timer_reward: timer_reward,
+			counter: 0,
+		};
+	};
+
+	useEffect(() => {
+		for (var i = 0; i < events.length; i++) {
+			var event = events[i];
+			switch (event.id) {
+				case "refresh-daily-order":
+					setDailyOrderObject(createNewDailyOrder());
+					break;
+				case "complete-daily-order":
+					for (
+						var i = 0;
+						i < dailyOrderObject.suborders.length;
+						i++
+					) {
+						dailyOrderObject.suborders[i].counter =
+							dailyOrderObject.suborders[i].amount;
+					}
+					break;
+				case "open-envelope":
+					animate_out();
+					break;
+			}
+		}
+	}, [events]);
 
 	const canClaim = (order) => {
 		if (!loaded || order.bc_reward == -1) {
@@ -406,11 +457,6 @@ function OrderBoard(props) {
 			id: "breadcoin-gain",
 			amount: newDailyOrderObject.bc_reward,
 		};
-		var dailyOrderClaimEvent = {
-			id: "daily-order-claim",
-			value: totalDailyOrders,
-		};
-		emitEvents([breadcoinGainEvent, dailyOrderClaimEvent]);
 
 		setTotalEarned(totalEarned + newDailyOrderObject.bc_reward);
 		animateReward(newDailyOrderObject.bc_reward);
@@ -423,6 +469,11 @@ function OrderBoard(props) {
 			newTotalDailyOrders = [...totalDailyOrders];
 		}
 		newTotalDailyOrders.push([new Date(), timeSinceGeneration]);
+		var dailyOrderClaimEvent = {
+			id: "daily-order-claim",
+			value: newTotalDailyOrders,
+		};
+		emitEvents([breadcoinGainEvent, dailyOrderClaimEvent]);
 		setTotalDailyOrders(newTotalDailyOrders);
 		reportDailyOrderFulfilled(
 			newTotalDailyOrders.length,
@@ -555,7 +606,9 @@ function OrderBoard(props) {
 		if (mode != newMode) {
 			setMode(newMode);
 		}
-		e.stopPropagation();
+		if (e) {
+			e.stopPropagation();
+		}
 	};
 
 	var orderContainerDiv = document.getElementById("order-container");

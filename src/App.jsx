@@ -43,6 +43,8 @@ import Envelope from "./Envelope";
 import tile from "/images/tile.png";
 import shadow from "/images/shadow.png";
 import dough_logo from "/images/dough-logo.png";
+import dough_logo_2 from "/images/dough-logo-2.png";
+import heart_logo from "/images/heart-logo.png";
 
 import "./App.css";
 
@@ -50,6 +52,7 @@ import breadJson from "./config/bread.json";
 import suppliesJson from "./config/supplies.json";
 import messagesJson from "./config/messages.json";
 import achievementsJson from "./config/achievements.json";
+import EndGameController from "./EndGameController";
 
 const timer_unit = 300000;
 
@@ -114,12 +117,15 @@ function App() {
 	const [isMobile, setIsMobile] = useState(false);
 	const [totalOrderBoardOrders, setTotalOrderBoardOrders] = useState(0);
 	const [debugEnvelope, setDebugEnvelope] = useState(null);
+	const [datingScore, setDatingScore] = useState([0, 0]); //curr points, total points
+	const [endingEnvelopeOrder, setEndingEnvelopeOrder] = useState(null);
 
 	const onInfoScreenButtonPressed = useRef(null);
 	const onAchievementClaimButtonPressed = useRef(null);
 	const trialModeJiggleInterval = useRef(null);
 	const idleTimeout = useRef(null);
 	const busyStartTime = useRef(0);
+	const glitchStop = useRef(null);
 
 	const convertForSave = () => {
 		var player = {
@@ -152,6 +158,8 @@ function App() {
 			in_trial_mode: inTrialMode,
 			order_board: orderBoardOrders,
 			total_order_board_orders: totalOrderBoardOrders,
+			dating_score: datingScore,
+			ending_envelope_order: endingEnvelopeOrder,
 		};
 		return player;
 	};
@@ -681,9 +689,14 @@ function App() {
 	const showAchievementInfoDialog = (a) => {
 		setShowInfo(true);
 		setInfoScreenTitle("Are you sure?");
-		setInfoScreenBody(
-			"We're going off the honor system for this one. Do you really want to mark this as done?"
-		);
+		if (a.id == "stretch_6") {
+			setInfoScreenBody("");
+		} else {
+			setInfoScreenBody(
+				"We're going off the honor system for this one. Do you really want to mark this as done?"
+			);
+		}
+
 		console.log(a.id);
 		if (a.id == "productivity_6") {
 			setInfoScreenConfirmOverrideText("Yes, Stop Guilt Tripping Me");
@@ -885,6 +898,12 @@ function App() {
 					saveData(convertForSave());
 					setOrderBoardOrders(orderBoardOrders);
 					break;
+				case "animate-glitch":
+					animate_glitch(event.amount);
+					break;
+				case "animate-achievements-out":
+					stop_glitch();
+					break;
 			}
 		}
 	}, [events]);
@@ -905,6 +924,18 @@ function App() {
 			...envelopeUnlocks,
 		];
 		setEnvelopeUnlocks(newEnvelopeUnlocks);
+	};
+
+	const unlockEnvelopes = (categories) => {
+		var newUnlocks = [];
+		for (var i in categories) {
+			newUnlocks.push({
+				category: categories[i],
+				event: null,
+				finish_time: false,
+			});
+		}
+		setEnvelopeUnlocks([...newUnlocks, ...envelopeUnlocks]);
 	};
 
 	const jiggleCrown = () => {
@@ -1022,6 +1053,55 @@ function App() {
 		}
 	};
 
+	const animate_glitch = (level) => {
+		var config = {
+			timing: {
+				duration: 4000,
+			},
+			glitchTimeSpan: {
+				start: 0.2,
+				end: 0.7,
+			},
+			shake: {
+				amplitudeX: 0,
+				amplitudeY: 0,
+			},
+			slice: {
+				count: 1,
+				velocity: 1,
+				maxHeight: 0.02,
+			},
+		};
+		if (level == 2) {
+			config.timing.duration = 3000;
+			config.glitchTimeSpan.end = 0.9;
+			config.shake.amplitudeX = 0.01;
+			config.shake.amplitudeY = 0.01;
+			config.slice.velocity = 3;
+			config.slice.count = 3;
+			config.slice.maxHeight = 0.04;
+		} else if (level == 3) {
+			config.timing.duration = 2000;
+			config.glitchTimeSpan.start = 0.0;
+			config.glitchTimeSpan.end = 1.0;
+			config.shake.amplitudeX = 0.03;
+			config.shake.amplitudeY = 0.03;
+			config.slice.velocity = 15;
+			config.shake.count = 7;
+			config.shake.maxHeight = 7;
+		}
+
+		const { _, stopGlitch } = PowerGlitch.glitch(".glitchable", config);
+		glitchStop.current = stopGlitch;
+	};
+
+	const stop_glitch = () => {
+		if (glitchStop.current != null) {
+			glitchStop.current();
+		}
+		setSupplyObject(SupplyObject); // force rerender
+	};
+
 	useEffect(() => {
 		checkForPercentNextLoafEnvelopes(BreadObject);
 	}, [breadCoin]);
@@ -1119,6 +1199,12 @@ function App() {
 			setPlayerStartTime(playerData.start_time);
 			setOrderBoardOrders(playerData.order_board);
 			setTotalOrderBoardOrders(playerData.total_order_board_orders);
+			if (playerData.dating_score) {
+				setDatingScore(playerData.dating_score);
+			}
+			if (playerData.ending_envelope_order) {
+				setEndingEnvelopeOrder(playerData.ending_envelope_order);
+			}
 			setVisited(true);
 
 			var newSupply = { ...SupplyObject };
@@ -1292,6 +1378,16 @@ function App() {
 				setClicks={setClicks}
 				setDebugEnvelope={setDebugEnvelope}
 			/>
+			<EndGameController
+				events={events}
+				storyState={storyState}
+				totalDailyOrders={totalDailyOrders}
+				endingEnvelopeOrder={endingEnvelopeOrder}
+				setEndingEnvelopeOrder={setEndingEnvelopeOrder}
+				unlockEnvelope={unlockEnvelope}
+				unlockEnvelopes={unlockEnvelopes}
+				loaded={loaded}
+			/>
 			<Tooltip
 				show={showTooltip}
 				mousePos={tooltipPos}
@@ -1303,6 +1399,7 @@ function App() {
 				showEnvelope={showEnvelope}
 				setShowEnvelope={setShowEnvelope}
 				emitEvent={emitEvent}
+				emitEvents={emitEvents}
 				timersUnlocked={timersUnlocked}
 				setTimersUnlocked={setTimersUnlocked}
 				setTimers={setTimers}
@@ -1318,6 +1415,8 @@ function App() {
 				reportEnvelopeCompleted={reportEnvelopeCompleted}
 				debugEnvelope={debugEnvelope}
 				setDebugEnvelope={setDebugEnvelope}
+				datingScore={datingScore}
+				setDatingScore={setDatingScore}
 			/>
 			<Achievements
 				showAchievements={showAchievements}
@@ -1333,12 +1432,13 @@ function App() {
 				setTotalEarned={setTotalEarned}
 				loaded={loaded}
 				claimButtonPressed={onAchievementClaimButtonPressed.current}
-				unlockEnvelope={unlockEnvelope}
 				timers={timers}
 				setTimers={setTimers}
 				timersUnlocked={timersUnlocked}
 				setTimersUnlocked={setTimersUnlocked}
 				busyStartTime={busyStartTime}
+				storyState={storyState}
+				setStoryState={setStoryState}
 			/>
 			<OrderBoard
 				showDailyOrder={showDailyOrder}
@@ -1358,6 +1458,7 @@ function App() {
 				unlockEvent={dailyOrderEvent}
 				emitEvent={emitEvent}
 				emitEvents={emitEvents}
+				events={events}
 				totalDailyOrders={totalDailyOrders}
 				setTotalDailyOrders={setTotalDailyOrders}
 				totalTimelyDailyOrders={totalTimelyDailyOrders}
@@ -1503,13 +1604,17 @@ function App() {
 				<div id="version">
 					{storyState > 1 ? (
 						<img
-							src={dough_logo}
+							src={storyState == 5 ? dough_logo_2 : dough_logo}
 							id="ending-logo"
 							onClick={() => {
 								setBlockingCategory("ending-crown");
 							}}
 							onMouseEnter={() => jiggleCrown()}
 						/>
+					) : null}
+					{storyState >= 3 &&
+					datingScore[0] / datingScore[1] > 0.66 ? (
+						<img src={heart_logo} id="ending-logo-heart" />
 					) : null}
 					bread winner{" "}
 					<span

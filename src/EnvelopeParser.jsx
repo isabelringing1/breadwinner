@@ -5,11 +5,38 @@ import timer_img from "/images/timer.png";
 import Markdown from "react-markdown";
 
 function getPrerequisites(id) {
-	var data = envelopeData[id];
-	if (!data) {
-		return null;
+	var env = getEnvelope(id);
+	return env.prerequisites;
+}
+
+function getEnvelope(envId) {
+	if (envelopeData[envId]) {
+		return envelopeData[envId];
 	}
-	return data.prerequisites;
+	if (endingData[envId]) {
+		return endingData[envId];
+	}
+	for (const [id, dayEnvelope] of Object.entries(endingData.days_sequence)) {
+		if (envId == id) {
+			return dayEnvelope;
+		}
+	}
+
+	for (const [id, orderEnvelope] of Object.entries(
+		endingData.orders_sequence
+	)) {
+		if (envId == id) {
+			return orderEnvelope;
+		}
+	}
+
+	for (const [id, miscEnvelope] of Object.entries(
+		endingData.misc_envelopes
+	)) {
+		if (envId == id) {
+			return miscEnvelope;
+		}
+	}
 }
 
 function parse(
@@ -17,87 +44,102 @@ function parse(
 	onButtonClick,
 	onDatingButtonClick,
 	replaceTokens,
-	setDating
+	datingScore
 ) {
-	var data = envelopeData[id] ?? endingData[id];
+	var data = getEnvelope(id);
 	var cards = [];
-	if (!data || !data.cards) {
-		return null;
+	var datingCards = null;
+	if (!data || (!data.cards && !data.dating)) {
+		return {};
 	}
 	var cardNo = 0;
-	data.cards.forEach((el) => {
-		if (el.constructor === Array) {
-			// multiple cards
-			var card = (
-				<div className="envelope-card-body">
-					{el.map((text, i) => {
-						if (text[0] == "[") {
-							return parseSpecial(text, id);
-						} else if (text[0] == "/") {
-							return parseButtons(
-								text,
-								id,
-								onButtonClick,
-								cardNo
-							);
-						}
-						text = replaceTokens(text);
-						return (
-							<div
-								key={"env-line-" + id + "-" + i}
-								className="env-line"
-							>
-								<Markdown>{text}</Markdown>
-							</div>
-						);
-					})}
-				</div>
-			);
-			cards.push(card);
-		} else {
-			if (el[0] == "[") {
-				cards.push(
+	if (data.cards) {
+		data.cards.forEach((el) => {
+			if (el.constructor === Array) {
+				// multiple cards
+				var card = (
 					<div className="envelope-card-body">
-						{parseSpecial(el, id)}
+						{el.map((text, i) => {
+							if (text[0] == "[") {
+								return parseSpecial(text, id);
+							} else if (text[0] == "/") {
+								return parseButtons(
+									text,
+									id,
+									onButtonClick,
+									cardNo
+								);
+							}
+							text = replaceTokens(text);
+							return (
+								<div
+									key={"env-line-" + id + "-" + i}
+									className="env-line"
+								>
+									<Markdown>{text}</Markdown>
+								</div>
+							);
+						})}
 					</div>
 				);
-			} else if (el[0] == "/") {
-				{
+				cards.push(card);
+			} else {
+				if (el[0] == "[") {
 					cards.push(
 						<div className="envelope-card-body">
-							{parseButtons(el, id, onButtonClick, cardNo)}
+							{parseSpecial(el, id)}
+						</div>
+					);
+				} else if (el[0] == "/") {
+					{
+						cards.push(
+							<div className="envelope-card-body">
+								{parseButtons(el, id, onButtonClick, cardNo)}
+							</div>
+						);
+					}
+				} else {
+					var text = replaceTokens(el);
+					cards.push(
+						<div className="envelope-card-body">
+							<div className="env-line">
+								<Markdown>{text}</Markdown>
+							</div>
 						</div>
 					);
 				}
-			} else {
-				var text = replaceTokens(el);
-				cards.push(
-					<div className="envelope-card-body">
-						<div className="env-line">
-							<Markdown>{text}</Markdown>
-						</div>
-					</div>
-				);
 			}
-		}
-		cardNo++;
-	});
-	setDating(null);
+			cardNo++;
+		});
+	}
+
 	if (data.dating) {
+		datingCards = [];
 		var datingCardNo = 0;
-		var datingCards = [];
 		data.dating.forEach((el) => {
 			if (el.constructor === Object) {
-				// Choice
-				var choiceCards = parseDatingButtons(
-					el,
-					id,
-					onDatingButtonClick,
-					datingCardNo
-				);
-				for (var j = 0; j < choiceCards.length; j++) {
+				if (el.choice_id) {
+					// Choice
+					var buttonCard = parseDatingButtons(
+						el,
+						id,
+						onDatingButtonClick,
+						datingCardNo
+					);
 					datingCardNo++;
-					datingCards.push(choiceCards[j]);
+					datingCards.push(buttonCard);
+				} else if (el.outcome_id) {
+					// Outcome
+					var outcomeCards = parseOutcomeCards(
+						el,
+						id,
+						datingCardNo,
+						datingScore
+					);
+					for (var j = 0; j < outcomeCards.length; j++) {
+						datingCardNo++;
+						datingCards.push(outcomeCards[j]);
+					}
 				}
 			} else {
 				// Otherwise it's a thought or a dialogue card
@@ -106,9 +148,12 @@ function parse(
 				datingCardNo++;
 			}
 		});
-		setDating(datingCards);
+		datingCards = datingCards;
 	}
-	return cards;
+	return {
+		cards: cards,
+		datingCards: datingCards,
+	};
 }
 
 function parseDatingCard(el, id) {
@@ -162,7 +207,6 @@ function parseDatingCard(el, id) {
 			);
 		}
 	}
-
 	var data = {
 		body: card,
 		title: title,
@@ -193,6 +237,26 @@ function parseSpecial(special, id) {
 				key={"env-signature-container-" + id}
 			>
 				<div className="env-line-signature">Your friend,</div>
+				<div className="env-line-signature">Dough</div>
+			</div>
+		);
+	} else if (keyword == "SIGNATURE3") {
+		return (
+			<div
+				className="env-signature-container"
+				key={"env-signature-container-" + id}
+			>
+				<div className="env-line-signature">Your friend(...?),</div>
+				<div className="env-line-signature">Dough</div>
+			</div>
+		);
+	} else if (keyword == "SIGNATURE4") {
+		return (
+			<div
+				className="env-signature-container"
+				key={"env-signature-container-" + id}
+			>
+				<div className="env-line-signature">Your friend forever,</div>
 				<div className="env-line-signature">Dough</div>
 			</div>
 		);
@@ -267,8 +331,16 @@ function parseSpecial(special, id) {
 				key={"env-line-num-" + id}
 			></div>
 		);
+	} else {
+		return (
+			<div
+				key={"env-line-" + id + "-" + keyword.toLowerCase()}
+				className={"env-line " + keyword.toLowerCase()}
+			>
+				<Markdown>{content}</Markdown>
+			</div>
+		);
 	}
-	return <div></div>;
 }
 
 function parseDatingTitle(text) {
@@ -279,7 +351,8 @@ function parseDatingTitle(text) {
 	if (title == "DOUGH-SHAKE") {
 		return "DOUGH";
 	}
-	return text.split("[").pop().split("]")[0];
+	if (title == "DATE-END") return "";
+	return title;
 }
 
 function parseSpecialDating(special, id, i = 0) {
@@ -289,13 +362,21 @@ function parseSpecialDating(special, id, i = 0) {
 	if (content[0] == "_") {
 		c += " dating-thought";
 	}
-	if (keyword == "DOUGH" || keyword == "DOUGH-SHAKE") {
+	if (keyword == "DATE-END") {
 		return (
-			<div key={"dating-env-line-" + id + "-" + i} className={c}>
-				<Markdown>{content}</Markdown>
+			<div
+				className="env-line-centered confetti-card dating-thought"
+				key={"dating-env-line-" + id + "-" + i}
+			>
+				{content}
 			</div>
 		);
 	}
+	return (
+		<div key={"dating-env-line-" + id + "-" + i} className={c}>
+			<Markdown>{content}</Markdown>
+		</div>
+	);
 }
 
 function parseButtons(text, id, onButtonClick, cardNo) {
@@ -321,6 +402,31 @@ function parseButtons(text, id, onButtonClick, cardNo) {
 							{button.slice(1, -1)}
 						</span>
 					);
+				} else if (button[0] == "{") {
+					// "fake button"
+					return (
+						<button
+							className={buttonClass + buttonCt + " fake-button"}
+							key={"env-button-" + id + "-" + cardNo}
+							id={"env-button-" + id + "-" + cardNo}
+						>
+							{button.slice(1, -1)}
+						</button>
+					);
+				} else if (button[0] == "}") {
+					// "fake button" that won't move
+					return (
+						<button
+							className={
+								buttonClass +
+								buttonCt +
+								" fake-button stuck-button"
+							}
+							key={"env-button-" + id + "-" + cardNo}
+						>
+							{button.slice(1, -1)}
+						</button>
+					);
 				}
 				buttonCt++;
 				return (
@@ -345,7 +451,6 @@ function parseDatingButtons(object, id, onDatingButtonClick, cardNo) {
 	var buttonObjs = object.buttons;
 
 	var buttonCt = 0;
-	var datingCards = [];
 	var card = (
 		<div className={containerClass} key={containerClass + "-" + id}>
 			{buttonObjs.map((buttonObj, i) => {
@@ -361,7 +466,7 @@ function parseDatingButtons(object, id, onDatingButtonClick, cardNo) {
 								object.choice_id,
 								i,
 								buttonObj[1], //score
-								object.outcomes[i]
+								object.max_points //max Score
 							);
 						}}
 					>
@@ -372,22 +477,53 @@ function parseDatingButtons(object, id, onDatingButtonClick, cardNo) {
 		</div>
 	);
 
-	datingCards.push({
+	return {
 		body: card,
 		choiceId: object.choice_id,
 		outcomes: object.outcomes,
 		buttons: true,
 		title: null,
-	});
-	return datingCards;
+	};
 }
 
-function getChoiceCards(card, choice, id) {
+function parseOutcomeCards(object, id, cardNo, datingScore) {
+	var outcomeCards = [];
+	var endingIndex = getEndingIndex(datingScore, object.outcomes);
+	var outcome = object.outcomes[endingIndex];
+	for (var i = 0; i < outcome.length; i++) {
+		var data = parseDatingCard(outcome[i], id + "-outcome-");
+		outcomeCards.push(data);
+	}
+	return outcomeCards;
+}
+
+function getEndingIndex(datingScore, outcomes) {
+	var percentage = datingScore[0] / datingScore[1];
+	if (percentage < 0.33) {
+		return outcomes.length < 3 ? 1 : 2;
+	} else if (percentage < 0.67) {
+		return 1;
+	}
+	return 0;
+}
+
+function getChoiceCards(card, choice, id, datingScore) {
 	var choiceTextArray = card.outcomes[choice];
 	var choiceCards = [];
 	for (var i = 0; i < choiceTextArray.length; i++) {
-		var data = parseDatingCard(choiceTextArray[i], id + "-choice-");
-		choiceCards.push(data);
+		var el = choiceTextArray[i];
+		if (el.constructor === Object) {
+			if (el.outcomes) {
+				var endingIndex = getEndingIndex(datingScore, el.outcomes);
+				var data = parseDatingCard(
+					el.outcomes[endingIndex],
+					id + "-choice-outcome-"
+				);
+				choiceCards.push(data);
+			}
+		} else {
+			choiceCards.push(parseDatingCard(el, id + "-choice-"));
+		}
 	}
 	return choiceCards;
 }
