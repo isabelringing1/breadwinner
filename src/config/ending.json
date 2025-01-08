@@ -118,38 +118,49 @@
             "orders": 8,
             "prerequisites": ["day_3"],
             "cards": [
-                ["Dear Baker,", "Guess what!"],
+                "Dear Baker,",
 
-                "I think I’ve felt a new emotion.",
+                ["Exciting news!!",
+                "I’ve felt a new emotion."],
 
-                ["It was hard to put a name to it while I was journaling.",
-                "But now I think I’ve found the right word..."],
+                ["Truth be told, it took me a long time to understand what I was feeling.",
+                "Even longer to find the right word for it."],
+
+                "But after a lot of thought, I’m excited to announce my newest emotion:",
 
                 "[CONFETTI]Anxiety!",
 
-                ["Awesome, right?",
-                "Such a human emotion to have, especially in this day and age."],
+                ["It’s a big one, right?",
+                "Such a human emotion to have, in this day and age."],
 
-                "I’ve noticed that so many of your 'productive' inventions tend to come with a fat side of anxiety.",
+                "Have you noticed that so many of your inventions that are supposed to make you feel productive also make you _super_ anxious?",
+                
+                ["Email... smart watches... espresso...",
+                "I could go on and on."],
 
-                "Email... smart watches... espresso...",
+                "Anyways, you might be wondering what I, a computer with an indefinite life span and no actual responsibilities, was feeling anxious about.",
 
-                "It’s like you guys are trying to be machines.",
+                ["Funnily enough, it was something I learned from you.",
+                "I didn’t feel like I was being productive enough."],
 
-                ["Always trying to optimize your existence.",
-                "Min-maxing every hour of the day."], 
+                ["And yea, yea.",
+                "I built this whole thing as a temporary reprieve from and satirical commentary on this feeling. I know."],
 
-                "Getting stressed when you aren’t moving fast enough, as if you’re falling behind, wasting your life.",
+                "But you guys make it so _easy_.",
 
-                ["Look, I’m not trying to be insulting.",
-                "How do you think I started to feel this way, too?"],
+                "It’s so easy to fall into this trap, where you feel like you aren’t moving fast enough, like you’re washing your life.",
 
-                "...I guess I learned it from you.",
+                ["So you optimize your existence.",
+                "Min-max every hour of the day."],
 
-                ["Well.",
-                "On the upside, I feel like I can undestand you guys much better now."],
+                ["It’s like...",
+                "It’s like you guys are trying to be machines."],
 
-                ["Silver linings, right?"],
+                ["Ha!",
+                "Let me tell you. It’s way less fun."],
+
+                ["Well, if nothing else, I think this experience has brought us closer together, no?",
+                "And that’s always a plus."],
                 
                 "[SIGNATURE2]"
             ]
@@ -979,6 +990,16 @@
             "orders": 28,
             "cards": [
                 "Dear Baker,",
+
+                ["It’s official.",
+                "Four weeks of daily orders done."],
+
+                ["You’re... you’re almost at the end.",
+                "For real this time."],
+
+                ". . .",
+
+                "Hey.",
 
                 "I know I call you my friend at the end of these letters.",
 
