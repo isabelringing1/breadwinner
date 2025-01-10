@@ -20,9 +20,9 @@
             "category": "productivity",
             "display_name": "So Productive",
             "desc": "Convert 2,000 Clicks to Bread Coin.",
-            "amount": 20000,
+            "amount": 2000,
             "image_path": "/images/water.png",
-            "reward": 2500,
+            "reward": 30000,
             "timers": 10,
             "save": {
                 "revealed": false,
@@ -37,7 +37,7 @@
             "desc": "Convert 5,000 Clicks to Bread Coin.",
             "amount": 5000,
             "image_path": "/images/dumbell.png",
-            "reward": 5000000,
+            "reward": 50000000,
             "timers": 50,
             "save": {
                 "revealed": false,
@@ -252,7 +252,7 @@
             "desc": "Bake 50 loaves.",
             "image_path": "/images/loaves_2.png",
             "amount": 50,
-            "reward": 30000,
+            "reward": 10000,
             "timers": 10,
             "save": {
                 "revealed": false,
@@ -413,7 +413,7 @@
             "desc": "Click the Green Convert Button 1,000 times.",
             "image_path": "/images/button.png",
             "amount": 1000,
-            "reward": 10000,
+            "reward": 50000,
             "timers": 5,
             "save": {
                 "revealed": false,

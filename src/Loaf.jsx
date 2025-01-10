@@ -141,7 +141,27 @@ function Loaf(props) {
 			/>
 
 			{ready ? (
-				<button className="loaf-button" onClick={() => sellLoaf(index)}>
+				<button
+					className="loaf-button"
+					onClick={() => sellLoaf(index)}
+					onMouseMove={(e) => {
+						var x =
+							e.clientX < window.innerWidth - 300
+								? e.clientX + 30
+								: e.clientX - 240;
+						toggleTooltip(
+							true,
+							loaf,
+							[x, e.clientY + 30],
+							get_percent_done(),
+							getTimerCost(loaf)
+						);
+					}}
+					onMouseLeave={() => {
+						toggleTooltip(false);
+						setHovered(false);
+					}}
+				>
 					SELL
 				</button>
 			) : useTimerMode ? (

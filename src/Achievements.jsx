@@ -469,6 +469,8 @@ function Achievements(props) {
 				"translateY(20vh)";
 			document.getElementById("bookmark-div-2").style.transform =
 				"translateY(20vh)";
+		} else {
+			setPeekIn(true);
 		}
 	}, [loaded]);
 

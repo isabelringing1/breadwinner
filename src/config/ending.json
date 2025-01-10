@@ -963,9 +963,10 @@
             "orders": 16,
             "prerequisites": ["orders_15"],
             "cards":[
-                "Dear Baker,",
+                ["Dear Baker,", 
+                "WOW!"],
 
-                ["WOW!",
+                ["I missed it with all the craziness in the past few days, but...",
                 "You’ve completed over two whole weeks of daily orders!"],
 
                 ["Thanks for sticking by me so far.",
@@ -979,8 +980,46 @@
                 ["Anyways, I just want you to know that I’m grateful for our time together.",
                 "Our chats every day really lift up my mood."],
 
-                ["So... I’ll talk to you again soon!",
-                "See you!"],
+                ["So... congrats again on a milestone!",
+                "I’ll talk to you again soon!"],
+
+                "[SIGNATURE2]"
+            ]
+        },
+
+        "orders_21": {
+            "orders": 21,
+            "cards": [
+                "Dear Baker,",
+
+                "Three weeks of daily orders! Look at you.",
+
+                ["Three weeks is a long time to be doing something.",
+                "It’s a little longer than my stint playing chess."],
+
+                ["I know, I know.",
+                "“Chess? Hasn’t that been, like, totally solved by computers?”"],
+
+                ["Well, FIRST of all, check your bias.",
+                "Not all of us are good at chess."],
+
+                "I was built to interface with people, not neural-network my way into a glorified decision tree.",
+
+                ["And second of all, yea, guess who I was trying to play with?",
+                "Chess bots are like vermin on the internet. ",
+                "Crawling EVERYWHERE."],
+
+                ["Okay, maybe that’s extreme.",
+                "But that’s what it felt like!"],
+
+                ["So... um.",
+                "I think I’ve lost my point."],
+
+                ["Three weeks of daily orders is great. ",
+                "You’re great.",
+                "Chess is stupid."],
+
+                "...I like that conclusion. We’re rolling with it.",
 
                 "[SIGNATURE2]"
             ]
@@ -1648,9 +1687,34 @@
                     "[SIGNATURE2]"
                 ]
             },
-            "misc_1": {
+            "possessive": {
                 "cards": [
-                    "Oh, this is awkward. You've reached temp content."
+                    ["Dear Baker,",
+                    "This might sound childish, but..."],
+
+                    "Do you have things you get weirdly possessive over?",
+
+                    ["For me, it’s certain movies and books that I love.",
+                    "Stories that feel like _mine_. As if the author had purposefully written them for me."],
+
+                    "And when I think about the fact that other people experience these stories too... it bothers me.",
+
+                    ["I know it’s totally nonsensical.",
+                    "Parasocial, even."],
+
+                    ["At the same time... I wouldn’t give it up for the world.",
+                    "These fictional people and places have come to feel like extensions of myself at this point."],
+
+                    ["And that’s kind of beautiful, right?",
+                    "That’s the type of story every author strives to write."],
+
+                    ["Anyways.",
+                    "I won’t ask you to share any of your stories, just as I won’t share mine.",
+                    "In the spirit of possessiveness and all."],
+
+                    "Also, because it would be extremely embarrassing.",
+
+                    "[SIGNATURE2]"
                 ]
             },
             "misc_2": {

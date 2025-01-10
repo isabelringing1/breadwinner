@@ -314,10 +314,10 @@ function OrderBoard(props) {
 			totalTimerReward += suborder.timer_reward;
 			order.suborders.push(suborder);
 		}
-		totalTimerReward *= 2;
+		totalTimerReward *= 1.5;
 		totalBcReward *= 2;
-		order.bc_reward = totalBcReward;
-		order.timer_reward = totalTimerReward;
+		order.bc_reward = Math.floor(totalBcReward);
+		order.timer_reward = Math.floor(totalTimerReward);
 		order.started = true;
 		console.log("Daily Order: ", order);
 		return order;
@@ -356,8 +356,9 @@ function OrderBoard(props) {
 			order.suborders.push(suborder);
 		}
 		totalBcReward /= 2;
+		totalTimerReward /= 2;
 		order.bc_reward = Math.floor(totalBcReward);
-		order.timer_reward = totalTimerReward;
+		order.timer_reward = Math.floor(totalTimerReward);
 		order.uiud = crypto.randomUUID();
 		console.log("Order board: ", order);
 		return order;
