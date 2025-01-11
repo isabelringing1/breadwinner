@@ -332,6 +332,15 @@ function OrderBoard(props) {
 		setOrderBoardLastRefreshTime(Date.now());
 	};
 
+	const exhaustedAllLowerWeights = (lowerWeights) => {
+		for (const [_, weight] of Object.entries(lowerWeights)) {
+			if (weight > 0) {
+				return false;
+			}
+		}
+		return true;
+	};
+
 	const createNewOrderBoardOrder = () => {
 		var order = {
 			suborders: [],
@@ -344,10 +353,19 @@ function OrderBoard(props) {
 		var bounds =
 			getRandomInt(0, 100) > 90 ? easyBreadBounds : normalBreadBounds;
 		for (var i = 0; i < numSuborders; i++) {
-			var suborder =
-				getRandomInt(0, 2) == 0
-					? createSuborder(lowerWeights, bounds)
-					: createSuborder(higherWeights, bounds);
+			var isLowerWeight = getRandomInt(0, 2) == 0;
+			// edge case where all 4 suborders are lower weights
+			if (
+				i == 3 &&
+				isLowerWeight &&
+				i == 3 &&
+				exhaustedAllLowerWeights(lowerWeights)
+			) {
+				isLowerWeight = false;
+			}
+			var suborder = isLowerWeight
+				? createSuborder(lowerWeights, bounds)
+				: createSuborder(higherWeights, bounds);
 			lowerWeights[suborder.id] = 0;
 			higherWeights[suborder.id] = 0;
 			suborder.card = cards[i];
@@ -360,7 +378,7 @@ function OrderBoard(props) {
 		order.bc_reward = Math.floor(totalBcReward);
 		order.timer_reward = Math.floor(totalTimerReward);
 		order.uiud = crypto.randomUUID();
-		console.log("Order board: ", order);
+		//console.log("Order board: ", order);
 		return order;
 	};
 
@@ -385,7 +403,6 @@ function OrderBoard(props) {
 				var timer_reward =
 					amount *
 					Math.ceil((1000 * BreadObject[id].bake_time) / timerUnit);
-
 				return {
 					id: id,
 					amount: amount,
