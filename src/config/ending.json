@@ -1025,6 +1025,11 @@
             ]
         },
 
+        "orders_27": {
+            "orders": 27,
+            "cards": ["Oh, this is awkward. You've reached temp content."]
+        },
+
         "orders_28": {
             "orders": 28,
             "cards": [
@@ -1664,6 +1669,9 @@
                     "[SIGNATURE2]"
                 ]
             },
+            "misc_1": {
+                "cards": ["Oh, this is awkward. You've reached temp content."]
+            },
             "gerri": {
                 "prerequisites": ["day_3"],
                 "cards": [
@@ -1716,12 +1724,7 @@
 
                     "[SIGNATURE2]"
                 ]
-            },
-            "misc_2": {
-                "cards": ["Oh, this is awkward. You've reached temp content."]
-            },
-            "misc_3": {
-                "cards": ["Oh, this is awkward. You've reached temp content."]
             }
+           
     }
 }

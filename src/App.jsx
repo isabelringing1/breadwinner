@@ -1482,6 +1482,7 @@ function App() {
 				reportOrderBoardOrderFulfilled={reportOrderBoardOrderFulfilled}
 				totalOrderBoardOrders={totalOrderBoardOrders}
 				setTotalOrderBoardOrders={setTotalOrderBoardOrders}
+				envelopeUnlocks={envelopeUnlocks}
 			/>
 			<FloatingText
 				text={floatingText}

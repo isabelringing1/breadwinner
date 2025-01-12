@@ -45,14 +45,6 @@ function EndGameController(props) {
 	};
 
 	useEffect(() => {
-		console.log(getEnvelopeOrder(0));
-		console.log(getEnvelopeOrder(1));
-		console.log(getEnvelopeOrder(2));
-
-		console.log(getEnvelopeOrder(4));
-	}, []);
-
-	useEffect(() => {
 		for (var i = 0; i < events.length; i++) {
 			var event = events[i];
 			switch (event.id) {
@@ -69,11 +61,6 @@ function EndGameController(props) {
 					}
 					break;
 				case "daily-order-claim":
-					console.log(
-						"daily order claim ",
-						storyState,
-						endingEnvelopeOrder
-					);
 					if (
 						(storyState == 2 || storyState == 3) &&
 						endingEnvelopeOrder.length

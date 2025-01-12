@@ -51,7 +51,10 @@ function Achievements(props) {
 	useEffect(() => {
 		var achievements = initializeAchievementArray();
 		var count = achievements.filter(function (a) {
-			return a.save.achieved && !a.save.claimed;
+			return (
+				(a.save.achieved && !a.save.claimed) ||
+				(a.id == "stretch_6" && a.save.revealed && !a.save.achieved)
+			);
 		}).length;
 		setNumNotifs(count);
 	}, [AchievementsObject]);
@@ -314,7 +317,7 @@ function Achievements(props) {
 					animate_out();
 					break;
 				case "story-state-changed":
-					if (event.value == 3) {
+					if (event.value == 4) {
 						newAchievements["stretch"][5].save.revealed = true;
 					}
 					break;
@@ -348,9 +351,6 @@ function Achievements(props) {
 		if (!peekIn && !showAchievements) {
 			peek_in();
 		}
-		if (storyState == 3) {
-			checkForAllAchievements(newAchievements);
-		}
 	};
 
 	const claimAchievement = (achievement) => {
@@ -380,6 +380,9 @@ function Achievements(props) {
 		setTotalEarned(totalEarned + achievement.reward);
 		animateReward(achievement.reward, achievement.id);
 		reportAchievementClaimed(achievement, numAchievements);
+		if (storyState == 3) {
+			checkForAllAchievements(newAchievements);
+		}
 	};
 
 	const checkForAllAchievements = (newAchievements) => {
@@ -387,7 +390,7 @@ function Achievements(props) {
 			var category = newAchievements[categoryName];
 			for (var i in category) {
 				if (
-					!category[i].save.achieved &&
+					!category[i].save.claimed &&
 					category[i].id != "stretch_6"
 				) {
 					return;
@@ -462,14 +465,19 @@ function Achievements(props) {
 	};
 
 	useEffect(() => {
-		if (loaded && !AchievementsObject["productivity"][0].save.revealed) {
+		if (!loaded) {
+			return;
+		}
+		if (storyState == 3) {
+			checkForAllAchievements(AchievementsObject);
+		}
+		if (!AchievementsObject["productivity"][0].save.revealed) {
 			document.getElementById("bookmark-div-1").style.transform =
 				"translateY(20vh)";
 			document.getElementById("bookmark-div-2").style.transform =
 				"translateY(20vh)";
-		} else {
-			setPeekIn(true);
 		}
+		setPeekIn(AchievementsObject["productivity"][0].save.revealed);
 	}, [loaded]);
 
 	const revealAchievements = () => {

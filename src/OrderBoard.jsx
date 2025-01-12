@@ -87,6 +87,7 @@ function OrderBoard(props) {
 		reportOrderBoardOrderFulfilled,
 		totalOrderBoardOrders,
 		setTotalOrderBoardOrders,
+		envelopeUnlocks,
 	} = props;
 
 	const animating = useRef(false);
@@ -163,11 +164,27 @@ function OrderBoard(props) {
 	}, 1000);
 
 	const dailyOrderUnlocked = () => {
-		return BreadObject["challah"].save.purchase_count > 0;
+		for (var i = 0; i < envelopeUnlocks.length; i++) {
+			if (
+				envelopeUnlocks[i].category == "challah" &&
+				envelopeUnlocks[i].finish_time
+			) {
+				return true;
+			}
+		}
+		return false;
 	};
 
 	const orderBoardUnlocked = () => {
-		return BreadObject["pumpernickel"].save.purchase_count > 0;
+		for (var i = 0; i < envelopeUnlocks.length; i++) {
+			if (
+				envelopeUnlocks[i].category == "pumpernickel" &&
+				envelopeUnlocks[i].finish_time
+			) {
+				return true;
+			}
+		}
+		return false;
 	};
 
 	/* Daily orders refresh at 9 a.m. */
@@ -306,8 +323,8 @@ function OrderBoard(props) {
 			totalTimerReward += suborder.timer_reward;
 			order.suborders.push(suborder);
 		}
-		totalTimerReward *= 1.5;
-		totalBcReward *= 2;
+		totalTimerReward *= 1;
+		totalBcReward *= 1.5;
 		order.bc_reward = Math.floor(totalBcReward);
 		order.timer_reward = Math.floor(totalTimerReward);
 		order.started = true;
