@@ -417,7 +417,7 @@ function App() {
 
 	const convertClicksToBreadCoin = () => {
 		setInSellAllSequence(false);
-		var earnedCoin = Math.round(clicks * multiplier);
+		var earnedCoin = Math.round(clicks * getTotalMultiplier());
 		broadcastBc(breadCoin + earnedCoin);
 		setBreadCoin(breadCoin + earnedCoin);
 		setTotalEarned(totalEarned + earnedCoin);
@@ -451,7 +451,7 @@ function App() {
 
 	const convertKeysToMultiplier = () => {
 		setInSellAllSequence(false);
-		setMultiplier(multiplier + keys * 0.0001);
+		//setMultiplier(multiplier + keys * 0.0001);
 		if (inTrialMode) {
 			setKeys(0);
 		} else {
@@ -459,6 +459,10 @@ function App() {
 		}
 		setTotalKeys(totalKeys + keys);
 		emitEvent("keys-converted", null, totalKeys + keys);
+	};
+
+	const getTotalMultiplier = () => {
+		return multiplier + totalKeys * 0.0001;
 	};
 
 	// Does stuff to set the default tooltip
@@ -542,7 +546,7 @@ function App() {
 		setupTooltip(show, mousePos);
 		if (show) {
 			var text1 = "Convert for +";
-			var text2 = formatNumber(Math.round(clicks * multiplier));
+			var text2 = formatNumber(Math.round(clicks * getTotalMultiplier()));
 			setTooltipContentArray([text1, "[BC]", text2]);
 		}
 	};
@@ -697,7 +701,6 @@ function App() {
 			);
 		}
 
-		console.log(a.id);
 		if (a.id == "productivity_6") {
 			setInfoScreenConfirmOverrideText("Yes, Stop Guilt Tripping Me");
 		} else {
@@ -959,12 +962,12 @@ function App() {
 	const startTrialMode = () => {
 		if (extensionDetected) {
 			console.log(
-				"Cannot start trial mode because extension is detected."
+				"Error: Cannot start trial mode because extension is detected."
 			);
 			return;
 		}
 
-		console.log("Starting trial mode");
+		//console.log("Starting trial mode");
 		setInTrialMode(true);
 		reportTrialMode();
 		trialModeJiggleInterval.current = setInterval(() => {
@@ -1224,7 +1227,6 @@ function App() {
 			setBreadObject(newBread);
 
 			var newAchievements = { ...AchievementsObject };
-			console.log(playerData.achievements_object);
 			for (const [categoryName, array] of Object.entries(
 				playerData.achievements_object
 			)) {
@@ -1299,6 +1301,14 @@ function App() {
 	useEffect(() => {
 		if (inTrialMode && clicks != null) {
 			saveData(convertForSave());
+		}
+		var clicks_button = document.getElementById("convert-clicks");
+		var keys_button = document.getElementById("convert-keys");
+		if (clicks_button) {
+			clicks_button.disabled = !clicks || clicks == 0;
+		}
+		if (keys_button) {
+			keys_button.disabled = !keys || keys == 0;
 		}
 	}, [clicks, keys]);
 
@@ -1512,7 +1522,9 @@ function App() {
 				<Wallet
 					clicks={clicks}
 					keys={keys}
+					totalKeys={totalKeys}
 					multiplier={multiplier}
+					getTotalMultiplier={getTotalMultiplier}
 					convertClicks={convertClicksToBreadCoin}
 					convertKeys={convertKeysToMultiplier}
 					toggleClicksTooltip={toggleConvertClicksTooltip}

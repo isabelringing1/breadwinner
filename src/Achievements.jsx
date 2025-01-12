@@ -72,7 +72,7 @@ function Achievements(props) {
 		var newAchievements = { ...AchievementsObject };
 		for (var i = 0; i < events.length; i++) {
 			var event = events[i];
-			console.log("Listening to event ", event);
+			//console.log("Listening to event ", event);
 			switch (event.id) {
 				case "total-conversions":
 					var productivityAchievements =
@@ -293,7 +293,6 @@ function Achievements(props) {
 					}
 					break;
 				case "banana-baked": //stretch 5
-					console.log(event, newAchievements["stretch"][4]);
 					if (
 						event.amount >= newAchievements["stretch"][4].amount &&
 						!newAchievements["stretch"][4].save.epilogue
@@ -323,7 +322,6 @@ function Achievements(props) {
 					if (event.value == "stretch_6") {
 						// last achievement claimed
 						setStoryState(5);
-						console.log(newAchievements["stretch"][5]);
 						achieve("stretch", 5, newAchievements);
 						claimAchievement(newAchievements["stretch"][5]);
 					}

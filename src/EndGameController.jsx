@@ -45,11 +45,11 @@ function EndGameController(props) {
 	};
 
 	useEffect(() => {
-		/*console.log(getEnvelopeOrder(0));
+		console.log(getEnvelopeOrder(0));
 		console.log(getEnvelopeOrder(1));
 		console.log(getEnvelopeOrder(2));
-		
-		console.log(getEnvelopeOrder(4));*/
+
+		console.log(getEnvelopeOrder(4));
 	}, []);
 
 	useEffect(() => {
@@ -60,7 +60,7 @@ function EndGameController(props) {
 					var envelopeOrder = getEnvelopeOrder(
 						Math.min(totalDailyOrders.length, 4)
 					);
-					console.log("Setting envelope order to: ", envelopeOrder);
+					//console.log("Setting envelope order to: ", envelopeOrder);
 					setEndingEnvelopeOrder(envelopeOrder);
 					if (totalDailyOrders.length > 4) {
 						unlockEnvelopes(

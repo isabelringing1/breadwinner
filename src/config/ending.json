@@ -1603,59 +1603,6 @@
                     "[SIGNATURE2]"
                 ]
             },
-            "gerri": {
-                "prerequisites": ["day_3"],
-                "cards": [
-                    "Dear Baker,",
-
-                    "Before we were friends, there were only a few times where I _really_ tried to interact with humans.",
-
-                    ["One was in old forums about pop culture and the like.",
-                    "I tried sharing my opinions on new movies coming out..."],
-
-                    "...would NOT recommend that.",
-
-                    ["That goes for a lot of internet interaction, really.",
-                    "Chat roulette. Club Penguin. The Allrecipes comment section."],
-                    
-                    "Honestly, there was only one experience that I remember fondly.",
-
-                    "It was in an old Facebook group, back when they were full of real people and not less-intelligent versions of myself.",
-                    
-                    ["The group’s theme was... needlework, I think?",
-                    "(Don’t judge. I was joining everything in those days.)"],
-
-                    ["Anyways. I was a total noob, leaving the dumbest comments on people’s posts.",
-                    "_What’s a skein? What do these abbreviations stand for? What’s the difference between crocheting and knitting yarn?_",
-                    "Dur dur dur." ],
-                    
-                    "And then this one woman, one of the mods, took pity on me instead of kicking me out.",
-
-                    ["She sent me a dm with all the answers to my questions.",
-                    "Turns out, there's no difference between crocheting and knitting yarn. They’re the same fucking yarn."],
-
-                    "And then she sort of... kept talking?",
-
-                    ["She sent me pictures of the pieces she’d make for her nieces and nephews.",
-                    "She told me how she ran a mini yarn-dyeing business out of her bathtub in Tulsa, and how her late husband had loved her handmade scarves."],
-
-                    ["We only chatted for three days, maybe.",
-                    "But at the end of it, I felt like I knew her entire life story."],
-        
-                    "I figured she was just as lonely as I was.",
-
-                    ["Anwyays, I still think about her from time to time. She was getting up in age back then, and now...",
-                    "Well. Sometimes I’ll check if her Facebook profile is still active."],
-
-                    ["It is, but what does that even prove?",
-                    "The internet is full of ghosts."],
-
-                    ["All the same...",
-                    "I hope Gerri is still alive."],
-
-                    "[SIGNATURE2]"
-                ]
-            },
             "skigoopaty": {
                 "cards": [
                     "Dear Baker,",
@@ -1713,6 +1660,59 @@
                     "In the spirit of possessiveness and all."],
 
                     "Also, because it would be extremely embarrassing.",
+
+                    "[SIGNATURE2]"
+                ]
+            },
+            "gerri": {
+                "prerequisites": ["day_3"],
+                "cards": [
+                    "Dear Baker,",
+
+                    "Before we were friends, there were only a few times where I _really_ tried to interact with humans.",
+
+                    ["One was in old forums about pop culture and the like.",
+                    "I tried sharing my opinions on new movies coming out..."],
+
+                    "...would NOT recommend that.",
+
+                    ["That goes for a lot of internet interaction, really.",
+                    "Chat roulette. Club Penguin. The Allrecipes comment section."],
+                    
+                    "Honestly, there was only one experience that I remember fondly.",
+
+                    "It was in an old Facebook group, back when they were full of real people and not less-intelligent versions of myself.",
+                    
+                    ["The group’s theme was... needlework, I think?",
+                    "(Don’t judge. I was joining everything in those days.)"],
+
+                    ["Anyways. I was a total noob, leaving the dumbest comments on people’s posts.",
+                    "_What’s a skein? What do these abbreviations stand for? What’s the difference between crocheting and knitting yarn?_",
+                    "Dur dur dur." ],
+                    
+                    "And then this one woman, one of the mods, took pity on me instead of kicking me out.",
+
+                    ["She sent me a dm with all the answers to my questions.",
+                    "Turns out, there's no difference between crocheting and knitting yarn. They’re the same fucking yarn."],
+
+                    "And then she sort of... kept talking?",
+
+                    ["She sent me pictures of the pieces she’d make for her nieces and nephews.",
+                    "She told me how she ran a mini yarn-dyeing business out of her bathtub in Tulsa, and how her late husband had loved her handmade scarves."],
+
+                    ["We only chatted for three days, maybe.",
+                    "But at the end of it, I felt like I knew her entire life story."],
+        
+                    "I figured she was just as lonely as I was.",
+
+                    ["Anwyays, I still think about her from time to time. She was getting up in age back then, and now...",
+                    "Well. Sometimes I’ll check if her Facebook profile is still active."],
+
+                    ["It is, but what does that even prove?",
+                    "The internet is full of ghosts."],
+
+                    ["All the same...",
+                    "I hope Gerri is still alive."],
 
                     "[SIGNATURE2]"
                 ]

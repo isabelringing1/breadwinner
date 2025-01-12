@@ -7,7 +7,9 @@ function Wallet(props) {
 	const {
 		clicks,
 		keys,
+		totalKeys,
 		multiplier,
+		getTotalMultiplier,
 		convertClicks,
 		convertKeys,
 		toggleClicksTooltip,
@@ -44,7 +46,7 @@ function Wallet(props) {
 
 	useEffect(() => {
 		punchMultiplier();
-	}, [multiplier]);
+	}, [multiplier, totalKeys]);
 
 	const punchMultiplier = () => {
 		const num = document.getElementById("multiplier-num");
@@ -66,7 +68,8 @@ function Wallet(props) {
 					{" "}
 					<span id="multiplier-x">×</span>{" "}
 					<span id="multiplier-num">
-						{String(formatNumber(multiplier, true)) ?? "1"}
+						{String(formatNumber(getTotalMultiplier(), true)) ??
+							"1"}
 					</span>
 				</div>
 				<button
@@ -181,7 +184,7 @@ function Wallet(props) {
 							.classList.remove("timer-icon-clicked");
 					}}
 				>
-					{timers}{" "}
+					{formatNumber(timers)}{" "}
 					<img
 						src={timer}
 						id="timer-icon-copy"

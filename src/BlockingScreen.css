@@ -11,8 +11,8 @@
 }
 
 .blocking-div{
-    width: 50vh;
-    margin-bottom: 15vh;
+    width: 30vw;
+    margin-bottom: 5vh;
     background-color: white;
     padding: 1vh;
     font-size: 2vh;
@@ -29,14 +29,14 @@
 }
 
 .blocking-screen-title{
-    font-size: 2.5vh;
+    font-size: 3.5vh;
     width: 100%;
     padding-bottom: 1.4vh;
 }
 
 .blocking-screen-hint{
     padding-top: .7vh;
-    font-size: 1.1vh;
+    font-size: 1.5vh;
     width: 100%;
     color: #565656;
 }
@@ -148,6 +148,15 @@ a:hover{
 }
 
 .never-mind:after{
+    background-color: #6EE835;
+}
+
+.trial-mode-button{
+    background-color:  #4c9d27;
+    margin-bottom: 2vh;
+}
+
+.trial-mode-button:after{
     background-color: #6EE835;
 }
 

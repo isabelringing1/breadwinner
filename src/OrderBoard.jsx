@@ -178,21 +178,17 @@ function OrderBoard(props) {
 		var now = new Date();
 		var refreshTimeToday = new Date().setHours(9, 0, 0, 0);
 		var nextRefreshTime = dailyOrderNextRefreshTime;
-		console.log(
-			"updating daily order: next refresh time is " + nextRefreshTime
-		);
 		if (
 			dailyOrderNextRefreshTime == null ||
 			dailyOrderNextRefreshTime == 0
 		) {
-			console.log("Creating new daily order");
+			//console.log("Creating new daily order");
 			setDailyOrderObject(createNewDailyOrder(easy_order));
 			nextRefreshTime =
 				new Date(refreshTimeToday) >= now
 					? refreshTimeToday
 					: refreshTimeToday + 86400000; //+24 hours
 			setDailyOrderNextRefreshTime(nextRefreshTime);
-			console.log("setting next refresh time to " + nextRefreshTime);
 		} else if (now >= new Date(dailyOrderNextRefreshTime)) {
 			setDailyOrderObject(createNewDailyOrder());
 			do {
@@ -202,7 +198,6 @@ function OrderBoard(props) {
 			setDailyOrderNextRefreshTime(nextRefreshTime);
 		}
 		var timeTilRefresh = nextRefreshTime - now.getTime();
-		console.log("time until refresh: " + timeTilRefresh);
 		if (timeTilRefresh >= 1) {
 			setTimeout(() => {
 				updateDailyOrder();
@@ -242,9 +237,7 @@ function OrderBoard(props) {
 		}
 
 		var timeTilRefresh = nextRefreshTimestamp - now;
-		console.log("new time til refresh: ", timeTilRefresh);
 		if (newOrderBoardOrders.length < 3 && timeTilRefresh >= 1) {
-			console.log("Setting timeout");
 			refreshTimeout.current = setTimeout(() => {
 				updateOrderBoardOrders();
 			}, timeTilRefresh);
@@ -252,7 +245,6 @@ function OrderBoard(props) {
 			newOrderBoardOrders.length == 3 &&
 			refreshTimeout.current != null
 		) {
-			console.log("clearing timeout");
 			clearTimeout(refreshTimeout.current);
 			refreshTimeout.current = null;
 		}
@@ -319,7 +311,7 @@ function OrderBoard(props) {
 		order.bc_reward = Math.floor(totalBcReward);
 		order.timer_reward = Math.floor(totalTimerReward);
 		order.started = true;
-		console.log("Daily Order: ", order);
+		//console.log("Daily Order: ", order);
 		return order;
 	};
 
@@ -590,7 +582,6 @@ function OrderBoard(props) {
 		setDailyOrderObject(newDailyOrderObject);
 		if (refreshTimeout.current == null) {
 			refreshTimeout.current = setTimeout(() => {
-				console.log("updating order board orders");
 				updateOrderBoardOrders();
 				emitEvent("order-board-update", null, null);
 			}, ORDER_BOARD_REFRESH);

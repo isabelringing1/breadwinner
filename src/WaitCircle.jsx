@@ -29,7 +29,7 @@ function WaitCircle(props) {
 	}, []);
 
 	const trySetWait = async () => {
-		console.log("try set wait");
+		//console.log("try set wait");
 		if (finished.current) {
 			return;
 		}
@@ -82,7 +82,6 @@ function WaitCircle(props) {
 	const breakWait = (success = false) => {
 		if (!success) {
 			//Reset tooltip progress
-			console.log("Emitting event");
 			emitEvent("productivity", id, 0);
 		}
 		clearTimeout(waitTimeout.current);

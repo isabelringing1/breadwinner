@@ -211,7 +211,6 @@ function Envelope(props) {
 				!card.querySelectorAll(".fake-button").length &&
 				!e.target.classList.contains("env-button")
 			) {
-				console.log("returning");
 				return;
 			}
 
@@ -557,10 +556,6 @@ function Envelope(props) {
 						setDatingScore([
 							datingScore[0] + event.value[3], //points
 							datingScore[1] + event.value[4], //max points
-						]);
-						console.log("New dating score: ", [
-							datingScore[0] + event.value[3],
-							datingScore[1] + event.value[4],
 						]);
 					}
 					createChoiceCards(

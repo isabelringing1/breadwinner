@@ -122,9 +122,15 @@ function BlockingScreen(props) {
 			</div>
 			<div className="blocking-screen-text">
 				Want to check it out without the extension? You can play in{" "}
-				<a onClick={startTrialMode}>trial mode</a> first, where clicks
-				are only tracked in the Bread Winner website.
+				<span style={{ color: "#ef5c5c" }}>trial mode</span> first,
+				where clicks are only tracked in the Bread Winner website.
 			</div>
+			<div className="blocking-screen-buttons" onClick={startTrialMode}>
+				<button className="trial-mode-button button">
+					Start Trial Mode
+				</button>
+			</div>
+
 			<div className="blocking-screen-hint">
 				Having trouble with the extension? Try refreshing the page, or
 				allowing permissions if you're using Firefox. Or, check out the{" "}
@@ -149,9 +155,12 @@ function BlockingScreen(props) {
 				We've noticed you’ve been playing in Trial Mode so far.
 			</div>
 			<div className="blocking-screen-text">
-				For the full experience, get the Bread Winner companion
-				extension! Then, clicks on <b>any website you visit</b> can be
-				used in the bakery. How productive!
+				For the full experience, get the{" "}
+				<span style={{ color: "#ef5c5c" }}>
+					Bread Winner companion extension
+				</span>
+				! That way, clicks on <b>any website you visit</b> can be used
+				in the bakery. How productive!
 			</div>
 			<div className="blocking-screen-link">
 				<a
@@ -173,25 +182,30 @@ function BlockingScreen(props) {
 				</a>
 			</div>
 			<div className="blocking-screen-text">
-				Have questions? Concerns? Check out the{" "}
-				<a
-					onClick={() => {
-						goToFAQ();
-					}}
+				<div
+					className="blocking-screen-buttons"
+					onClick={startTrialMode}
 				>
-					FAQ
-				</a>
-				.
-			</div>
-			<div className="blocking-screen-text">
-				<a onClick={startTrialMode}>
-					No thanks, take me back to Trial Mode
-				</a>
+					<button className="trial-mode-button button">
+						No thanks,
+						<br />
+						take me back to Trial Mode
+					</button>
+				</div>
 			</div>
 			{visited ? (
 				<div className="blocking-screen-hint">
 					Having trouble with the extension? Try refreshing the page,
-					or allowing permissions if you're using Firefox.
+					or allowing permissions if you're using Firefox. Or, check
+					out the{" "}
+					<a
+						onClick={() => {
+							goToFAQ();
+						}}
+					>
+						FAQ
+					</a>
+					.
 				</div>
 			) : null}
 		</div>
@@ -338,9 +352,9 @@ function BlockingScreen(props) {
 					registered?
 				</div>
 				<div className="blocking-screen-text answer">
-					If you had the page open before installing the extension,
-					give it a refresh so that it picks up future clicks. If a
-					website is consistently not picking up activity, please{" "}
+					If you had a page open before installing, you'll need to
+					refresh it to pick up any future clicks. If you find a
+					website that's consistently not picking up activity, please{" "}
 					<a
 						href="https://forms.gle/XZsfyj8Vem2RhEYHA"
 						target="_blank"
@@ -348,7 +362,7 @@ function BlockingScreen(props) {
 					>
 						report it
 					</a>
-					!
+					.
 				</div>
 			</div>
 		);

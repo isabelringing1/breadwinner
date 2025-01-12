@@ -31,7 +31,7 @@ function LoafStencil(props) {
 			return <StencilBanana {...props} />;
 	}
 
-	console.log("ERROR: Did not regonize loaf of type ", type);
+	console.log("ERROR: Did not recognize loaf of type ", type);
 	return <StencilDefault {...props} />;
 }
 
