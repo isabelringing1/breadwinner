@@ -1,24 +1,18 @@
-import bison from '@jeffriggle/bison/dist/esm/index';
-
 function saveData(player){
-    //console.log("Saving: ", JSON.stringify(player));
-    //var binary = bison.encode(player);
-    //console.log("binary", binary)
-    localStorage.setItem("bread_data", JSON.stringify(player));
+    var saveString = JSON.stringify(player)
+    localStorage.setItem("bread_data", window.btoa(saveString));
 }
 
 function loadData(){
     var saveData = localStorage.getItem("bread_data");
     if (saveData != null){
-        try{
-           //("Loaded Save Data: ");
-            //console.log(JSON.parse(saveData))
-            return JSON.parse(saveData)
-           //var player = bison.decode(saveData);
+        try {
+            saveData = JSON.parse(window.atob(saveData));
+        } catch (e) {
+            console.log("Detected old save method")
+            saveData = JSON.parse(saveData)
         }
-        catch (e) {
-            console.error(e)
-        }
+        return saveData
     }
 }
 
