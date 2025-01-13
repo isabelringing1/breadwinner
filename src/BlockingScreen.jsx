@@ -474,13 +474,14 @@ function BlockingScreen(props) {
 		}
 	}, [blockingCategory, isMobile, delayPassed]);
 
+	var cn = isMobile ? "blocking-div-mobile blocking-div" : "blocking-div";
 	return shouldShow ? (
 		<div
 			className="blocking-screen"
 			id="blocking-screen"
 			onClick={onBGClicked}
 		>
-			<div className="blocking-div">
+			<div className={cn}>
 				<div className="inner-border">{content}</div>
 			</div>
 		</div>
