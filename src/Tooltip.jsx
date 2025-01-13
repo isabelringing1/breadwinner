@@ -19,7 +19,7 @@ function Tooltip(props) {
 			setTop(
 				mousePos[1] -
 					document.getElementById("tooltip").offsetHeight -
-					30
+					40
 			);
 		} else {
 			setTop(mousePos[1]);
