@@ -1502,6 +1502,7 @@ function App() {
 				inTrialMode={inTrialMode}
 				startTrialMode={startTrialMode}
 				envelopeUnlocks={envelopeUnlocks}
+				endingEnvelopeOrder={endingEnvelopeOrder}
 				totalClicks={totalClicks}
 				totalKeys={totalKeys}
 				breadBaked={breadBaked}

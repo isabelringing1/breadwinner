@@ -14,6 +14,7 @@ function BlockingScreen(props) {
 		delay,
 		startTime,
 		envelopeUnlocks,
+		endingEnvelopeOrder,
 		resetProgress,
 		inTrialMode,
 		startTrialMode,
@@ -233,6 +234,10 @@ function BlockingScreen(props) {
 				<div className="blocking-screen-text">
 					Total Loaves: {formatNumber(breadBaked)}
 				</div>
+				<div className="blocking-screen-text">
+					Total Envelopes:{" "}
+					{getTotalReadEnvelopes() + "/" + getTotalEnvelopes()}
+				</div>
 
 				<div className="blocking-screen-buttons">
 					<button
@@ -402,6 +407,28 @@ function BlockingScreen(props) {
 			true
 		);
 		return timeStr;
+	};
+
+	const getTotalReadEnvelopes = () => {
+		var total = 0;
+		for (var i in envelopeUnlocks) {
+			if (envelopeUnlocks[i].finish_time) {
+				total++;
+			}
+		}
+		return total;
+	};
+
+	const getTotalEnvelopes = () => {
+		var total = 14;
+		if (endingEnvelopeOrder != null) {
+			for (var i in endingEnvelopeOrder) {
+				if (endingEnvelopeOrder[i] != null) {
+					total++;
+				}
+			}
+		}
+		return total;
 	};
 
 	const goToFAQ = () => {
