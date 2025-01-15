@@ -266,13 +266,13 @@
 .order-board-info{
     margin-top: -10%;
     padding-bottom: 1.1vh;
-    font-size: 130%;
+    font-size: 2.2vh;
     text-align: center;
     width: 120%;
 }
 
 .order-card-reward-info{
-    font-size: 130%;
+    font-size: 2.2vh;
     width: 28%;
     display: flex;
     flex-direction: column;
