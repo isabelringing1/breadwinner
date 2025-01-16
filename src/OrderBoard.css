@@ -33,8 +33,7 @@
 #order-container{
     transform: translateY(100vh);
     z-index: 21;
-    width: 850px;
-    max-width: 80vh;
+    width: 80vh;
     aspect-ratio: 1 / 1;
     background-color: #94E5FF;
     border-radius: 3px;
@@ -244,6 +243,7 @@
 .order-board-card{
     margin-top: 3%;
     width: 25%;
+    z-index: 21;
 }
 
 .order-card-flexbox{

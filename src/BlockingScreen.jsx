@@ -318,8 +318,11 @@ function BlockingScreen(props) {
 					scary. How safe is the companion extension?
 				</div>
 				<div className="blocking-screen-text answer">
-					No data is collected from the extension at all! You can see
-					for yourself; the source code for the extensions is public{" "}
+					Bread Winner only counts the number of clicks and keys you
+					make throughout the browser, ignoring any actual content.
+					Everything is stored locally. <br />
+					If you're still concerned, please feel free to check out the
+					source code! It's publicly available{" "}
 					<a
 						href="https://github.com/isabelringing1/click-counter-chrome"
 						target="_blank"
@@ -336,6 +339,13 @@ function BlockingScreen(props) {
 						here
 					</a>
 					.
+				</div>
+				<div className="blocking-screen-text question">
+					I still don't want to install an extension. Can I play?
+				</div>
+				<div className="blocking-screen-text answer">
+					Totally understandable! Yes, the game is completely beatable
+					via Trial Mode.
 				</div>
 				<div className="blocking-screen-text question">
 					Are there only extensions for Chome and Firefox?
@@ -474,7 +484,13 @@ function BlockingScreen(props) {
 		}
 	}, [blockingCategory, isMobile, delayPassed]);
 
-	var cn = isMobile ? "blocking-div-mobile blocking-div" : "blocking-div";
+	var cn = "blocking-div";
+	if (isMobile) {
+		cn = "blocking-div-mobile " + cn;
+	}
+	if (blockingCategory == "FAQ") {
+		cn = "faq " + cn;
+	}
 	return shouldShow ? (
 		<div
 			className="blocking-screen"

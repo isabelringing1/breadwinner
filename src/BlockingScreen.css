@@ -10,6 +10,10 @@
     z-index: 100;
 }
 
+.faq{
+    width: 50vw !important;
+}
+
 .blocking-div{
     width: 30vw;
     margin-bottom: 5vh;
