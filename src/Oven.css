@@ -68,7 +68,7 @@
     background-color: #4c9d27;
     border: solid transparent;
     border-radius: 1.67vh;
-    border-width: 0 0 4px;
+    border-width: 0 0 .5vh;
     box-sizing: border-box;
     cursor: pointer;
     display: inline-block;
@@ -92,9 +92,9 @@
     background-clip: padding-box;
     border: solid transparent;
     background-color: #6EE835;
-    border-radius: 16px;
-    border-width: 0 0 4px;
-    bottom: -4px;
+    border-radius: 1.67vh;
+    border-width: 0 0 .5vh;
+    bottom: -.55vh;
     content: "";
     left: 0;
     position: absolute;

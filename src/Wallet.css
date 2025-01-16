@@ -11,6 +11,10 @@
     padding-top: 3.66vh;
 }
 
+#key-container{
+    height: 3.2vh;
+}
+
 #bread-list-title{
   padding-bottom: 1.04vh;
 }
@@ -76,8 +80,8 @@
 .button{
     appearance: button;
     border: solid transparent;
-    border-radius: 16px;
-    border-width: 0 0 4px;
+    border-radius: 1.6vh;
+    border-width: 0 0 .5vh;
     box-sizing: border-box;
     cursor: pointer;
     display: inline-block;
@@ -88,7 +92,7 @@
     margin: 0;
     outline: none;
     overflow: visible;
-    padding: 20px 16px;
+    padding: 2.1vh 1.6vh;
     text-align: center;
     text-transform: uppercase;
     touch-action: manipulation;
@@ -105,9 +109,9 @@
 .button:after {
   background-clip: padding-box;
   border: solid transparent;
-  border-radius: 16px;
-  border-width: 0 0 4px;
-  bottom: -4px;
+  border-radius: 1.6vh;
+  border-width: 0 0 .5vh;
+  bottom: -.55vh;
   content: "";
   left: 0;
   position: absolute;
