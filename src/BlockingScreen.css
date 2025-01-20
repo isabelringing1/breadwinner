@@ -16,6 +16,7 @@
 
 .blocking-div{
     width: 30vw;
+    min-width: 450px;
     margin-bottom: 5vh;
     background-color: white;
     padding: 1vh;
@@ -34,6 +35,8 @@
 
 .blocking-div-mobile{
     width: auto;
+    min-width: auto;
+
 }
 
 .blocking-screen-title{

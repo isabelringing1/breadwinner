@@ -92,7 +92,7 @@ function BlockingScreen(props) {
 					</a>
 					.
 				</div>
-				<div className="blocking-screen-text">v1.0.0</div>
+				<div className="blocking-screen-text">v1.0.1</div>
 			</div>
 		</div>
 	);
@@ -316,7 +316,7 @@ function BlockingScreen(props) {
 					Bread Winner only counts the number of clicks and keystrokes
 					you make in the browser, never what you actually do. Data is
 					stored locally and does not leave your browser.{" "}
-					<div class="faq-break"></div>
+					<div className="faq-break"></div>
 					If you're still concerned, please feel free to check out the
 					source code! It's publicly available{" "}
 					<a
@@ -366,7 +366,7 @@ function BlockingScreen(props) {
 					If you had a page open before installing, you'll need to
 					refresh it to pick up any future clicks. Firefox users also
 					need to open the extension to explictly allow permissions.{" "}
-					<div class="faq-break"></div>
+					<div className="faq-break"></div>
 					Find a website that's consistently not picking up activity?
 					Please{" "}
 					<a
