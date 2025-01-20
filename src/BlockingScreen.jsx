@@ -50,23 +50,27 @@ function BlockingScreen(props) {
 				Where no matter what you do... you can't NOT be productive.{" "}
 			</div>
 			<div className="blocking-screen-text">
-				You'll need the{" "}
+				You'll need the Chrome or Firefox extension to play (other
+				browsers not supported yet, sorry!)
+			</div>
+			<div className="blocking-screen-link">
 				<a
+					className="extension-link button"
 					href="https://chromewebstore.google.com/detail/bread-winner-companion/mlfplmodeiemagcbcfofdmfcahjaafel"
 					target="_blank"
 					rel="noreferrer"
 				>
 					Chrome
-				</a>{" "}
-				or{" "}
+				</a>
+				&emsp;
 				<a
+					className="extension-link button"
 					href="https://addons.mozilla.org/en-US/firefox/addon/bread-winner-companion/"
 					target="_blank"
 					rel="noreferrer"
 				>
 					Firefox
-				</a>{" "}
-				extension to play (other browsers not supported yet, sorry!)
+				</a>
 			</div>
 			<div className="credits">
 				<div className="blocking-screen-text">
@@ -104,7 +108,7 @@ function BlockingScreen(props) {
 			</div>
 			<div className="blocking-screen-link">
 				<a
-					className="extension-link"
+					className="extension-link button"
 					href="https://chromewebstore.google.com/detail/bread-winner-companion/mlfplmodeiemagcbcfofdmfcahjaafel"
 					target="_blank"
 					rel="noreferrer"
@@ -113,7 +117,7 @@ function BlockingScreen(props) {
 				</a>
 				&emsp;
 				<a
-					className="extension-link"
+					className="extension-link button"
 					href="https://addons.mozilla.org/en-US/firefox/addon/bread-winner-companion/"
 					target="_blank"
 					rel="noreferrer"
@@ -123,8 +127,11 @@ function BlockingScreen(props) {
 			</div>
 			<div className="blocking-screen-text">
 				Want to check it out without the extension? You can play in{" "}
-				<span style={{ color: "#ef5c5c" }}>trial mode</span> first,
-				where clicks are only tracked in the Bread Winner website.
+				<span style={{ backgroundColor: "rgb(248 244 70)" }}>
+					trial mode
+				</span>{" "}
+				first, where clicks are only tracked in the Bread Winner
+				website.
 			</div>
 			<div className="blocking-screen-buttons" onClick={startTrialMode}>
 				<button className="trial-mode-button button">
@@ -133,8 +140,7 @@ function BlockingScreen(props) {
 			</div>
 
 			<div className="blocking-screen-hint">
-				Having trouble with the extension? Try refreshing the page, or
-				allowing permissions if you're using Firefox. Or, check out the{" "}
+				No data leaves your browser. Extension not working? See{" "}
 				<a
 					onClick={() => {
 						goToFAQ();
@@ -156,16 +162,16 @@ function BlockingScreen(props) {
 				We've noticed you’ve been playing in Trial Mode so far.
 			</div>
 			<div className="blocking-screen-text">
-				For the full experience, get the{" "}
-				<span style={{ color: "#ef5c5c" }}>
-					Bread Winner companion extension
+				For the full experience, get the Bread Winner{" "}
+				<span style={{ backgroundColor: "rgb(248 244 70)" }}>
+					companion extension
 				</span>
 				! That way, clicks on <b>any website you visit</b> can be used
 				in the bakery. How productive!
 			</div>
 			<div className="blocking-screen-link">
 				<a
-					className="extension-link"
+					className="extension-link button"
 					href="https://chromewebstore.google.com/detail/bread-winner-companion/mlfplmodeiemagcbcfofdmfcahjaafel"
 					target="_blank"
 					rel="noreferrer"
@@ -174,7 +180,7 @@ function BlockingScreen(props) {
 				</a>
 				&emsp;
 				<a
-					className="extension-link"
+					className="extension-link button"
 					href="https://addons.mozilla.org/en-US/firefox/addon/bread-winner-companion/"
 					target="_blank"
 					rel="noreferrer"
@@ -182,33 +188,22 @@ function BlockingScreen(props) {
 					Firefox
 				</a>
 			</div>
-			<div className="blocking-screen-text">
-				<div
-					className="blocking-screen-buttons"
-					onClick={startTrialMode}
+			<div className="blocking-screen-hint">
+				No data leaves your browser. Extension not working? See{" "}
+				<a
+					onClick={() => {
+						goToFAQ();
+					}}
 				>
-					<button className="trial-mode-button button">
-						No thanks,
-						<br />
-						take me back to Trial Mode
-					</button>
-				</div>
+					FAQ
+				</a>
+				.
 			</div>
-			{visited ? (
-				<div className="blocking-screen-hint">
-					Having trouble with the extension? Try refreshing the page,
-					or allowing permissions if you're using Firefox. Or, check
-					out the{" "}
-					<a
-						onClick={() => {
-							goToFAQ();
-						}}
-					>
-						FAQ
-					</a>
-					.
-				</div>
-			) : null}
+			<div className="blocking-screen-text trial-mode-link">
+				<a onClick={startTrialMode}>
+					No thanks, take me back to Trial Mode
+				</a>
+			</div>
 		</div>
 	);
 
@@ -318,9 +313,10 @@ function BlockingScreen(props) {
 					scary. How safe is the companion extension?
 				</div>
 				<div className="blocking-screen-text answer">
-					Bread Winner only counts the number of clicks and keys you
-					make throughout the browser, ignoring any actual content.
-					Everything is stored locally. <br />
+					Bread Winner only counts the number of clicks and keystrokes
+					you make in the browser, never what you actually do. Data is
+					stored locally and does not leave your browser.{" "}
+					<div class="faq-break"></div>
 					If you're still concerned, please feel free to check out the
 					source code! It's publicly available{" "}
 					<a
@@ -368,8 +364,11 @@ function BlockingScreen(props) {
 				</div>
 				<div className="blocking-screen-text answer">
 					If you had a page open before installing, you'll need to
-					refresh it to pick up any future clicks. If you find a
-					website that's consistently not picking up activity, please{" "}
+					refresh it to pick up any future clicks. Firefox users also
+					need to open the extension to explictly allow permissions.{" "}
+					<div class="faq-break"></div>
+					Find a website that's consistently not picking up activity?
+					Please{" "}
 					<a
 						href="https://forms.gle/XZsfyj8Vem2RhEYHA"
 						target="_blank"

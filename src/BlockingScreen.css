@@ -44,9 +44,16 @@
 
 .blocking-screen-hint{
     padding-top: .7vh;
-    font-size: 1.5vh;
+    font-size: 1.6vh;
     width: 100%;
     color: #565656;
+    text-align: center;
+}
+
+.trial-mode-link{
+    padding-top: 1.8vh;
+    width: 100%;
+    text-align: center;
 }
 
 .question{
@@ -117,9 +124,19 @@ a{
 }
 
 .extension-link{
-    padding: 0 3vh;
-    
+    color: black;
+    background-color:  #4c9d27;
+    margin: 0 2vh;
 }
+
+.extension-link:hover{
+    color: black;
+}
+
+.extension-link:after{
+    background-color: #6EE835;
+}
+
 
 a:hover{
     color: rgb(142, 37, 255)
@@ -160,12 +177,12 @@ a:hover{
 }
 
 .trial-mode-button{
-    background-color:  #4c9d27;
+    background-color:  #d4ad1f;
     margin-bottom: 2vh;
 }
 
 .trial-mode-button:after{
-    background-color: #6EE835;
+    background-color: #e8e435;
 }
 
 .blocking-screen-buttons{
@@ -182,6 +199,10 @@ a:hover{
 
 .blocking-screen-container{
     width: 100%;
+}
+
+.faq-break{
+    height: 1vh;
 }
   
 @keyframes load8 {
