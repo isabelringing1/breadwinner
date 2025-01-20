@@ -87,9 +87,7 @@ function reportEnvelopeCompleted(envelopeId) {
 }
 
 function reportFAQOpened() {
-    gtag("event", "faq_opened", {
-        "envelope_id": envelopeId,
-    });
+    gtag("event", "faq_opened");
 }
 
 
