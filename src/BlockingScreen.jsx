@@ -92,7 +92,7 @@ function BlockingScreen(props) {
 					</a>
 					.
 				</div>
-				<div className="blocking-screen-text">v1.0.1</div>
+				<div className="blocking-screen-text">v1.1.0</div>
 			</div>
 		</div>
 	);
