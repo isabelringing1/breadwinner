@@ -61,7 +61,6 @@ function Envelope(props) {
 			var entry = unlocks[i];
 			unlockDict.current[entry.category] = entry;
 		}
-
 		for (var i in unlocks) {
 			var entry = unlocks[i];
 			if (entry.finish_time) {
@@ -114,6 +113,9 @@ function Envelope(props) {
 	}, [debugEnvelope]);
 
 	const hasPrerequisites = (envelope) => {
+		if (envelope.category == null) {
+			return false;
+		}
 		var prereqs = Parser.getPrerequisites(envelope.category);
 		if (!prereqs) {
 			return true;

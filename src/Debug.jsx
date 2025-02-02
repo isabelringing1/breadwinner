@@ -22,6 +22,8 @@ function Debug(props) {
 	const timersRef = useRef();
 	const envelopeIdRef = useRef();
 
+	const devMode = false;
+
 	const toggleShowDebug = () => {
 		setShowDebug((prevShowDebug) => !prevShowDebug);
 	};
@@ -58,6 +60,23 @@ function Debug(props) {
 		setAchievements(newAchievements);
 	};
 
+	const copySaveData = async () => {
+		var button = document.getElementById("copy-button");
+		try {
+			await navigator.clipboard.writeText(localStorage.bread_data);
+			button.innerHTML = "Copied!";
+			setTimeout(() => {
+				button.innerHTML = "Copy Save";
+			}, 500);
+		} catch (err) {
+			console.error("Failed to copy: ", err);
+			button.innerHTML = "Error";
+			setTimeout(() => {
+				button.innerHTML = "Copy Save";
+			}, 500);
+		}
+	};
+
 	useEffect(() => {
 		document.addEventListener("keydown", (event) => {
 			if (event.code === "KeyD" && event.ctrlKey) {
@@ -83,81 +102,104 @@ function Debug(props) {
 				Reset?
 			</button>
 
-			{/* <br />
-			<input type="number" ref={clickInputRef} />{" "}
 			<button
-				id="set-clicks-button"
+				className="button env-button"
+				id="copy-button"
 				onClick={() => {
-					if (inTrialMode) {
-						setClicks(parseInt(clickInputRef.current.value));
-					} else {
-						setClicksCheat(parseInt(clickInputRef.current.value));
-					}
+					copySaveData();
 				}}
 			>
-				{" "}
-				Set Click Count{" "}
+				Copy Save
 			</button>
-			<input type="number" ref={BCInputRef} />{" "}
-			<button
-				id="set-bread-coin-button"
-				onClick={() => {
-					broadcastBc(parseInt(BCInputRef.current.value));
-					setBreadCoin(parseInt(BCInputRef.current.value));
-				}}
-			>
-				{" "}
-				Set Bread Coin{" "}
-			</button>
-			<input type="number" ref={timersRef} />{" "}
-			<button
-				id="set-clicks-button"
-				onClick={() => setTimers(parseInt(timersRef.current.value))}
-			>
-				{" "}
-				Set Timers{" "}
-			</button>
-			<button id="finish-oven-button" onClick={finishOven}>
-				{" "}
-				Finish Baking{" "}
-			</button>
-			<button id="set-achievements-button" onClick={finishAchievements}>
-				Finish Achievements
-			</button>
-			<button
-				id="skip-envelope-button"
-				onClick={() => {
-					emitEvent("skip-envelope");
-				}}
-			>
-				Skip Envelope
-			</button>
-			<input type="text" ref={envelopeIdRef} />{" "}
-			<button
-				id="show-envelope-button"
-				onClick={() => {
-					setDebugEnvelope(envelopeIdRef.current.value);
-				}}
-			>
-				{" "}
-				Show Envelope{" "}
-			</button>
-			<button
-				id="refresh-daily-order"
-				onClick={() => {
-					emitEvent("refresh-daily-order");
-				}}
-			>
-				Refresh Daily Order
-			</button>
-			<button
-				id="complete-daily-order"
-				onClick={() => {
-					emitEvent("complete-daily-order");
-				}}
-			>
-				Complete Daily Order
-			</button>*/}
+
+			{devMode ? (
+				<div>
+					<br />
+					<input type="number" ref={clickInputRef} />{" "}
+					<button
+						id="set-clicks-button"
+						onClick={() => {
+							if (inTrialMode) {
+								setClicks(
+									parseInt(clickInputRef.current.value)
+								);
+							} else {
+								setClicksCheat(
+									parseInt(clickInputRef.current.value)
+								);
+							}
+						}}
+					>
+						{" "}
+						Set Click Count{" "}
+					</button>
+					<input type="number" ref={BCInputRef} />{" "}
+					<button
+						id="set-bread-coin-button"
+						onClick={() => {
+							broadcastBc(parseInt(BCInputRef.current.value));
+							setBreadCoin(parseInt(BCInputRef.current.value));
+						}}
+					>
+						{" "}
+						Set Bread Coin{" "}
+					</button>
+					<input type="number" ref={timersRef} />{" "}
+					<button
+						id="set-clicks-button"
+						onClick={() =>
+							setTimers(parseInt(timersRef.current.value))
+						}
+					>
+						{" "}
+						Set Timers{" "}
+					</button>
+					<button id="finish-oven-button" onClick={finishOven}>
+						{" "}
+						Finish Baking{" "}
+					</button>
+					<button
+						id="set-achievements-button"
+						onClick={finishAchievements}
+					>
+						Finish Achievements
+					</button>
+					<button
+						id="skip-envelope-button"
+						onClick={() => {
+							emitEvent("skip-envelope");
+						}}
+					>
+						Skip Envelope
+					</button>
+					<input type="text" ref={envelopeIdRef} />{" "}
+					<button
+						id="show-envelope-button"
+						onClick={() => {
+							setDebugEnvelope(envelopeIdRef.current.value);
+						}}
+					>
+						{" "}
+						Show Envelope{" "}
+					</button>
+					<button
+						id="refresh-daily-order"
+						onClick={() => {
+							emitEvent("refresh-daily-order");
+						}}
+					>
+						Refresh Daily Order
+					</button>
+					<button
+						id="complete-daily-order"
+						onClick={() => {
+							emitEvent("complete-daily-order");
+						}}
+					>
+						Complete Daily Order
+					</button>{" "}
+				</div>
+			) : null}
 		</div>
 	) : null;
 }

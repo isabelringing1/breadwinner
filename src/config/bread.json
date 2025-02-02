@@ -4,13 +4,13 @@
       "display_name": "White Bread",
       "desc": "America's favorite bread.",
       "image_path": "/images/white.png",
-      "bake_time": 60,
+      "bake_time": 15,
       "markup": 1.1,
       "increase_rate": 1.07,
       "starting_color": "#fcd994",
       "ending_color": "#d59313",
       "save": {
-        "cost": 50,
+        "cost": 15,
         "purchase_count": 0,
         "unlocked": false
       }
@@ -21,13 +21,13 @@
       "desc": "We get it, you’re better than us.",
       "image_path": "/images/whole_wheat.png",
       "previous": "white",
-      "bake_time": 180,
+      "bake_time": 60,
       "markup": 1.2,
       "increase_rate": 1.1,
       "starting_color": "#debd9f",
       "ending_color": "#986844",
       "save": {
-        "cost": 600,
+        "cost": 200,
         "purchase_count": 0,
         "unlocked": false
       }
@@ -38,13 +38,13 @@
       "desc": "It's alive!",
       "image_path": "/images/sourdough.png",
       "previous": "whole_wheat",
-      "bake_time": 600,
+      "bake_time": 180,
       "markup": 1.3,
       "increase_rate": 1.15,
       "starting_color": "#F1BD88",
       "ending_color": "#DF882E",
       "save": {
-        "cost": 7200,
+        "cost": 2800,
         "purchase_count": 0,
         "unlocked": false
       }
@@ -55,13 +55,13 @@
       "desc": "Braids aren't just for hair.",
       "image_path": "/images/challah.png",
       "previous": "sourdough",
-      "bake_time": 1200,
+      "bake_time": 600,
       "markup": 1.35,
       "increase_rate": 1.15,
       "starting_color": "#EBB369",
       "ending_color": "#CC6926",
       "save": {
-        "cost": 86400,
+        "cost": 39200,
         "purchase_count": 0,
         "unlocked": false
       }
@@ -72,13 +72,13 @@
       "desc": "A twist in every slice.",
       "image_path": "/images/cinnamon_raisin.png",
       "previous": "challah",
-      "bake_time": 2700,
+      "bake_time": 1200,
       "markup": 1.5,
       "increase_rate": 1.15,
       "starting_color": "#FBD39E",
       "ending_color": "#D88E2E",
       "save": {
-        "cost": 1036800,
+        "cost": 548800,
         "purchase_count": 0,
         "unlocked": false
       }
@@ -90,13 +90,13 @@
       "desc": "Dark and mysterious.",
       "image_path": "/images/pumpernickel.png",
       "previous": "cinnamon_raisin",
-      "bake_time": 5400,
+      "bake_time": 2700,
       "markup": 1.6,
       "increase_rate": 1.15,
       "starting_color": "#AF9377",
       "ending_color": "#614529",
       "save": {
-        "cost": 12441600,
+        "cost": 7683200,
         "purchase_count": 0,
         "unlocked": false
       }
@@ -107,13 +107,13 @@
       "desc": "It's like, double carbs.",
       "image_path": "/images/potato.png",
       "previous": "pumpernickel",
-      "bake_time": 10800,
+      "bake_time": 5400,
       "markup": 1.75,
       "increase_rate": 1.1,
       "starting_color": "#FFC46A",
       "ending_color": "#FFA41C",
       "save": {
-        "cost": 149299200,
+        "cost": 107564800,
         "purchase_count": 0,
         "unlocked": false
       }
@@ -124,13 +124,13 @@
       "desc": "What Marie Antoinette told her peasants to eat.",
       "image_path": "/images/brioche.png",
       "previous": "potato",
-      "bake_time": 16000,
+      "bake_time": 10800,
       "markup": 1.8,
       "increase_rate": 1.09,
       "starting_color": "#E5B366",
       "ending_color": "#CC7C03",
       "save": {
-        "cost": 1791590400,
+        "cost": 1505907200,
         "purchase_count": 0,
         "unlocked": false
       }
@@ -141,13 +141,13 @@
       "desc": "What every overripe banana aspires to become.",
       "image_path": "/images/banana.png",
       "previous": "brioche",
-      "bake_time": 28800,
+      "bake_time": 16000,
       "markup": 2.1,
       "increase_rate": 1.08,
       "starting_color": "#F4DBBA",
       "ending_color": "#A96521",
       "save": {
-        "cost": 21499084800,
+        "cost": 21082700800,
         "purchase_count": 0,
         "unlocked": false
       }

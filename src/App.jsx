@@ -54,7 +54,7 @@ import messagesJson from "./config/messages.json";
 import achievementsJson from "./config/achievements.json";
 import EndGameController from "./EndGameController";
 
-const timer_unit = 300000;
+const timer_unit = 60000;
 
 function App() {
 	const [playerId, setPlayerId] = useState(null);
@@ -330,7 +330,6 @@ function App() {
 				eventsToEmit.push({
 					id: "bread-mid",
 				});
-			} else if (id == "pumpernickel") {
 				event = "unlock-order-board";
 			} else if (id == "banana") {
 				event = "reveal-epilogue";

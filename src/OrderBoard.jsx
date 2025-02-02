@@ -178,7 +178,7 @@ function OrderBoard(props) {
 	const orderBoardUnlocked = () => {
 		for (var i = 0; i < envelopeUnlocks.length; i++) {
 			if (
-				envelopeUnlocks[i].category == "pumpernickel" &&
+				envelopeUnlocks[i].category == "cinnamon_raisin" &&
 				envelopeUnlocks[i].finish_time
 			) {
 				return true;
@@ -303,7 +303,8 @@ function OrderBoard(props) {
 		var [lowerWeights, higherWeights] = prepBreadWeights();
 		for (var i = 0; i < 2; i++) {
 			var suborder;
-			if (i == 1 && totalDailyOrders == 4) {
+			console.log(totalDailyOrders.length);
+			if (i == 1 && totalDailyOrders.length == 4) {
 				// Force player to reach banana before getting 5 daily orders
 				suborder = getBananaBreadOrder();
 			} else {
@@ -341,8 +342,8 @@ function OrderBoard(props) {
 		setOrderBoardLastRefreshTime(Date.now());
 	};
 
-	const exhaustedAllLowerWeights = (lowerWeights) => {
-		for (const [_, weight] of Object.entries(lowerWeights)) {
+	const exhaustedAllWeights = (weights) => {
+		for (const [_, weight] of Object.entries(weights)) {
 			if (weight > 0) {
 				return false;
 			}
@@ -364,13 +365,16 @@ function OrderBoard(props) {
 		for (var i = 0; i < numSuborders; i++) {
 			var isLowerWeight = getRandomInt(0, 2) == 0;
 			// edge case where all 4 suborders are lower weights
-			if (
-				i == 3 &&
-				isLowerWeight &&
-				i == 3 &&
-				exhaustedAllLowerWeights(lowerWeights)
-			) {
+			if (i == 3 && isLowerWeight && exhaustedAllWeights(lowerWeights)) {
 				isLowerWeight = false;
+			}
+			// edge case where all 3 suborders are higher weights and we only have 2 high breads unlocked
+			else if (
+				i == 2 &&
+				!isLowerWeight &&
+				exhaustedAllWeights(higherWeights)
+			) {
+				isLowerWeight = true;
 			}
 			var suborder = isLowerWeight
 				? createSuborder(lowerWeights, bounds)
@@ -648,6 +652,8 @@ function OrderBoard(props) {
 
 	var animate_in = () => {
 		if (animating.current || showDailyOrder) return;
+		updateDailyOrder();
+		updateOrderBoardOrders();
 		orderContainerDiv.classList.add("do-bounce-in");
 		bookmarkDiv.classList.add("do-bounce-in-bookmark");
 		animating.current = true;

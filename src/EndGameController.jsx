@@ -50,15 +50,9 @@ function EndGameController(props) {
 			switch (event.id) {
 				case "reveal-epilogue":
 					var envelopeOrder = getEnvelopeOrder(
-						Math.min(totalDailyOrders.length, 4)
+						totalDailyOrders.length
 					);
-					//console.log("Setting envelope order to: ", envelopeOrder);
 					setEndingEnvelopeOrder(envelopeOrder);
-					if (totalDailyOrders.length > 4) {
-						unlockEnvelopes(
-							envelopeOrder.slice(0, totalDailyOrders.length - 4)
-						);
-					}
 					break;
 				case "daily-order-claim":
 					if (

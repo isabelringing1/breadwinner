@@ -317,8 +317,8 @@ function BlockingScreen(props) {
 					you make in the browser, never what you actually do. Data is
 					stored locally and does not leave your browser.{" "}
 					<div className="faq-break"></div>
-					If you're still concerned, please feel free to check out the
-					source code! It's publicly available{" "}
+					If you're curious, feel free to check out the source code!
+					It's publicly available{" "}
 					<a
 						href="https://github.com/isabelringing1/click-counter-chrome"
 						target="_blank"

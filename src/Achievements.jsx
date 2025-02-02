@@ -95,7 +95,7 @@ function Achievements(props) {
 								event.amount;
 							if (event.amount >= a.amount) {
 								achieve("productivity", i, newAchievements);
-								if (i == 2) {
+								if (i == 1) {
 									newAchievements[
 										"productivity"
 									][3].save.revealed = true;
@@ -200,6 +200,12 @@ function Achievements(props) {
 					) {
 						newAchievements["daily_orders"][0].save.revealed = true;
 					}
+					if (
+						total >= 3 &&
+						!newAchievements["daily_orders"][1].save.revealed
+					) {
+						newAchievements["daily_orders"][1].save.revealed = true;
+					}
 					dailyOrderAchievements.forEach((a, i) => {
 						if (a.id == "daily_order_1") {
 							if (total >= a.amount) {
@@ -227,10 +233,7 @@ function Achievements(props) {
 					orderBoardAchiemevent.save.progress = event.value;
 					if (event.value >= orderBoardAchiemevent.amount) {
 						achieve("order-board", 0, newAchievements);
-					} else if (
-						event.value >=
-						orderBoardAchiemevent.amount / 4
-					) {
+					} else if (event.value >= 2) {
 						orderBoardAchiemevent.save.revealed = true;
 					}
 
