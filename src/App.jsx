@@ -317,8 +317,8 @@ function App() {
 				});
 			}
 		}
-		if (breadBaked == 2) {
-			//3rd loaf of bread
+		if (breadBaked == 3) {
+			//4th loaf of bread
 			unlockEnvelope("timer");
 		}
 		checkForPercentNextLoafEnvelopes(newBread);

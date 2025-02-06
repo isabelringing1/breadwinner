@@ -98,17 +98,15 @@
 }
 
 .daily-order-bg{
-    width: 283.33px;
-    max-width: 30vh;
+    width: 25vh;
     position: relative;
 }
 
 .daily-order-bread{
-    max-width: 20vh;
-    width: 180px;
+    width: 17vh;
     position: absolute;
     z-index: 1;
-    margin: 8% 6.5%
+    margin: 5.5vh 4.5vh;
 }
 
 .daily-order-info{

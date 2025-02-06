@@ -22,7 +22,7 @@
             "desc": "Convert 2,000 Clicks to Bread Coin.",
             "amount": 2000,
             "image_path": "/images/water.png",
-            "reward": 30000,
+            "reward": 75000,
             "timers": 10,
             "save": {
                 "revealed": false,
