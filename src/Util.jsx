@@ -58,6 +58,26 @@ function formatNumber(num, isDecimal = false, addSuffix = true) {
 		});
 	}
 	if (addSuffix) {
+		// Decillion
+		if (num > 1000000000000000000000000000000000) {
+			return +(num / 1e33).toFixed(1) + "De";
+		}
+		// Nonillion
+		if (num > 1000000000000000000000000000000) {
+			return +(num / 1e30).toFixed(1) + "No";
+		}
+		// Octillion
+		if (num > 1000000000000000000000000000) {
+			return +(num / 1e27).toFixed(1) + "Oc";
+		}
+		// Septillion
+		if (num > 1000000000000000000000000) {
+			return +(num / 1e24).toFixed(1) + "Sp";
+		}
+		// Sextillion
+		if (num > 1000000000000000000000) {
+			return +(num / 1e21).toFixed(1) + "Sx";
+		}
 		// quintillion
 		if (num > 1000000000000000000) {
 			return +(num / 1e18).toFixed(1) + "Qn";
