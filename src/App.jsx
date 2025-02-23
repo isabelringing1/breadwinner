@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { saveData, loadData } from "../public/account";
 import { setClicksCheat, setKeysCheat } from "../public/debug";
+import { ErrorBoundary } from "react-error-boundary";
 import {
 	reportLoafBought,
 	reportSupplyBought,
@@ -39,6 +40,7 @@ import SpeechBubble from "./SpeechBubble";
 import Achievements from "./Achievements";
 import OrderBoard from "./OrderBoard";
 import Envelope from "./Envelope";
+import ErrorScreen from "./ErrorScreen";
 
 import tile from "/images/tile.png";
 import shadow from "/images/shadow.png";
@@ -52,6 +54,7 @@ import breadJson from "./config/bread.json";
 import suppliesJson from "./config/supplies.json";
 import messagesJson from "./config/messages.json";
 import achievementsJson from "./config/achievements.json";
+import clickAchievementsJson from "./config/click_achievements.json";
 import EndGameController from "./EndGameController";
 
 const timer_unit = 60000;
@@ -119,6 +122,7 @@ function App() {
 	const [debugEnvelope, setDebugEnvelope] = useState(null);
 	const [datingScore, setDatingScore] = useState([0, 0]); //curr points, total points
 	const [endingEnvelopeOrder, setEndingEnvelopeOrder] = useState(null);
+	const [spedUpLoafClicks, setSpedUpLoafClicks] = useState(0);
 
 	const onInfoScreenButtonPressed = useRef(null);
 	const onAchievementClaimButtonPressed = useRef(null);
@@ -126,6 +130,7 @@ function App() {
 	const idleTimeout = useRef(null);
 	const busyStartTime = useRef(0);
 	const glitchStop = useRef(null);
+	const clickMessages = useRef(null);
 
 	const convertForSave = () => {
 		var player = {
@@ -160,6 +165,7 @@ function App() {
 			total_order_board_orders: totalOrderBoardOrders,
 			dating_score: datingScore,
 			ending_envelope_order: endingEnvelopeOrder,
+			sped_up_loaf_clicks: spedUpLoafClicks,
 		};
 		return player;
 	};
@@ -274,6 +280,7 @@ function App() {
 		}
 		var eventsToEmit = [];
 		var now = Date.now();
+		var markup = getMarkup(bread);
 		var loaf = {
 			id: id,
 			purchase_count: bread.save.purchase_count,
@@ -282,7 +289,8 @@ function App() {
 			ending_color: bread.ending_color ?? "#BB7F0A",
 			start_time: now,
 			end_time: now + bread.bake_time * 1000,
-			sell_value: Math.floor(bread.save.cost * bread.markup),
+			sell_value: Math.floor(bread.save.cost * markup),
+			index: nextOpen,
 		};
 		var newOvenQueue = [
 			...OvenQueue.slice(0, nextOpen),
@@ -293,6 +301,7 @@ function App() {
 
 		var newBread = { ...BreadObject };
 		newBread[id].save.purchase_count++;
+		newBread[id].save.markup = getMarkup(newBread[id]);
 		spendBreadCoin(bread.save.cost);
 		setTotalSpent(totalSpent + bread.save.cost);
 		newBread[id].save.cost = Math.floor(
@@ -306,22 +315,17 @@ function App() {
 			amount: breadBaked + 1,
 		});
 		if (id == "banana") {
-			eventsToEmit.push({
-				id: "banana-baked",
-				amount: newBread[id].save.purchase_count,
-			});
-
 			if (newBread[id].save.purchase_count == 1) {
 				eventsToEmit.push({
 					id: "bread-finished",
 				});
 			}
 		}
-		if (breadBaked == 3) {
-			//4th loaf of bread
+		if (breadBaked == 5) {
+			//6th loaf of bread
 			unlockEnvelope("timer");
 		}
-		checkForPercentNextLoafEnvelopes(newBread);
+		eventsToEmit = checkForPercentNextLoaf(newBread, eventsToEmit);
 		if (newBread[id].save.purchase_count == 1) {
 			var event = null;
 			if (id == "challah") {
@@ -334,12 +338,29 @@ function App() {
 			} else if (id == "banana") {
 				event = "reveal-epilogue";
 			}
+			eventsToEmit.push({
+				id: "first-baked",
+				value: id,
+			});
 			unlockEnvelope(id, event);
 		}
 		if (eventsToEmit.length > 0) {
 			emitEvents(eventsToEmit);
 		}
 		reportLoafBought(loaf, breadBaked + 1, newOvenQueue.length, playerId);
+	};
+
+	const getMarkup = (bread) => {
+		if (bread.save.cost < bread.starting_cost * 100) {
+			return bread.starting_markup;
+		}
+		var breadCutoff = Math.log(100) / Math.log(bread.increase_rate);
+		console.log("calculated bread cutoff as ", breadCutoff);
+		return Math.max(
+			bread.minimum_markup,
+			bread.starting_markup -
+				(bread.save.purchase_count - breadCutoff) * 0.0005
+		);
 	};
 
 	const TryBuySupply = (id, mousePos) => {
@@ -468,7 +489,7 @@ function App() {
 	const setupTooltip = (show, mousePos = [0, 0]) => {
 		setTooltipContentArray([]);
 		setShowTooltip(show);
-		setTooltipPos(mousePos);
+		setTooltipPos(show ? mousePos : [0, 0]);
 	};
 
 	const toggleTooltip = (show, item = null, mousePos = [0, 0]) => {
@@ -486,17 +507,17 @@ function App() {
 	};
 
 	const updateBreadTooltip = (item) => {
-		var sell_price = Math.floor(item.save.cost * item.markup);
+		var sell_price = Math.floor(item.save.cost * item.save.markup);
 		var times = item.save.purchase_count == 1 ? " time." : " times.";
 		var text1 =
 			item.desc +
 			"\nSells for " +
-			formatPercent(item.markup) +
+			formatPercent(item.save.markup, 0) +
 			" of the original price (";
 		var text2 =
 			formatNumber(sell_price) +
 			").\nYou've baked this " +
-			item.save.purchase_count +
+			formatNumber(item.save.purchase_count) +
 			times;
 		setTooltipContentArray([text1, "[BC]", text2]);
 	};
@@ -584,6 +605,7 @@ function App() {
 
 				if (achievement.desc_after) {
 					text2 = achievement.desc_after;
+					tooltipArray.push(" ");
 					tooltipArray.push("[BC]");
 					tooltipArray.push(text2);
 				}
@@ -591,65 +613,66 @@ function App() {
 				return;
 			}
 
-			if (true) {
-				//achievement.save.revealed
-				var tooltipArray = [];
-				var text1 =
-					"**" + achievement.display_name + "**\n" + achievement.desc;
-				tooltipArray.push(text1);
+			var tooltipArray = [];
+			var text1 =
+				"**" + achievement.display_name + "**\n" + achievement.desc;
+			tooltipArray.push(text1);
 
-				if (achievement.desc_after) {
-					var text2 = achievement.desc_after + "\nReward: ";
-					tooltipArray.push(" ");
-					tooltipArray.push("[BC]");
-					tooltipArray.push(text2);
-				} else {
-					tooltipArray.push("\nReward: ");
-				}
+			if (achievement.desc_after) {
+				var text2 = achievement.desc_after + "\nReward: ";
+				tooltipArray.push(" ");
 				tooltipArray.push("[BC]");
-				tooltipArray.push(formatNumber(achievement.reward));
+				tooltipArray.push(text2);
+			} else {
+				tooltipArray.push("\nReward: ");
+			}
+			tooltipArray.push("[BC]");
+			tooltipArray.push(formatNumber(achievement.reward));
 
-				if (achievement.timers) {
-					tooltipArray.push(" + " + formatNumber(achievement.timers));
-					tooltipArray.push("[timer]");
-				}
+			if (achievement.timers) {
+				tooltipArray.push(" + " + formatNumber(achievement.timers));
+				tooltipArray.push("[timer]");
+			}
 
-				if (achievement.save.achieved) {
-					tooltipArray.push("\nClick to claim!");
-				} else if (achievement.save.revealed) {
-					if (achievement.save.progress != null) {
-						if (achievement.timer) {
-							if (achievement.save.progress > 0) {
-								tooltipArray.push(
-									"\nTime Remaining: " +
-										msToTime(
-											(achievement.timer -
-												achievement.save.progress) *
-												1000,
-											true
-										)
-								);
-							}
-						} else if (
-							typeof achievement.save.progress === "number"
-						) {
+			if (achievement.save.achieved) {
+				tooltipArray.push("\nClick to claim!");
+			} else if (achievement.save.revealed) {
+				if (achievement.save.progress != null) {
+					if (achievement.timer) {
+						if (achievement.save.progress > 0) {
 							tooltipArray.push(
-								"\nProgress: " +
-									formatNumber(achievement.save.progress) +
-									"/" +
-									formatNumber(achievement.amount)
+								"\nTime Remaining: " +
+									msToTime(
+										(achievement.timer -
+											achievement.save.progress) *
+											1000,
+										true
+									)
 							);
 						}
-					}
-					if (
-						achievement.progress != null &&
-						achievement.progress != 0
-					) {
-						//special case for what extension-- we want to forget it after reload
+					} else if (typeof achievement.save.progress === "number") {
 						tooltipArray.push(
-							"\nProgress: " + achievement.progress
+							"\nProgress: " +
+								formatNumber(achievement.save.progress) +
+								"/" +
+								formatNumber(achievement.amount)
 						);
 					}
+				}
+			}
+
+			// Add click achievement flavor text, if exists
+			if (!achievement.save.achieved && achievement.click) {
+				var messages = clickMessages.current[achievement.id];
+				if (
+					achievement.save.progress != null &&
+					!isNaN(achievement.save.progress) &&
+					messages[achievement.save.progress]
+				) {
+					tooltipArray.push("\n");
+					tooltipArray.push(
+						"*" + messages[achievement.save.progress] + "*"
+					);
 				}
 			}
 
@@ -854,6 +877,51 @@ function App() {
 				playerId
 			);
 		}
+
+		// spend one click to knock off a second
+		if (!useTimerMode && loaf.end_time >= Date.now()) {
+			if (clicks == 0) {
+				if (inTrialMode) {
+					setClicks(0);
+				} else {
+					spendClicks(1);
+				}
+				return;
+			}
+			if (inTrialMode) {
+				setClicks(clicks - 1);
+			} else {
+				spendClicks(2);
+			}
+
+			loaf.end_time -= 1000;
+			saveData(convertForSave());
+			setSpedUpLoafClicks(spedUpLoafClicks + 1);
+			emitEvent("loaf-sped-up", 0, spedUpLoafClicks + 1);
+
+			document
+				.getElementById(loaf.id + "-div-" + index)
+				.classList.add("pulse");
+			setTimeout(() => {
+				if (
+					document.getElementById(loaf.id + "-div-" + index) != null
+				) {
+					document
+						.getElementById(loaf.id + "-div-" + index)
+						.classList.remove("pulse");
+				}
+			}, 300);
+
+			var textAnim = document.getElementById(
+				loaf.index + "-loaf-text-anim"
+			);
+			textAnim.classList.remove("float-short");
+			void textAnim.offsetWidth;
+			textAnim.classList.add("float-short");
+			setTimeout(() => {
+				textAnim.classList.remove("float-short");
+			}, 600);
+		}
 	};
 
 	const getTimerCost = (loaf) => {
@@ -875,6 +943,23 @@ function App() {
 			}
 		}
 		return false;
+	};
+
+	const generateClickMessages = () => {
+		var messageDict = {};
+		for (var messageGroupId in clickAchievementsJson) {
+			var messageGroup = clickAchievementsJson[messageGroupId];
+			messageDict[messageGroupId] = {};
+			for (var id in messageGroup) {
+				var bounds = id.split("-");
+				var start = Number(bounds[0]);
+				var end = Number(bounds[1]);
+				for (var i = start; i < end; i++) {
+					messageDict[messageGroupId][i] = messageGroup[id];
+				}
+			}
+		}
+		return messageDict;
 	};
 
 	useEffect(() => {
@@ -950,11 +1035,13 @@ function App() {
 	};
 
 	const jiggleTrialMode = () => {
-		document.getElementById("trial-mode-marker").classList.add("jiggle");
+		document
+			.getElementById("trial-mode-marker")
+			.classList.add("jiggle-lite");
 		setTimeout(() => {
 			document
 				.getElementById("trial-mode-marker")
-				.classList.remove("jiggle");
+				.classList.remove("jiggle-lite");
 		}, 250);
 	};
 
@@ -985,6 +1072,8 @@ function App() {
 			return;
 		} else if (e.target.id == "set-clicks-button") {
 			return;
+		} else if (e.target.closest(".loaf-div")) {
+			return;
 		}
 		setClicks(clicks + 1);
 	};
@@ -1006,7 +1095,7 @@ function App() {
 			clearTimeout(idleTimeout.current);
 		}
 		idleTimeout.current = setTimeout(() => {
-			console.log("inactive for a full minute");
+			//console.log("inactive for a full minute");
 			busyStartTime.current = 0;
 			emitEvent("busy-reset", null);
 		}, 60000);
@@ -1034,13 +1123,17 @@ function App() {
 		return netWorth / nextBreadCost;
 	};
 
-	const checkForPercentNextLoafEnvelopes = (breadObj) => {
+	const checkForPercentNextLoaf = (breadObj, eventsToEmit) => {
 		var percentToNextLoaf = calculatePercentToNextLoaf(breadObj);
-		if (
-			breadObj["potato"].save.purchase_count > 0 &&
-			percentToNextLoaf >= 0.5
-		) {
-			unlockEnvelope("potato2");
+		if (breadObj["whole_wheat"].save.purchase_count > 0) {
+			if (percentToNextLoaf >= 0.5) {
+				unlockEnvelope("whole_wheat2");
+			}
+		}
+		if (breadObj["potato"].save.purchase_count > 0) {
+			if (percentToNextLoaf >= 0.33) {
+				unlockEnvelope("potato2");
+			}
 		}
 		if (breadObj["brioche"].save.purchase_count > 0) {
 			if (percentToNextLoaf >= 0.25) {
@@ -1053,6 +1146,7 @@ function App() {
 				unlockEnvelope("brioche4");
 			}
 		}
+		return eventsToEmit;
 	};
 
 	const animate_glitch = (level) => {
@@ -1105,7 +1199,11 @@ function App() {
 	};
 
 	useEffect(() => {
-		checkForPercentNextLoafEnvelopes(BreadObject);
+		var eventsToEmit = [];
+		eventsToEmit = checkForPercentNextLoaf(BreadObject, eventsToEmit);
+		if (eventsToEmit.length > 0) {
+			emitEvents(eventsToEmit);
+		}
 	}, [breadCoin]);
 
 	const convertArrayToSuborder = (arr) => {
@@ -1207,6 +1305,9 @@ function App() {
 			if (playerData.ending_envelope_order) {
 				setEndingEnvelopeOrder(playerData.ending_envelope_order);
 			}
+			if (playerData.sped_up_loaf_clicks > 0) {
+				setSpedUpLoafClicks(playerData.sped_up_loaf_clicks);
+			}
 			setVisited(true);
 
 			var newSupply = { ...SupplyObject };
@@ -1240,6 +1341,13 @@ function App() {
 						playerData.achievements_object[categoryName][i];
 				}
 			}
+			console.log(newAchievements["stretch"]);
+			if (
+				playerData.story_state >= 2 &&
+				!newAchievements["stretch"][5].save.revealed
+			) {
+				newAchievements["stretch"][5].save.revealed = true;
+			}
 			setAchievementsObject(newAchievements);
 		} else {
 			setPlayerId(self.crypto.randomUUID());
@@ -1257,6 +1365,7 @@ function App() {
 			setIsMobile(window.innerHeight / window.innerWidth > 1);
 		});
 		setIsMobile(window.innerHeight / window.innerWidth > 1);
+		clickMessages.current = generateClickMessages();
 
 		return () => {
 			document.removeEventListener("click", (e) => {
@@ -1368,299 +1477,326 @@ function App() {
 	}, [extensionDetected]);
 
 	return (
-		<div
-			id="content"
-			onClick={(e) => {
-				onContentClick(e);
+		<ErrorBoundary
+			fallbackRender={ErrorScreen}
+			onReset={() => {
+				window.location.reload();
 			}}
 		>
-			<Debug
-				resetProgress={reset}
-				setBreadCoin={setBreadCoin}
-				ovenQueue={OvenQueue}
-				setOvenQueue={setOvenQueue}
-				achievements={AchievementsObject}
-				setAchievements={setAchievementsObject}
-				setTimers={setTimers}
-				emitEvent={emitEvent}
-				inTrialMode={inTrialMode}
-				setClicks={setClicks}
-				setDebugEnvelope={setDebugEnvelope}
-			/>
-			<EndGameController
-				events={events}
-				storyState={storyState}
-				totalDailyOrders={totalDailyOrders}
-				endingEnvelopeOrder={endingEnvelopeOrder}
-				setEndingEnvelopeOrder={setEndingEnvelopeOrder}
-				unlockEnvelope={unlockEnvelope}
-				unlockEnvelopes={unlockEnvelopes}
-				loaded={loaded}
-			/>
-			<Tooltip
-				show={showTooltip}
-				mousePos={tooltipPos}
-				contentArray={tooltipContentArray}
-			/>
-			<Envelope
-				unlocks={envelopeUnlocks}
-				setUnlocks={setEnvelopeUnlocks}
-				showEnvelope={showEnvelope}
-				setShowEnvelope={setShowEnvelope}
-				emitEvent={emitEvent}
-				emitEvents={emitEvents}
-				timersUnlocked={timersUnlocked}
-				setTimersUnlocked={setTimersUnlocked}
-				setTimers={setTimers}
-				timers={timers}
-				breadObject={BreadObject}
-				events={events}
-				totalClicks={totalClicks}
-				totalKeys={totalKeys}
-				AchievementsObject={AchievementsObject}
-				storyState={storyState}
-				setStoryState={setStoryState}
-				reportEnvelopeAnswer={reportEnvelopeAnswer}
-				reportEnvelopeCompleted={reportEnvelopeCompleted}
-				debugEnvelope={debugEnvelope}
-				setDebugEnvelope={setDebugEnvelope}
-				datingScore={datingScore}
-				setDatingScore={setDatingScore}
-			/>
-			<Achievements
-				showAchievements={showAchievements}
-				setShowAchievements={setShowAchievements}
-				AchievementsObject={AchievementsObject}
-				setAchievementsObject={setAchievementsObject}
-				toggleTooltip={toggleAchievementsTooltip}
-				emitEvent={emitEvent}
-				events={events}
-				breadCoin={breadCoin}
-				setBreadCoin={setBreadCoin}
-				totalEarned={totalEarned}
-				setTotalEarned={setTotalEarned}
-				loaded={loaded}
-				claimButtonPressed={onAchievementClaimButtonPressed.current}
-				timers={timers}
-				setTimers={setTimers}
-				timersUnlocked={timersUnlocked}
-				setTimersUnlocked={setTimersUnlocked}
-				busyStartTime={busyStartTime}
-				storyState={storyState}
-				setStoryState={setStoryState}
-			/>
-			<OrderBoard
-				showDailyOrder={showDailyOrder}
-				setShowDailyOrder={setShowDailyOrder}
-				dailyOrderNextRefreshTime={dailyOrderNextRefreshTime}
-				setDailyOrderNextRefreshTime={setDailyOrderNextRefreshTime}
-				orderBoardLastRefreshTime={orderBoardLastRefreshTime}
-				setOrderBoardLastRefreshTime={setOrderBoardLastRefreshTime}
-				dailyOrderObject={dailyOrderObject}
-				setDailyOrderObject={setDailyOrderObject}
-				loaded={loaded}
-				breadCoin={breadCoin}
-				setBreadCoin={setBreadCoin}
-				totalEarned={totalEarned}
-				setTotalEarned={setTotalEarned}
-				BreadObject={BreadObject}
-				unlockEvent={dailyOrderEvent}
-				emitEvent={emitEvent}
-				emitEvents={emitEvents}
-				events={events}
-				totalDailyOrders={totalDailyOrders}
-				setTotalDailyOrders={setTotalDailyOrders}
-				totalTimelyDailyOrders={totalTimelyDailyOrders}
-				setTotalTimelyDailyOrders={setTotalTimelyDailyOrders}
-				timers={timers}
-				setTimers={setTimers}
-				timerUnit={timer_unit}
-				orderBoardOrders={orderBoardOrders}
-				setOrderBoardOrders={setOrderBoardOrders}
-				reportDailyOrderFulfilled={reportDailyOrderFulfilled}
-				reportOrderBoardOrderFulfilled={reportOrderBoardOrderFulfilled}
-				totalOrderBoardOrders={totalOrderBoardOrders}
-				setTotalOrderBoardOrders={setTotalOrderBoardOrders}
-				envelopeUnlocks={envelopeUnlocks}
-			/>
-			<FloatingText
-				text={floatingText}
-				setText={setFloatingText}
-				mousePos={floatingTextPos}
-			/>
-
-			<BlockingScreen
-				extensionDetected={extensionDetected}
-				visited={visited}
-				isMobile={isMobile}
-				delay={1000}
-				blockingCategory={blockingCategory}
-				setBlockingCategory={setBlockingCategory}
-				resetProgress={reset}
-				startTime={playerStartTime}
-				inTrialMode={inTrialMode}
-				startTrialMode={startTrialMode}
-				envelopeUnlocks={envelopeUnlocks}
-				endingEnvelopeOrder={endingEnvelopeOrder}
-				totalClicks={totalClicks}
-				totalKeys={totalKeys}
-				breadBaked={breadBaked}
-				AchievementsObject={AchievementsObject}
-				reportFAQOpened={reportFAQOpened}
-			/>
-
-			{showInfo ? (
-				<InfoScreen
-					setShowInfo={setShowInfo}
-					title={infoScreenTitle}
-					body={infoScreenBody}
-					confirmOverrideText={infoScreenConfirmOverrideText}
-					onConfirmButtonClicked={onInfoScreenButtonPressed.current}
-				/>
-			) : null}
-
-			<div id="column-1" className="column">
-				<Wallet
-					clicks={clicks}
-					keys={keys}
-					totalKeys={totalKeys}
-					multiplier={multiplier}
-					getTotalMultiplier={getTotalMultiplier}
-					convertClicks={convertClicksToBreadCoin}
-					convertKeys={convertKeysToMultiplier}
-					toggleClicksTooltip={toggleConvertClicksTooltip}
-					toggleKeysTooltip={toggleConvertKeysTooltip}
-					keyUnlocked={keyUnlocked}
-					convertPresses={convertPresses}
-					setConvertPresses={setConvertPresses}
+			<div
+				id="content"
+				onClick={(e) => {
+					onContentClick(e);
+				}}
+			>
+				<Debug
+					resetProgress={reset}
+					setBreadCoin={setBreadCoin}
+					ovenQueue={OvenQueue}
+					setOvenQueue={setOvenQueue}
+					achievements={AchievementsObject}
+					setAchievements={setAchievementsObject}
+					setTimers={setTimers}
 					emitEvent={emitEvent}
-					timers={timers}
+					inTrialMode={inTrialMode}
+					setClicks={setClicks}
+					setDebugEnvelope={setDebugEnvelope}
+				/>
+				<EndGameController
+					events={events}
+					storyState={storyState}
+					totalDailyOrders={totalDailyOrders}
+					endingEnvelopeOrder={endingEnvelopeOrder}
+					setEndingEnvelopeOrder={setEndingEnvelopeOrder}
+					unlockEnvelope={unlockEnvelope}
+					unlockEnvelopes={unlockEnvelopes}
+					loaded={loaded}
+				/>
+				<Tooltip
+					show={showTooltip}
+					mousePos={tooltipPos}
+					contentArray={tooltipContentArray}
+				/>
+				<Envelope
+					unlocks={envelopeUnlocks}
+					setUnlocks={setEnvelopeUnlocks}
+					showEnvelope={showEnvelope}
+					setShowEnvelope={setShowEnvelope}
+					emitEvent={emitEvent}
+					emitEvents={emitEvents}
 					timersUnlocked={timersUnlocked}
-					toggleTimerInfoTooltip={toggleTimerInfoTooltip}
-					useTimerMode={useTimerMode}
-					setUseTimerMode={setUseTimerMode}
-					canUseTimers={canUseTimers}
-					timerButtonHovered={timerButtonHovered}
-					setTimerButtonHovered={setTimerButtonHovered}
+					setTimersUnlocked={setTimersUnlocked}
+					setTimers={setTimers}
+					timers={timers}
+					breadObject={BreadObject}
+					events={events}
+					totalClicks={totalClicks}
+					totalKeys={totalKeys}
+					AchievementsObject={AchievementsObject}
+					storyState={storyState}
+					setStoryState={setStoryState}
+					reportEnvelopeAnswer={reportEnvelopeAnswer}
+					reportEnvelopeCompleted={reportEnvelopeCompleted}
+					debugEnvelope={debugEnvelope}
+					setDebugEnvelope={setDebugEnvelope}
+					datingScore={datingScore}
+					setDatingScore={setDatingScore}
+				/>
+				<Achievements
+					showAchievements={showAchievements}
+					setShowAchievements={setShowAchievements}
+					AchievementsObject={AchievementsObject}
+					setAchievementsObject={setAchievementsObject}
+					toggleTooltip={toggleAchievementsTooltip}
+					emitEvent={emitEvent}
+					events={events}
+					breadCoin={breadCoin}
+					setBreadCoin={setBreadCoin}
+					totalEarned={totalEarned}
+					setTotalEarned={setTotalEarned}
+					loaded={loaded}
+					claimButtonPressed={onAchievementClaimButtonPressed.current}
+					timers={timers}
+					setTimers={setTimers}
+					timersUnlocked={timersUnlocked}
+					setTimersUnlocked={setTimersUnlocked}
+					busyStartTime={busyStartTime}
+					storyState={storyState}
+					setStoryState={setStoryState}
+				/>
+				<OrderBoard
+					showDailyOrder={showDailyOrder}
+					setShowDailyOrder={setShowDailyOrder}
+					dailyOrderNextRefreshTime={dailyOrderNextRefreshTime}
+					setDailyOrderNextRefreshTime={setDailyOrderNextRefreshTime}
+					orderBoardLastRefreshTime={orderBoardLastRefreshTime}
+					setOrderBoardLastRefreshTime={setOrderBoardLastRefreshTime}
+					dailyOrderObject={dailyOrderObject}
+					setDailyOrderObject={setDailyOrderObject}
+					loaded={loaded}
+					breadCoin={breadCoin}
+					setBreadCoin={setBreadCoin}
+					totalEarned={totalEarned}
+					setTotalEarned={setTotalEarned}
+					BreadObject={BreadObject}
+					unlockEvent={dailyOrderEvent}
+					emitEvent={emitEvent}
+					emitEvents={emitEvents}
+					events={events}
+					totalDailyOrders={totalDailyOrders}
+					setTotalDailyOrders={setTotalDailyOrders}
+					totalTimelyDailyOrders={totalTimelyDailyOrders}
+					setTotalTimelyDailyOrders={setTotalTimelyDailyOrders}
+					timers={timers}
+					setTimers={setTimers}
+					timerUnit={timer_unit}
+					orderBoardOrders={orderBoardOrders}
+					setOrderBoardOrders={setOrderBoardOrders}
+					reportDailyOrderFulfilled={reportDailyOrderFulfilled}
+					reportOrderBoardOrderFulfilled={
+						reportOrderBoardOrderFulfilled
+					}
+					totalOrderBoardOrders={totalOrderBoardOrders}
+					setTotalOrderBoardOrders={setTotalOrderBoardOrders}
+					envelopeUnlocks={envelopeUnlocks}
+				/>
+				<FloatingText
+					text={floatingText}
+					setText={setFloatingText}
+					mousePos={floatingTextPos}
 				/>
 
-				{SupplyObject ? (
-					<CardList
-						id="supply-list"
-						title="Kitchen Supplies"
-						items={Object.values(SupplyObject)}
-						onCardClicked={TryBuySupply}
-						shouldShow={shouldShowSupply}
-						toggleTooltip={toggleTooltip}
-						shouldDisable={isSupplyDisabled}
-						maxItems={4}
+				<BlockingScreen
+					extensionDetected={extensionDetected}
+					visited={visited}
+					isMobile={isMobile}
+					delay={1000}
+					blockingCategory={blockingCategory}
+					setBlockingCategory={setBlockingCategory}
+					resetProgress={reset}
+					startTime={playerStartTime}
+					inTrialMode={inTrialMode}
+					startTrialMode={startTrialMode}
+					envelopeUnlocks={envelopeUnlocks}
+					endingEnvelopeOrder={endingEnvelopeOrder}
+					totalClicks={totalClicks}
+					totalKeys={totalKeys}
+					breadBaked={breadBaked}
+					AchievementsObject={AchievementsObject}
+					reportFAQOpened={reportFAQOpened}
+				/>
+
+				{showInfo ? (
+					<InfoScreen
+						setShowInfo={setShowInfo}
+						title={infoScreenTitle}
+						body={infoScreenBody}
+						confirmOverrideText={infoScreenConfirmOverrideText}
+						onConfirmButtonClicked={
+							onInfoScreenButtonPressed.current
+						}
 					/>
 				) : null}
-			</div>
 
-			<div id="column-2" className="column">
-				{inTrialMode ? (
-					<div
-						id="trial-mode-marker"
-						onClick={() => {
-							setBlockingCategory("trial-mode");
-						}}
-						onMouseOver={() => {
-							jiggleTrialMode();
-						}}
-					>
-						trial mode
-					</div>
-				) : null}
-				<div id="bc-container">
-					<div id="bread-coin">
-						<BCSymbol color="black" />
-						<span
-							id="bc-num"
-							onMouseMove={(e) => {
-								var x =
-									e.clientX < window.innerWidth - 300
-										? e.clientX + 30
-										: e.clientX - 240;
-								toggleBCTooltip(true, [x, e.clientY + 30]);
+				<div id="column-1" className="column">
+					<Wallet
+						clicks={clicks}
+						keys={keys}
+						totalKeys={totalKeys}
+						multiplier={multiplier}
+						getTotalMultiplier={getTotalMultiplier}
+						convertClicks={convertClicksToBreadCoin}
+						convertKeys={convertKeysToMultiplier}
+						toggleClicksTooltip={toggleConvertClicksTooltip}
+						toggleKeysTooltip={toggleConvertKeysTooltip}
+						keyUnlocked={keyUnlocked}
+						convertPresses={convertPresses}
+						setConvertPresses={setConvertPresses}
+						emitEvent={emitEvent}
+						timers={timers}
+						timersUnlocked={timersUnlocked}
+						toggleTimerInfoTooltip={toggleTimerInfoTooltip}
+						useTimerMode={useTimerMode}
+						setUseTimerMode={setUseTimerMode}
+						canUseTimers={canUseTimers}
+						timerButtonHovered={timerButtonHovered}
+						setTimerButtonHovered={setTimerButtonHovered}
+					/>
+
+					{SupplyObject ? (
+						<CardList
+							id="supply-list"
+							title="Kitchen Supplies"
+							items={Object.values(SupplyObject)}
+							onCardClicked={TryBuySupply}
+							shouldShow={shouldShowSupply}
+							toggleTooltip={toggleTooltip}
+							shouldDisable={isSupplyDisabled}
+							maxItems={4}
+						/>
+					) : null}
+				</div>
+
+				<div id="column-2" className="column">
+					{inTrialMode ? (
+						<div
+							id="trial-mode-marker"
+							onClick={() => {
+								setBlockingCategory("trial-mode");
 							}}
-							onMouseLeave={() => {
-								toggleBCTooltip(false);
+							onMouseOver={() => {
+								jiggleTrialMode();
 							}}
 						>
-							<span id="bc-anim">100</span>
-							{formatNumber(breadCoin) ?? "?"}{" "}
+							trial mode
+						</div>
+					) : null}
+
+					<div id="bc-container">
+						<div id="bread-coin">
+							<BCSymbol color="black" />
+							<span
+								id="bc-num"
+								onMouseMove={(e) => {
+									var x =
+										e.clientX < window.innerWidth - 300
+											? e.clientX + 30
+											: e.clientX - 240;
+									toggleBCTooltip(true, [x, e.clientY + 30]);
+								}}
+								onMouseLeave={() => {
+									toggleBCTooltip(false);
+								}}
+							>
+								<span id="bc-anim">100</span>
+								{formatNumber(breadCoin) ?? "?"}{" "}
+							</span>
+						</div>
+					</div>
+					<Oven
+						queue={OvenQueue}
+						sellLoaf={sellLoaf}
+						toggleTooltip={toggleLoafTooltip}
+						updateTooltip={updateLoafTooltip}
+						shouldShow={totalSpent > 0}
+						setAllDone={setAllLoavesDone}
+						onLoafClicked={onLoafClicked}
+						timers={timers}
+						getTimerCost={getTimerCost}
+						useTimerMode={useTimerMode}
+						setUseTimerMode={setUseTimerMode}
+						timerButtonHovered={timerButtonHovered}
+					/>
+					<SpeechBubble
+						text={speechBubbleText}
+						setText={setSpeechBubbleText}
+						duration={speechBubbleDuration}
+						show={true}
+						count={speechBubbleCount}
+					/>
+					<div id="version">
+						{storyState > 1 ? (
+							<img
+								src={
+									storyState == 5 ? dough_logo_2 : dough_logo
+								}
+								id="ending-logo"
+								onClick={() => {
+									setBlockingCategory("ending-crown");
+								}}
+								onMouseEnter={() => jiggleCrown()}
+							/>
+						) : null}
+						{inTrialMode ? (
+							<div
+								id="trial-mode-marker"
+								onClick={() => {
+									setBlockingCategory("trial-mode");
+								}}
+								onMouseOver={() => {
+									jiggleTrialMode();
+								}}
+							>
+								lite!
+							</div>
+						) : null}
+						{storyState >= 3 &&
+						datingScore[0] / datingScore[1] > 0.66 ? (
+							<img src={heart_logo} id="ending-logo-heart" />
+						) : null}
+						bread winner{" "}
+						<span
+							id="info"
+							onClick={() => {
+								setBlockingCategory("question-mark");
+							}}
+						>
+							?
 						</span>
 					</div>
 				</div>
-				<Oven
-					queue={OvenQueue}
-					sellLoaf={sellLoaf}
-					toggleTooltip={toggleLoafTooltip}
-					updateTooltip={updateLoafTooltip}
-					shouldShow={totalSpent > 0}
-					setAllDone={setAllLoavesDone}
-					onLoafClicked={onLoafClicked}
-					timers={timers}
-					getTimerCost={getTimerCost}
-					useTimerMode={useTimerMode}
-					setUseTimerMode={setUseTimerMode}
-					timerButtonHovered={timerButtonHovered}
-				/>
-				<SpeechBubble
-					text={speechBubbleText}
-					setText={setSpeechBubbleText}
-					duration={speechBubbleDuration}
-					show={true}
-					count={speechBubbleCount}
-				/>
-				<div id="version">
-					{storyState > 1 ? (
-						<img
-							src={storyState == 5 ? dough_logo_2 : dough_logo}
-							id="ending-logo"
-							onClick={() => {
-								setBlockingCategory("ending-crown");
-							}}
-							onMouseEnter={() => jiggleCrown()}
+
+				<div id="column-3" className="column">
+					{BreadObject ? (
+						<CardList
+							id="bread-list"
+							title="Recipe Book"
+							items={Object.values(BreadObject)}
+							onCardClicked={TryBuyBread}
+							shouldShow={shouldShowBread}
+							toggleTooltip={toggleBreadTooltip}
+							shouldDisable={isBreadDisabled}
+							maxItems={9}
 						/>
 					) : null}
-					{storyState >= 3 &&
-					datingScore[0] / datingScore[1] > 0.66 ? (
-						<img src={heart_logo} id="ending-logo-heart" />
-					) : null}
-					bread winner{" "}
-					<span
-						id="info"
-						onClick={() => {
-							setBlockingCategory("question-mark");
-						}}
-					>
-						?
-					</span>
+				</div>
+				<div id="background">
+					<img src={tile} className="tile-bg" id="tile-1" />
+					<img src={tile} className="tile-bg" id="tile-3" />
+					<img src={shadow} id="shadow" />
 				</div>
 			</div>
-
-			<div id="column-3" className="column">
-				{BreadObject ? (
-					<CardList
-						id="bread-list"
-						title="Recipe Book"
-						items={Object.values(BreadObject)}
-						onCardClicked={TryBuyBread}
-						shouldShow={shouldShowBread}
-						toggleTooltip={toggleBreadTooltip}
-						shouldDisable={isBreadDisabled}
-						maxItems={9}
-					/>
-				) : null}
-			</div>
-			<div id="background">
-				<img src={tile} className="tile-bg" id="tile-1" />
-				<img src={tile} className="tile-bg" id="tile-3" />
-				<img src={shadow} id="shadow" />
-			</div>
-		</div>
+		</ErrorBoundary>
 	);
 }
 

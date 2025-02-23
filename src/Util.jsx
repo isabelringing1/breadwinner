@@ -99,9 +99,9 @@ function formatNumber(num, isDecimal = false, addSuffix = true) {
 	return num.toLocaleString();
 }
 
-function formatPercent(num) {
+function formatPercent(num, decimals = 2) {
 	if (num == null) return;
-	num = +(num * 100).toFixed(2); // plus sign drops any "extra" zeroes at the end.
+	num = +(num * 100).toFixed(decimals); // plus sign drops any "extra" zeroes at the end.
 	return num + "%";
 }
 

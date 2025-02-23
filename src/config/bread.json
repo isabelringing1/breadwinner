@@ -5,15 +5,18 @@
       "desc": "America's favorite bread.",
       "image_path": "/images/white.png",
       "bake_time": 15,
-      "markup": 1.1,
+      "starting_markup": 1.1,
+      "minimum_markup": 1.01,
+      "starting_cost": 15,
       "increase_rate": 1.07,
       "starting_color": "#fcd994",
       "ending_color": "#d59313",
       "save": {
         "cost": 15,
         "purchase_count": 0,
-        "unlocked": false
-      }
+        "unlocked": false,
+        "markup": 1.1
+    }
     },
     "whole_wheat": {
       "id": "whole_wheat",
@@ -22,14 +25,17 @@
       "image_path": "/images/whole_wheat.png",
       "previous": "white",
       "bake_time": 60,
-      "markup": 1.2,
+      "starting_markup": 1.2,
+      "minimum_markup": 1.05,
+      "starting_cost": 200,
       "increase_rate": 1.1,
       "starting_color": "#debd9f",
       "ending_color": "#986844",
       "save": {
         "cost": 200,
         "purchase_count": 0,
-        "unlocked": false
+        "unlocked": false,
+        "markup": 1.2
       }
     },
     "sourdough": {
@@ -39,14 +45,17 @@
       "image_path": "/images/sourdough.png",
       "previous": "whole_wheat",
       "bake_time": 180,
-      "markup": 1.3,
+      "starting_markup": 1.25,
+      "minimum_markup": 1.1,
+      "starting_cost": 2800,
       "increase_rate": 1.15,
       "starting_color": "#F1BD88",
       "ending_color": "#DF882E",
       "save": {
         "cost": 2800,
         "purchase_count": 0,
-        "unlocked": false
+        "unlocked": false,
+        "markup": 1.25
       }
     },
     "challah": {
@@ -55,15 +64,18 @@
       "desc": "Braids aren't just for hair.",
       "image_path": "/images/challah.png",
       "previous": "sourdough",
-      "bake_time": 600,
-      "markup": 1.35,
+      "bake_time": 480,
+      "starting_markup": 1.4,
+      "minimum_markup": 1.25,
+      "starting_cost": 39200,
       "increase_rate": 1.15,
       "starting_color": "#EBB369",
       "ending_color": "#CC6926",
       "save": {
         "cost": 39200,
         "purchase_count": 0,
-        "unlocked": false
+        "unlocked": false,
+        "markup": 1.4
       }
     },
     "cinnamon_raisin": {
@@ -73,14 +85,17 @@
       "image_path": "/images/cinnamon_raisin.png",
       "previous": "challah",
       "bake_time": 1200,
-      "markup": 1.5,
+      "starting_markup": 1.5,
+      "minimum_markup": 1.4,
+      "starting_cost": 548800,
       "increase_rate": 1.15,
       "starting_color": "#FBD39E",
       "ending_color": "#D88E2E",
       "save": {
         "cost": 548800,
         "purchase_count": 0,
-        "unlocked": false
+        "unlocked": false,
+        "markup": 1.5
       }
       
     },
@@ -91,14 +106,17 @@
       "image_path": "/images/pumpernickel.png",
       "previous": "cinnamon_raisin",
       "bake_time": 2700,
-      "markup": 1.6,
+      "starting_markup": 1.6,
+      "minimum_markup": 1.6,
+      "starting_cost": 7683200,
       "increase_rate": 1.15,
       "starting_color": "#AF9377",
       "ending_color": "#614529",
       "save": {
         "cost": 7683200,
         "purchase_count": 0,
-        "unlocked": false
+        "unlocked": false,
+        "markup": 1.6
       }
     },
     "potato": {
@@ -108,14 +126,17 @@
       "image_path": "/images/potato.png",
       "previous": "pumpernickel",
       "bake_time": 5400,
-      "markup": 1.75,
-      "increase_rate": 1.1,
+      "starting_markup": 1.7,
+      "minimum_markup": 1.7,
+      "starting_cost": 107564800,
+      "increase_rate": 1.15,
       "starting_color": "#FFC46A",
       "ending_color": "#FFA41C",
       "save": {
         "cost": 107564800,
         "purchase_count": 0,
-        "unlocked": false
+        "unlocked": false,
+        "markup": 1.7
       }
     },
     "brioche": {
@@ -125,14 +146,17 @@
       "image_path": "/images/brioche.png",
       "previous": "potato",
       "bake_time": 10800,
-      "markup": 1.8,
-      "increase_rate": 1.09,
+      "starting_markup": 1.9,
+      "minimum_markup": 1.9,
+      "starting_cost": 1505907200,
+      "increase_rate": 1.15,
       "starting_color": "#E5B366",
       "ending_color": "#CC7C03",
       "save": {
         "cost": 1505907200,
         "purchase_count": 0,
-        "unlocked": false
+        "unlocked": false,
+        "markup": 1.9
       }
     },
     "banana": {
@@ -142,14 +166,17 @@
       "image_path": "/images/banana.png",
       "previous": "brioche",
       "bake_time": 16000,
-      "markup": 2.1,
-      "increase_rate": 1.08,
+      "starting_markup": 2.1,
+      "minimum_markup": 2.1,
+      "starting_cost": 21082700800,
+      "increase_rate": 1.15,
       "starting_color": "#F4DBBA",
       "ending_color": "#A96521",
       "save": {
         "cost": 21082700800,
         "purchase_count": 0,
-        "unlocked": false
+        "unlocked": false,
+        "markup": 2.1
       }
     }
 }

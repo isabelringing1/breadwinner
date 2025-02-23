@@ -24,6 +24,7 @@ function OrderContainer(props) {
 							order={suborder}
 							i={j}
 							mode="order-board"
+							useSmall={order.suborders.length == 4}
 						/>
 					);
 				})}

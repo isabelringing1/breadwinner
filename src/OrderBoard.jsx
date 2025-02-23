@@ -15,6 +15,7 @@ import card1 from "/images/postit1.png";
 import card2 from "/images/postit2.png";
 import card3 from "/images/postit3.png";
 import timer from "/images/timer.png";
+import bwTimer from "/images/bw_timer.png";
 
 var cards = [card1, card2, card3, card3]; //TODO: Make 4th post it
 
@@ -54,7 +55,7 @@ const easyBreadBounds = {
 	brioche: [2, 5],
 };
 
-const ORDER_BOARD_REFRESH = 21600000;
+const ORDER_BOARD_REFRESH = 3600000;
 
 function OrderBoard(props) {
 	const {
@@ -193,7 +194,7 @@ function OrderBoard(props) {
 			return;
 		}
 		var now = new Date();
-		var refreshTimeToday = new Date().setHours(9, 0, 0, 0);
+		var refreshTimeToday = new Date().setHours(6, 0, 0, 0);
 		var nextRefreshTime = dailyOrderNextRefreshTime;
 		if (
 			dailyOrderNextRefreshTime == null ||
@@ -239,7 +240,19 @@ function OrderBoard(props) {
 			orderBoardLastRefreshTimeRef.current + ORDER_BOARD_REFRESH;
 		var now = Date.now();
 		var newOrderBoardOrders = orderBoardOrdersRef.current;
+		console.log(
+			"last refresh time: ",
+			orderBoardLastRefreshTimeRef.current,
+			" and next refresh timestamp: ",
+			nextRefreshTimestamp,
+			" and now: ",
+			now
+		);
 		if (now >= nextRefreshTimestamp) {
+			console.log(
+				"Now greater than next refresh by ",
+				now - nextRefreshTimestamp
+			);
 			while (
 				now >= nextRefreshTimestamp &&
 				newOrderBoardOrders.length < 3
@@ -265,6 +278,23 @@ function OrderBoard(props) {
 			clearTimeout(refreshTimeout.current);
 			refreshTimeout.current = null;
 		}
+	};
+
+	const generateOrder = () => {
+		if (
+			!orderBoardUnlocked() ||
+			orderBoardOrdersRef.current.length == 3 ||
+			timers < getGenerateOrderTimerCost()
+		) {
+			return;
+		}
+
+		var newOrderBoardOrders = orderBoardOrdersRef.current;
+		newOrderBoardOrders.push(createNewOrderBoardOrder());
+		setOrderBoardOrders(newOrderBoardOrders);
+		calculateNotifs(newOrderBoardOrders, dailyOrderObject);
+		setTimers(timers - getGenerateOrderTimerCost());
+		//animateReward(-getGenerateOrderTimerCost(), "generate-order-button");
 	};
 
 	const prepBreadWeights = () => {
@@ -303,7 +333,6 @@ function OrderBoard(props) {
 		var [lowerWeights, higherWeights] = prepBreadWeights();
 		for (var i = 0; i < 2; i++) {
 			var suborder;
-			console.log(totalDailyOrders.length);
 			if (i == 1 && totalDailyOrders.length == 4) {
 				// Force player to reach banana before getting 5 daily orders
 				suborder = getBananaBreadOrder();
@@ -359,7 +388,17 @@ function OrderBoard(props) {
 		var totalBcReward = 0;
 		var totalTimerReward = 0;
 		var [lowerWeights, higherWeights] = prepBreadWeights();
-		var numSuborders = getRandomInt(2, 5);
+
+		var getSmallerOrder = orderBoardOrdersRef.current.length != 0;
+		for (var i = 0; i < orderBoardOrdersRef.current.length; i++) {
+			if (orderBoardOrdersRef.current[i].suborders.length < 4) {
+				getSmallerOrder = false; // don't want an order board stacked with 4 bread orders
+				break;
+			}
+		}
+		var numSuborders = getSmallerOrder
+			? getRandomInt(2, 4)
+			: getRandomInt(2, 5); //2-3 bread orders vs 2-4 orders
 		var bounds =
 			getRandomInt(0, 100) > 90 ? easyBreadBounds : normalBreadBounds;
 		for (var i = 0; i < numSuborders; i++) {
@@ -411,7 +450,7 @@ function OrderBoard(props) {
 				var bc_reward =
 					amount *
 					Math.floor(
-						BreadObject[id].save.cost * BreadObject[id].markup
+						BreadObject[id].save.cost * BreadObject[id].save.markup
 					);
 				var timer_reward =
 					amount *
@@ -430,7 +469,7 @@ function OrderBoard(props) {
 
 	const getBananaBreadOrder = () => {
 		var bc_reward = Math.floor(
-			BreadObject["banana"].save.cost * BreadObject["banana"].markup
+			BreadObject["banana"].save.cost * BreadObject["banana"].save.markup
 		);
 		var timer_reward = Math.ceil(
 			(1000 * BreadObject["banana"].bake_time) / timerUnit
@@ -442,6 +481,13 @@ function OrderBoard(props) {
 			timer_reward: timer_reward,
 			counter: 0,
 		};
+	};
+
+	const getGenerateOrderTimerCost = () => {
+		var msLeft =
+			orderBoardLastRefreshTime + ORDER_BOARD_REFRESH - Date.now();
+		var minutes = Math.floor((msLeft / (1000 * 60)) % 60);
+		return Math.max(1, Math.ceil(minutes / 2));
 	};
 
 	useEffect(() => {
@@ -704,7 +750,13 @@ function OrderBoard(props) {
 
 	const animateReward = (amount, buttonId = "daily-order-claim-button") => {
 		var num = document.getElementById("do-reward-anim");
-		num.innerHTML = "+" + formatNumber(amount);
+		num.style.color = amount > 0 ? "#13f600" : "red";
+		if (amount > 0) {
+			num.innerHTML = "+" + formatNumber(amount);
+		} else {
+			num.innerHTML = formatNumber(amount);
+		}
+
 		var boundingBox = document
 			.getElementById(buttonId)
 			.getBoundingClientRect();
@@ -729,7 +781,14 @@ function OrderBoard(props) {
 
 	var bgColor = mode == "daily-order" ? "#94E5FF" : "#DEA2FF";
 	return (
-		<div id="daily-order-container" onClick={() => animate_out()}>
+		<div
+			id="daily-order-container"
+			onClick={(e) => {
+				if (e.target.id == "daily-order-container") {
+					animate_out();
+				}
+			}}
+		>
 			<span id="do-reward-anim">100</span>
 
 			<div id="do-bookmark-div">
@@ -789,6 +848,7 @@ function OrderBoard(props) {
 											i={i}
 											key={i}
 											mode="daily-order"
+											useSmall={false}
 										/>
 									);
 								})}
@@ -826,18 +886,6 @@ function OrderBoard(props) {
 					<div id="order-board">
 						<div id="order-board-header">
 							<div id="order-board-title">Order Board</div>
-							{orderBoardOrders.length < 3 ? (
-								<div id="order-board-subtitle">
-									New Order in{" "}
-									{msToTime(
-										orderBoardLastRefreshTime +
-											ORDER_BOARD_REFRESH -
-											Date.now(),
-										true,
-										true
-									)}
-								</div>
-							) : null}
 						</div>
 
 						<div id="order-board-orders">
@@ -854,6 +902,56 @@ function OrderBoard(props) {
 									/>
 								);
 							})}
+						</div>
+						<div id="order-board-refresh-section">
+							{orderBoardOrders.length < 3 ? (
+								<div className="order-board-subtitle">
+									<button
+										className="button"
+										id="generate-order-button"
+										onClick={generateOrder}
+										disabled={
+											timers < getGenerateOrderTimerCost()
+										}
+									>
+										Generate order for
+										{timers <
+										getGenerateOrderTimerCost() ? (
+											<img
+												src={bwTimer}
+												id="timer-icon"
+												className={"timer-icon"}
+											/>
+										) : (
+											<img
+												src={timer}
+												id="timer-icon"
+												className={"timer-icon"}
+											/>
+										)}{" "}
+										{formatNumber(
+											getGenerateOrderTimerCost()
+										)}
+									</button>
+									<div
+										className="order-board-subtitle"
+										id="order-board-subtitle-or"
+									>
+										OR
+									</div>
+									<div>
+										{" "}
+										New order in{" "}
+										{msToTime(
+											orderBoardLastRefreshTime +
+												ORDER_BOARD_REFRESH -
+												Date.now(),
+											true,
+											true
+										)}{" "}
+									</div>
+								</div>
+							) : null}
 						</div>
 					</div>
 				)}

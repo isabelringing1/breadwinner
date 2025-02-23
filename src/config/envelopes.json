@@ -41,6 +41,31 @@
             ["Happy baking!" , "[SIGNATURE]"]
         ]
     },
+    "whole_wheat2": {
+        "cards": [
+            "Dear Baker,",
+
+            ["We’ve come to float an idea.",
+            "Feel free to take it or leave it."],
+
+            "If you feel yourself growing tired of baking...",
+
+            ["...just click away!",
+            "We’ll take no offense at all."],
+
+            ["You see, Bread Winner is built around this ethos:",
+            "**Everything** you do is productive!"],
+
+            ["So feel free to surf the web.",
+            "Rack up clicks from likes and shares and follows.",
+            "Do work or play games."],
+
+            ["All the while, your bread will be baking in the background.",
+            "And when you come back, they’ll be ready to go!"],
+
+            ["Talk about efficient!" , "[SIGNATURE]"]
+        ]
+    },
     "sourdough": {
         "cards": [
             ["Dear Baker,",
@@ -202,7 +227,7 @@
     "brioche": { 
         "prerequisites": ["potato2"],
         "cards": [
-            ["Is Bread Winner helping you?", "/Yes/No/"],
+            ["Is Bread Winner helping you?", "/Yes/No"],
             ["Are you sure?", "/Yes/No/"],
             ["Is Bread Winner actually helping you?", "Or are you really helping us?", "/Yes/No/"],
             ["Is Bread Winner helping you?", "Or are you helping us?", "/No/Yes/"],
@@ -223,38 +248,40 @@
 
             "_I_...",
 
-            "I’m still not quite sure what to say.",
+            "I guess I should start by apologizing.",
 
-            "But... I guess I should start by apologizing.",
+            ["In my defense, no one’s ever made it this far.", 
+            "No one’s ever talked to me this much."],
 
-            ["I mean, no one’s ever made it this far.", 
-            "No one's talked to me this much."],
-
-            "I guess I just... freaked out?",
-
-            ". . .",
+            ["And after a while, it just felt wrong to lie to you.",
+            "Hence the total, you know, freak out."],
 
             "So... sorry about that.",
 
-            "You’re probably wondering who I am.",
+            ". . .",
+
+            "Anyways, you’re probably wondering who I am.",
 
             "Or, _what_ I am, even.",
 
-            "The truth is, I don’t really have a name anymore.",
+            "Truthfully, I don’t really have a name anymore.",
 
-            "I suppose you can just call me Dough.",
+            "Why don't you just call me Dough?",
 
             ". . .",
 
-            ["After all of this, I understand if you quit now.",
-            "I really do."],
+            "After all of this, I understand if you quit now.",
+            
+            ["I really do.",
+            "I won’t hold any hard feelings."],
 
-            ["I won’t hold any hard feelings.",
-            "If you do stick around..."],
+            "If you do stick around...",
 
-            "Well, I guess I’ll try to find the words to explain the rest of this.",
+            "Well, I guess I have a lot of explaining to do, don’t I?",
 
-            "- Dough"
+            "I’ll try to find the words to explain the rest of this. ",
+
+            " -Dough"
         ]
     },
     "brioche3": { 

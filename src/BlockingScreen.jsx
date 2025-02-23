@@ -92,7 +92,7 @@ function BlockingScreen(props) {
 					</a>
 					.
 				</div>
-				<div className="blocking-screen-text">v1.1.0</div>
+				<div className="blocking-screen-text">v1.2.0</div>
 			</div>
 		</div>
 	);
@@ -126,16 +126,16 @@ function BlockingScreen(props) {
 				</a>
 			</div>
 			<div className="blocking-screen-text">
-				Want to check it out without the extension? You can play in{" "}
+				Want to check it out without the extension? You can play the{" "}
 				<span style={{ backgroundColor: "rgb(248 244 70)" }}>
-					trial mode
+					lite version
 				</span>{" "}
 				first, where clicks are only tracked in the Bread Winner
 				website.
 			</div>
 			<div className="blocking-screen-buttons" onClick={startTrialMode}>
 				<button className="trial-mode-button button">
-					Start Trial Mode
+					Start Bread Winner Lite
 				</button>
 			</div>
 
@@ -159,7 +159,7 @@ function BlockingScreen(props) {
 				{blockingCategory != "trial-mode" ? "Welcome Back!" : "Psst!"}
 			</div>
 			<div className="blocking-screen-text">
-				We've noticed you’ve been playing in Trial Mode so far.
+				We've noticed you’ve been playing the Lite version so far.
 			</div>
 			<div className="blocking-screen-text">
 				For the full experience, get the Bread Winner{" "}
@@ -200,8 +200,13 @@ function BlockingScreen(props) {
 				.
 			</div>
 			<div className="blocking-screen-text trial-mode-link">
-				<a onClick={startTrialMode}>
-					No thanks, take me back to Trial Mode
+				<a
+					onClick={() => {
+						startTrialMode();
+						setBlockingCategory(null);
+					}}
+				>
+					No thanks, take me back to Bread Winner Lite
 				</a>
 			</div>
 		</div>
@@ -340,8 +345,8 @@ function BlockingScreen(props) {
 					I still don't want to install an extension. Can I play?
 				</div>
 				<div className="blocking-screen-text answer">
-					Totally understandable! Yes, the game is completely beatable
-					via Trial Mode.
+					Totally understandable! Yes, the lite version of the game is
+					completely beatable.
 				</div>
 				<div className="blocking-screen-text question">
 					Are there only extensions for Chome and Firefox?

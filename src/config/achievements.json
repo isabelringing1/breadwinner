@@ -112,8 +112,8 @@
             "display_name": "Unpluggedly Productive",
             "desc": "Don’t look at a screen for an hour while keeping your mouse here.",
             "image_path": "/images/plug.png",
-            "reward": 7000,
-            "timers": 100,
+            "reward": 10000000,
+            "timers": 200,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -123,6 +123,25 @@
             "amount": 3600
         }
         
+    ],
+    "more_productivity": [
+        {
+            "disabled": true,
+            "id": "more_productivity_1",
+            "category": "more_productivity",
+            "display_name": "Counter Productive",
+            "desc": "Click on this achievement 300 times.",
+            "image_path": "/images/meta.png",
+            "reward": 50000000,
+            "timers": 100,
+            "click": true,
+            "amount": 300,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
+        }
     ],
     "keys": [
         {
@@ -140,14 +159,29 @@
             }
         },
         {
+            "id": "keys_1.5",
+            "category": "keys",
+            "display_name": "Typist",
+            "desc": "Convert 2,000 keystrokes.",
+            "image_path": "/images/keycap.png",
+            "amount": 2000,
+            "reward": 10000,
+            "timers": 10,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
+        },
+        {
             "id": "keys_2",
             "category": "keys",
             "display_name": "Essayist",
-            "desc": "Convert 10,000 keystrokes.",
+            "desc": "Convert 20,000 keystrokes.",
             "image_path": "/images/page.png",
-            "amount": 10000,
-            "reward": 10000,
-            "timers": 10,
+            "amount": 20000,
+            "reward": 100000,
+            "timers": 100,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -161,8 +195,8 @@
             "desc": "Convert 262,270 keystrokes, the equivalent of the Great Gatsby.",
             "image_path": "/images/book.png",
             "amount": 262270,
-            "reward": 262270,
-            "timers": 20,
+            "reward": 10000000,
+            "timers": 1000,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -170,6 +204,7 @@
             }
         },
         {
+            "disabled": true,
             "id": "keys_4",
             "category": "keys",
             "display_name": "Epicist",
@@ -249,9 +284,9 @@
             "id": "loaves_2",
             "category": "loaves",
             "display_name": "Income-Earner",
-            "desc": "Bake 50 loaves.",
+            "desc": "Bake 100 loaves.",
             "image_path": "/images/loaves_2.png",
-            "amount": 50,
+            "amount": 100,
             "reward": 10000,
             "timers": 10,
             "save": {
@@ -276,6 +311,7 @@
             }
         },
         {
+            "disabled": true,
             "id": "loaves_4",
             "category": "loaves",
             "display_name": "Miracle-Worker",
@@ -344,12 +380,12 @@
     ],
     "daily_orders": [
         {
-            "id": "daily_order_1",
+            "id": "daily_order_0",
             "category": "daily_orders",
-            "display_name": "All in a Week’s Work",
-            "desc": "Fulfill 7 Daily Orders.",
-            "image_path": "/images/calendar_1.png",
-            "amount": 7,
+            "display_name": "Consistency",
+            "desc": "Fulfill 3 Daily Orders.",
+            "image_path": "/images/calendar_0.png",
+            "amount": 3,
             "reward": 1000,
             "timers": 30,
             "save": {
@@ -359,6 +395,22 @@
             }
         },
         {
+            "id": "daily_order_1",
+            "category": "daily_orders",
+            "display_name": "All in a Week’s Work",
+            "desc": "Fulfill 7 Daily Orders.",
+            "image_path": "/images/calendar_1.png",
+            "amount": 7,
+            "reward": 100000,
+            "timers": 300,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
+        },
+        {
+            "disabled": true,
             "id": "daily_order_2",
             "category": "daily_orders",
             "display_name": "Procrastinator",
@@ -379,11 +431,26 @@
             "id": "order_board_0",
             "category": "order_board",
             "display_name": "Order Up!",
+            "desc": "Fulfill 10 Order Board orders.",
+            "image_path": "/images/pancakes.png",
+            "amount": 10,
+            "reward": 100000000,
+            "timers": 100,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false
+            }
+        },
+        {
+            "id": "order_board_1",
+            "category": "order_board",
+            "display_name": "Too Many Cooks",
             "desc": "Fulfill 50 Order Board orders.",
-            "image_path": "/images/pancake.png",
+            "image_path": "/images/pancake2.png",
             "amount": 50,
-            "reward": 100000,
-            "timers": 45,
+            "reward": 1000000000,
+            "timers": 300,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -395,11 +462,12 @@
         {
             "id": "misc_1",
             "category": "misc",
-            "display_name": "What Extension?",
-            "desc": "Be active in the bakery for an entire hour.",
+            "display_name": "Impatient",
+            "desc": "Click to speed up a loaf 500 times.",
             "image_path": "/images/stopwatch.png",
+            "amount": 500,
             "reward": 10000,
-            "timers": 50,
+            "timers": 150,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -457,7 +525,7 @@
             "display_name": "Mature",
             "desc": "Ha ha.",
             "image_path": "/images/hat.png",
-            "reward": 50,
+            "reward": 420,
             "timers": 69,
             "save": {
                 "revealed": false,
@@ -501,6 +569,7 @@
             }
         },
         {
+            "disabled": true,
             "id": "stretch_3",
             "category": "keys",
             "display_name": "Babel Librarian",
@@ -509,6 +578,22 @@
             "amount": 1000000,
             "reward": 1000000,
             "timers": 80,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false,
+                "epilogue": true
+            }
+        },
+        {
+            "id": "stretch_3",
+            "category": "keys",
+            "display_name": "Epicist",
+            "desc": "Convert 600,067 keystrokes, the equivalent of Homer's Odyssey.",
+            "image_path": "/images/books.png",
+            "amount": 600067,
+            "reward": 600067,
+            "timers": 40,
             "save": {
                 "revealed": false,
                 "achieved": false,
@@ -533,6 +618,24 @@
             "manual": true
         },
         {
+            "id": "stretch_5",
+            "category": "loaves",
+            "display_name": "Miracle-Worker",
+            "desc": "Bake 5,000 loaves.",
+            "quip": "It took Jesus 5 loaves and 2 fish to make 5,000 loaves of bread. You did it with only clicks.",
+            "image_path": "/images/loaves_4.png",
+            "amount": 5000,
+            "reward": 500000,
+            "timers": 100,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false,
+                "epilogue": true
+            }
+        },
+        {
+            "disabled": true,
             "id": "stretch_5",
             "category": "ending",
             "display_name": "Monkey Do",

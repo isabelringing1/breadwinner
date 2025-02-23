@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useInterval, msToTime } from "./Util";
 
 function Timer(props) {
-	const { endTime, onTimerEnd, visible } = props;
+	const { id, endTime, onTimerEnd, visible } = props;
 
 	var [timeLeft, setTimeLeft] = useState(null);
 	const [status, setStatus] = useState("idle");
@@ -42,6 +42,9 @@ function Timer(props) {
 			style={{ display: visible ? "block" : "none" }}
 		>
 			{timeLeftString}
+			<div className="loaf-text-anim" id={id + "-loaf-text-anim"}>
+				-1
+			</div>
 		</div>
 	);
 }

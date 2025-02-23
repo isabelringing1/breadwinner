@@ -1,7 +1,7 @@
 import "./OrderBoard.css";
 
 function OrderCard(props) {
-	const { order, i, mode } = props;
+	const { order, i, mode, useSmall } = props;
 	var breadName = "";
 	var split = order.id.split("_");
 	split.forEach((word) => {
@@ -11,6 +11,10 @@ function OrderCard(props) {
 		mode +
 		"-info" +
 		(order.counter < order.amount ? " notreached" : " reached");
+	var infoClass = mode + "-info";
+	if (useSmall) {
+		infoClass += " info-small";
+	}
 	return (
 		<div id={mode + "-card-" + i} className={mode + "-card"}>
 			<img
@@ -20,7 +24,7 @@ function OrderCard(props) {
 				}
 			/>
 			<img className={mode + "-bg"} src={order.card} />
-			<div className={mode + "-info"}> {breadName} </div>
+			<div className={infoClass}> {breadName} </div>
 			<div className={progressClass}>
 				{order.counter + "/" + order.amount}
 			</div>

@@ -138,7 +138,7 @@
 }
 
 #stretch_5:not(.locked){
-    background-color: #63EAA4;
+    background-color: #FFAA5C;
 }
 
 .locked{
@@ -236,8 +236,8 @@
     position: absolute;
     top: 3vh;
     right: 3vh;
-    width: 35vh;
-    height: 10vh;
+    width: 37vh;
+    height: 12vh;
     background-color: #9CCFFF;
     border-radius: 3.138vh;
     display: flex;
@@ -263,6 +263,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+#alert-subtitle{
+    font-size: 1.6vh;
 }
 
 .corner{

@@ -23,8 +23,13 @@
   padding-top: 1.04vh;
 }
 
+#multiplier-div{
+    height: 3.66vh;
+}
+
 #convert-keys{
   width: 29.28vh;
+  height: 6.75vh;
   background-color: #c54141;
 }
 
@@ -42,6 +47,7 @@
 
 #convert-clicks{
   width: 29.28vh;
+  height: 6.75vh;
   background-color: #4c9d27;
 }
 

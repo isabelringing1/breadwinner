@@ -78,12 +78,13 @@ function Envelope(props) {
 			);
 			if (parsedEntry.cards != null && parsedEntry.cards.length) {
 				setCards(parsedEntry.cards);
+			} else {
+				setCards([]);
 			}
-			if (parsedEntry.datingCards != null) {
-				setDatingCards(parsedEntry.datingCards);
-			}
+			setDatingCards(parsedEntry.datingCards); // may be null
 			setCurrentEntry(entry);
 			peek_in_envelope();
+			break;
 		}
 	};
 
@@ -98,10 +99,11 @@ function Envelope(props) {
 			);
 			if (parsedEntry.cards != null && parsedEntry.cards.length) {
 				setCards(parsedEntry.cards);
+			} else {
+				setCards([]);
 			}
-			if (parsedEntry.datingCards != null) {
-				setDatingCards(parsedEntry.datingCards);
-			}
+
+			setDatingCards(parsedEntry.datingCards);
 			setCurrentEntry({
 				category: debugEnvelope,
 				event: null,
@@ -167,6 +169,7 @@ function Envelope(props) {
 
 		emitEvent("open-envelope");
 		setCardIndex(0);
+		setDatingIndex(0);
 		jiggleInterval.current = null;
 
 		animating.current = true;
@@ -246,6 +249,7 @@ function Envelope(props) {
 			if (datingIndex + 1 < datingCards.length) {
 				animate_next_dating_card(prevCard, nextCard, cursor);
 			} else {
+				setDatingMode(false);
 				animate_close();
 			}
 		}

@@ -13,6 +13,7 @@ function Achievement(props) {
 		claimAchievement,
 		claimButtonPressed,
 		emitEvent,
+		progressClickAchievement,
 	} = props;
 	const [inWait, setInWait] = useState(false);
 	const lastTooltipPos = useRef([0, 0]);
@@ -49,9 +50,13 @@ function Achievement(props) {
 	};
 
 	const onClick = (e) => {
-		e.stopPropagation();
+		//e.stopPropagation();
 		if (achievement.save.achieved && !achievement.save.claimed) {
 			claimAchievement(achievement);
+		}
+		if (achievement.click && !achievement.save.achieved) {
+			progressClickAchievement(achievement);
+			toggleTooltip(true, lastTooltipPos.current, achievement);
 		}
 	};
 

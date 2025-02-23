@@ -101,6 +101,12 @@ function Loaf(props) {
 				fill={color}
 				className={classname}
 				id={loaf.id + "-" + index}
+				onClick={(e) => {
+					if (ready) {
+						return;
+					}
+					onLoafClicked(index);
+				}}
 				onMouseMove={(e) => {
 					var x =
 						e.clientX < window.innerWidth - 300
@@ -183,6 +189,7 @@ function Loaf(props) {
 				</div>
 			) : null}
 			<Timer
+				id={index}
 				endTime={loaf.end_time}
 				onTimerEnd={onLoafDone}
 				visible={!useTimerMode && !ready}
