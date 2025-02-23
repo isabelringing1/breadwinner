@@ -240,19 +240,7 @@ function OrderBoard(props) {
 			orderBoardLastRefreshTimeRef.current + ORDER_BOARD_REFRESH;
 		var now = Date.now();
 		var newOrderBoardOrders = orderBoardOrdersRef.current;
-		console.log(
-			"last refresh time: ",
-			orderBoardLastRefreshTimeRef.current,
-			" and next refresh timestamp: ",
-			nextRefreshTimestamp,
-			" and now: ",
-			now
-		);
 		if (now >= nextRefreshTimestamp) {
-			console.log(
-				"Now greater than next refresh by ",
-				now - nextRefreshTimestamp
-			);
 			while (
 				now >= nextRefreshTimestamp &&
 				newOrderBoardOrders.length < 3
@@ -267,6 +255,7 @@ function OrderBoard(props) {
 		}
 
 		var timeTilRefresh = nextRefreshTimestamp - now;
+		clearTimeout(refreshTimeout.current);
 		if (newOrderBoardOrders.length < 3 && timeTilRefresh >= 1) {
 			refreshTimeout.current = setTimeout(() => {
 				updateOrderBoardOrders();
@@ -275,7 +264,6 @@ function OrderBoard(props) {
 			newOrderBoardOrders.length == 3 &&
 			refreshTimeout.current != null
 		) {
-			clearTimeout(refreshTimeout.current);
 			refreshTimeout.current = null;
 		}
 	};

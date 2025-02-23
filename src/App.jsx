@@ -355,7 +355,6 @@ function App() {
 			return bread.starting_markup;
 		}
 		var breadCutoff = Math.log(100) / Math.log(bread.increase_rate);
-		console.log("calculated bread cutoff as ", breadCutoff);
 		return Math.max(
 			bread.minimum_markup,
 			bread.starting_markup -
@@ -1341,7 +1340,6 @@ function App() {
 						playerData.achievements_object[categoryName][i];
 				}
 			}
-			console.log(newAchievements["stretch"]);
 			if (
 				playerData.story_state >= 2 &&
 				!newAchievements["stretch"][5].save.revealed
