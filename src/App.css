@@ -76,6 +76,8 @@ p{
 
 .debug-menu{
     position: absolute;
+    display: flex;
+    flex-direction: column;
     width: 15vh;
     padding: 2vh;
     text-align: right;
@@ -424,6 +426,15 @@ p{
 .gold-bg:hover{
     background-image: linear-gradient(-72Deg,#EFE6BC 9%,#FAF5CE 27%,#EFE6BC 43%,#EFE6BC 60%,#FAF5CE 73%,#EFE6BC 92%);
 
+}
+
+#load-button{
+    margin-top: 1vh;
+}
+
+#load-text{
+    margin-top: 2vh;
+    height: 1.8vh;
 }
 
 .jiggle-crown{

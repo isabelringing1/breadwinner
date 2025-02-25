@@ -17,6 +17,7 @@ function Debug(props) {
 		setDebugEnvelope,
 	} = props;
 	const [showDebug, setShowDebug] = useState(false);
+	const loadInputRef = useRef();
 	const clickInputRef = useRef();
 	const BCInputRef = useRef();
 	const timersRef = useRef();
@@ -77,6 +78,24 @@ function Debug(props) {
 		}
 	};
 
+	const isJson = (str) => {
+		try {
+			JSON.parse(str);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	};
+
+	const tryParseJsonFromBinary = (bin) => {
+		try {
+			var data = window.atob(bin);
+			return data;
+		} catch (e) {
+			return null;
+		}
+	};
+
 	useEffect(() => {
 		document.addEventListener("keydown", (event) => {
 			if (event.code === "KeyD" && event.ctrlKey) {
@@ -101,7 +120,6 @@ function Debug(props) {
 			>
 				Reset?
 			</button>
-
 			<button
 				className="button env-button"
 				id="copy-button"
@@ -111,7 +129,34 @@ function Debug(props) {
 			>
 				Copy Save
 			</button>
-
+			<input type="text" id="load-text" ref={loadInputRef} />{" "}
+			<button
+				className="button env-button"
+				id="load-button"
+				onClick={() => {
+					if (isJson(loadInputRef.current.value)) {
+						localStorage.setItem(
+							"bread_data",
+							window.btoa(loadInputRef.current.value)
+						);
+						window.location.reload();
+					} else if (
+						tryParseJsonFromBinary(loadInputRef.current.value) !=
+							null &&
+						isJson(
+							tryParseJsonFromBinary(loadInputRef.current.value)
+						)
+					) {
+						localStorage.setItem(
+							"bread_data",
+							loadInputRef.current.value
+						);
+						window.location.reload();
+					}
+				}}
+			>
+				Load Save
+			</button>
 			{devMode ? (
 				<div>
 					<br />
