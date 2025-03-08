@@ -281,6 +281,11 @@ function App() {
 		var eventsToEmit = [];
 		var now = Date.now();
 		var markup = getMarkup(bread);
+		var increase_rate = bread.save.increase_rate;
+		var sell_value = Math.max(
+			bread.save.cost + 2,
+			Math.floor(bread.save.cost * markup)
+		);
 		var loaf = {
 			id: id,
 			purchase_count: bread.save.purchase_count,
@@ -289,7 +294,7 @@ function App() {
 			ending_color: bread.ending_color ?? "#BB7F0A",
 			start_time: now,
 			end_time: now + bread.bake_time * 1000,
-			sell_value: Math.floor(bread.save.cost * markup),
+			sell_value: sell_value,
 			index: nextOpen,
 		};
 		var newOvenQueue = [
@@ -302,10 +307,12 @@ function App() {
 		var newBread = { ...BreadObject };
 		newBread[id].save.purchase_count++;
 		newBread[id].save.markup = getMarkup(newBread[id]);
+		newBread[id].save.increase_rate = getNewIncreaseRate(newBread[id]);
 		spendBreadCoin(bread.save.cost);
 		setTotalSpent(totalSpent + bread.save.cost);
-		newBread[id].save.cost = Math.floor(
-			newBread[id].save.cost * bread.increase_rate
+		newBread[id].save.cost = Math.max(
+			newBread[id].save.cost + 1,
+			Math.floor(newBread[id].save.cost * increase_rate)
 		);
 		setBreadObject(newBread);
 		updateBreadTooltip(newBread[id]);
@@ -351,15 +358,23 @@ function App() {
 	};
 
 	const getMarkup = (bread) => {
-		if (bread.save.cost < bread.starting_cost * 100) {
+		if (bread.save.cost < bread.starting_cost * bread.cutoff_multiplier) {
 			return bread.starting_markup;
 		}
-		var breadCutoff = Math.log(100) / Math.log(bread.increase_rate);
-		return Math.max(
-			bread.minimum_markup,
-			bread.starting_markup -
-				(bread.save.purchase_count - breadCutoff) * 0.0005
-		);
+		var new_markup =
+			bread.starting_increase_rate *
+			Math.pow(0.9998, bread.save.purchase_count);
+		return Math.max(1, new_markup);
+	};
+
+	const getNewIncreaseRate = (bread) => {
+		if (bread.save.cost < bread.starting_cost * bread.cutoff_multiplier) {
+			return bread.starting_increase_rate;
+		}
+		var new_rate =
+			bread.starting_increase_rate *
+			Math.pow(0.9998, bread.save.purchase_count);
+		return Math.max(1, new_rate);
 	};
 
 	const TryBuySupply = (id, mousePos) => {
@@ -748,7 +763,7 @@ function App() {
 				setTotalEarned(totalEarned + loaf.sell_value);
 				animateGainOrLoss(loaf.sell_value);
 				setShowTooltip(false);
-				updateOrderBoard(loaf.id);
+				updateOrderBoard([loaf.id]);
 				setSpeechBubble("SELL");
 				if (
 					allLoavesDone &&
@@ -782,7 +797,8 @@ function App() {
 	const animateGainOrLoss = (amount) => {
 		var num = document.getElementById("bc-anim");
 		num.style.color = amount > 0 ? "#76b812" : "red";
-		num.innerHTML = (amount > 0 ? "+" : "") + formatNumber(amount);
+		num.innerHTML =
+			(amount > 0 ? "+" : "") + formatNumber(amount, false, false);
 		num.classList.remove("float");
 		void num.offsetWidth;
 		num.classList.add("float");
@@ -820,28 +836,32 @@ function App() {
 		setEvents(e);
 	};
 
-	const updateOrderBoard = (id) => {
+	const updateOrderBoard = (ids) => {
 		var newDailyOrderObject = { ...dailyOrderObject };
 		var newOrderBoardObject = [...orderBoardOrders];
 		var changed = false;
-		if (dailyOrderObject.bc_reward != -1) {
-			newDailyOrderObject.suborders.forEach((order) => {
-				if (order.id == id) {
-					order.counter++;
-					changed = true;
-				}
-			});
-		}
-		newOrderBoardObject.forEach((order) => {
-			if (order.started) {
-				order.suborders.forEach((suborder) => {
-					if (suborder.id == id) {
-						suborder.counter++;
+		for (var i = 0; i < ids.length; i++) {
+			var id = ids[i];
+			if (dailyOrderObject.bc_reward != -1) {
+				newDailyOrderObject.suborders.forEach((order) => {
+					if (order.id == id) {
+						order.counter++;
 						changed = true;
 					}
 				});
 			}
-		});
+			newOrderBoardObject.forEach((order) => {
+				if (order.started) {
+					order.suborders.forEach((suborder) => {
+						if (suborder.id == id) {
+							suborder.counter++;
+							changed = true;
+						}
+					});
+				}
+			});
+		}
+
 		if (changed) {
 			setDailyOrderObject(newDailyOrderObject);
 			setOrderBoardOrders(newOrderBoardObject);
@@ -1322,6 +1342,16 @@ function App() {
 				playerData.bread_object
 			)) {
 				newBread[key].save = value;
+				if (isNaN(value.cost)) {
+					newBread[key].save.cost = newBread[key].starting_cost;
+				}
+				if (isNaN(value.increase_rate)) {
+					newBread[key].save.increase_rate =
+						newBread[key].starting_increase_rate;
+				}
+				if (isNaN(value.markup)) {
+					newBread[key].save.markup = newBread[key].starting_markup;
+				}
 			}
 			setBreadObject(newBread);
 

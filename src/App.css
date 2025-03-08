@@ -138,6 +138,7 @@ p{
 .disabled{
     background-color: rgb(197, 197, 197);
     filter: grayscale(100%) drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.45));
+    color: gray;
 }
 
 .disabled:hover{

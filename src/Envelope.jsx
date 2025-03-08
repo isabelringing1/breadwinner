@@ -144,7 +144,9 @@ function Envelope(props) {
 				.getElementById("small-envelope")
 				.classList.remove("peek-in-small");
 			document.getElementById("small-envelope").style.bottom = "-3vh";
-			//document.getElementById("small-envelope").classList.add("envelope-hint")
+			document
+				.getElementById("small-envelope-bg-image")
+				.classList.add("envelope-hint");
 			jiggle_envelope();
 		}, 400);
 		jiggleInterval.current = setInterval(() => {
@@ -178,6 +180,10 @@ function Envelope(props) {
 			.classList.add("peek-out-small");
 		setTimeout(() => {
 			document.getElementById("small-envelope").style.bottom = "-15vh";
+			console.log(document.getElementById("small-envelope").classList);
+			document
+				.getElementById("small-envelope-bg-image")
+				.classList.remove("envelope-hint");
 			document
 				.getElementById("small-envelope")
 				.classList.remove("peek-out-small");
@@ -634,10 +640,7 @@ function Envelope(props) {
 				onClick={() => animate_open()}
 				onMouseEnter={() => jiggle_envelope()}
 			>
-				<img
-					className="small-envelope-bg-image envelope-hint"
-					src={envelope_closed}
-				/>
+				<img id="small-envelope-bg-image" src={envelope_closed} />
 			</div>
 
 			<div id="big-envelope">
