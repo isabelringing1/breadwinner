@@ -485,7 +485,6 @@ function App() {
 
 	const convertKeysToMultiplier = () => {
 		setInSellAllSequence(false);
-		//setMultiplier(multiplier + keys * 0.0001);
 		if (inTrialMode) {
 			setKeys(0);
 		} else {
@@ -496,7 +495,7 @@ function App() {
 	};
 
 	const getTotalMultiplier = () => {
-		return multiplier + totalKeys * 0.0001;
+		return multiplier + totalKeys * 0.001;
 	};
 
 	// Does stuff to set the default tooltip
@@ -590,7 +589,7 @@ function App() {
 		if (show) {
 			var text =
 				"Increase your multiplier by tiny amount with every key. Convert for +" +
-				keys * 0.0001 +
+				(keys * 0.001).toFixed(3) +
 				".";
 			setTooltipContentArray([text]);
 		}
@@ -1145,7 +1144,7 @@ function App() {
 	const checkForPercentNextLoaf = (breadObj, eventsToEmit) => {
 		var percentToNextLoaf = calculatePercentToNextLoaf(breadObj);
 		if (breadObj["whole_wheat"].save.purchase_count > 0) {
-			if (percentToNextLoaf >= 0.5) {
+			if (percentToNextLoaf >= 0.75) {
 				unlockEnvelope("whole_wheat2");
 			}
 		}
