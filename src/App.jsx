@@ -247,6 +247,10 @@ function App() {
 			if (!supply.save.unlocked && breadCoin >= supply.cost * 0.5) {
 				supply.save.unlocked = true;
 			}
+		} else if (!supply.save.unlocked && supply.extra) {
+			if (storyState >= 2 && OvenQueue.length == 16) {
+				supply.save.unlocked = true;
+			}
 		} else if (
 			!supply.save.unlocked &&
 			isSupplyPurchased(supply.previous)
@@ -428,10 +432,10 @@ function App() {
 				});
 			}
 		}
-		var allPurchased = Object.entries(newSupply).filter((item) => {
-			return item[1].save.purchased;
-		});
-		if (allPurchased.length == Object.entries(newSupply).length) {
+		var allBasicSuppliesPurchased = allBasicSuppliesPurchased(newSupply);
+		toggleTooltip(false);
+
+		if (allBasicSuppliesPurchased) {
 			eventsToEmit.push({
 				id: "supply-finished",
 			});
@@ -447,6 +451,20 @@ function App() {
 			emitEvents(eventsToEmit);
 		}
 		reportSupplyBought(supply, breadBaked + 1, ovenSize, playerId);
+	};
+
+	const allBasicSuppliesPurchased = (newSupply) => {
+		var totalSupplies = Object.entries(newSupply).filter((item) => {
+			return !item[1].extra; //ignore extra ones
+		});
+		var allPurchased = totalSupplies.filter((item) => {
+			return item[1].save.purchased;
+		});
+		return allPurchased.length == totalSupplies.length;
+	};
+
+	const boughtSellButton = () => {
+		return SupplyObject["sell_all_button"].save.purchased;
 	};
 
 	const convertClicksToBreadCoin = () => {
@@ -744,6 +762,40 @@ function App() {
 		onInfoScreenButtonPressed.current = () => {
 			emitEvent(a.category, a.id);
 		};
+	};
+
+	const sellAllLoaves = () => {
+		var newOvenQueue = [...OvenQueue];
+		var addedBreadCoin = 0;
+		var ids = [];
+		for (var i = 0; i < OvenQueue.length; i++) {
+			var loaf = OvenQueue[i];
+			if (loaf != null && loaf.end_time < Date.now()) {
+				addedBreadCoin += loaf.sell_value;
+				reportLoafSold(
+					loaf,
+					breadBaked,
+					OvenQueue.length,
+					Date.now() - loaf.end_time,
+					playerId
+				);
+				newOvenQueue[i] = null;
+				ids.push(loaf.id);
+			}
+		}
+		broadcastBc(breadCoin + addedBreadCoin);
+		setBreadCoin(breadCoin + addedBreadCoin);
+		setTotalEarned(totalEarned + addedBreadCoin);
+		animateGainOrLoss(addedBreadCoin);
+		setShowTooltip(false);
+		emitEvent("breadcoin-gain", addedBreadCoin, null);
+		updateOrderBoard(ids);
+		setSpeechBubble("SELL");
+		if (allLoavesDone && OvenQueue.length == 16) {
+			emitEvent("sell-oven");
+		}
+		setAllLoavesDone(false);
+		setOvenQueue(newOvenQueue);
 	};
 
 	const sellLoaf = (index) => {
@@ -1693,7 +1745,11 @@ function App() {
 					{SupplyObject ? (
 						<CardList
 							id="supply-list"
-							title="Kitchen Supplies"
+							title={
+								allBasicSuppliesPurchased(SupplyObject)
+									? "Kitchen Supplies+"
+									: "Kitchen Supplies"
+							}
 							items={Object.values(SupplyObject)}
 							onCardClicked={TryBuySupply}
 							shouldShow={shouldShowSupply}
@@ -1705,20 +1761,6 @@ function App() {
 				</div>
 
 				<div id="column-2" className="column">
-					{inTrialMode ? (
-						<div
-							id="trial-mode-marker"
-							onClick={() => {
-								setBlockingCategory("trial-mode");
-							}}
-							onMouseOver={() => {
-								jiggleTrialMode();
-							}}
-						>
-							trial mode
-						</div>
-					) : null}
-
 					<div id="bc-container">
 						<div id="bread-coin">
 							<BCSymbol color="black" />
@@ -1743,6 +1785,8 @@ function App() {
 					<Oven
 						queue={OvenQueue}
 						sellLoaf={sellLoaf}
+						sellAllLoaves={sellAllLoaves}
+						boughtSellButton={boughtSellButton}
 						toggleTooltip={toggleLoafTooltip}
 						updateTooltip={updateLoafTooltip}
 						shouldShow={totalSpent > 0}

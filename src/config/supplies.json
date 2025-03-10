@@ -141,6 +141,18 @@
         "unlocked": false
       }
     },
+    "sell_all_button": {
+      "id": "sell_all_button",
+      "display_name": "Sell All Button",
+      "desc": "Installs a very neat button onto your oven.",
+      "image_path": "/images/sell_all.png",
+      "cost": 100000000000,
+      "extra": true,
+      "save": {
+        "purchased": false,
+        "unlocked": false
+      }
+    },
     "oven_slot_1":{
       "id": "oven_slot_1",
       "display_name": "Oven Rack",

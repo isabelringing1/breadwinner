@@ -225,6 +225,69 @@
     right: 1.2vh;
 }
 
+#sell-all-container{
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 2.5vh;
+}
+
+#sell-all-button{
+    box-shadow: 0 .2vh 0 .3vh #352d2d, 0 .7vh 0 .45vh #1f1f1f;
+    cursor: pointer;
+    background-color: #c0392b;
+    position: absolute;
+    border-radius: 50%;
+    right: 11%;
+    width: 6vh;
+    height: 2.5vh;
+    transform: translateX(-50%);
+}
+
+#sell-all-button::before{
+    content: '';
+    z-index: 1;
+    border-radius: 50%;
+    background-color: #e74c3c;
+    position: absolute;
+    bottom: 35%;
+    left: 0%;
+    width: 6vh;
+    height: 2.5vh;
+    transition: bottom .1s;
+}
+
+#sell-all-button::after{
+    content: '';
+    background-color: #c0392b;
+    position: absolute;
+    bottom: 50%;
+    left: 0%;
+    width: 6vh;
+    height: 1vh;
+    transition: height .1s;
+}
+
+#sell-all-button:active::before{
+    bottom: 10%;
+}
+
+#sell-all-button:active::after{
+    height: 10%;
+}
+
+#sell-all-button.disabled{
+    filter: grayscale(50%);
+}
+
+#sell-all-button.disabled::after{
+    height: 25%;
+}
+
+#sell-all-button.disabled::before{
+    bottom: 25%;
+}
+
 @keyframes loaf-shake {
     0% { transform: translate(0, 0) rotate(0deg); }
     25% { transform: translate(5px, 5px) rotate(5deg); }

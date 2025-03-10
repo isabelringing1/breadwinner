@@ -8,6 +8,8 @@ function Oven(props) {
 	const {
 		queue,
 		sellLoaf,
+		sellAllLoaves,
+		boughtSellButton,
 		toggleTooltip,
 		updateTooltip,
 		shouldShow,
@@ -28,6 +30,22 @@ function Oven(props) {
 			}
 		}
 		setAllDone(true);
+	};
+
+	const canSellAll = () => {
+		if (queue.length < 16) {
+			return false;
+		}
+		var allEmpty = true;
+		for (var i = 0; i < queue.length; i++) {
+			if (queue[i] != null) {
+				allEmpty = false;
+				if (queue[i].end_time > Date.now()) {
+					return false;
+				}
+			}
+		}
+		return !allEmpty;
 	};
 
 	const getSlot = (i) => {
@@ -79,6 +97,16 @@ function Oven(props) {
 	}
 	return shouldShow ? (
 		<div id="oven">
+			{boughtSellButton() ? (
+				<div id="sell-all-container">
+					<a
+						id={"sell-all-button"}
+						className={canSellAll() ? "" : "disabled"}
+						onClick={canSellAll() ? sellAllLoaves : null}
+					></a>
+				</div>
+			) : null}
+
 			<div id="oven-engravement">
 				Dough & Co{" "}
 				<img src={engravement} className="oven-engravement-img" />{" "}
