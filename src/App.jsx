@@ -197,6 +197,9 @@ function App() {
 	};
 
 	const isSupplyPurchased = (id) => {
+		if (!SupplyObject[id]) {
+			return null;
+		}
 		return SupplyObject[id].save.purchased;
 	};
 
@@ -247,7 +250,11 @@ function App() {
 			if (!supply.save.unlocked && breadCoin >= supply.cost * 0.5) {
 				supply.save.unlocked = true;
 			}
-		} else if (!supply.save.unlocked && supply.extra) {
+		} else if (
+			!supply.save.unlocked &&
+			supply.extra &&
+			allBasicSuppliesPurchased(SupplyObject)
+		) {
 			if (storyState >= 2 && OvenQueue.length == 16) {
 				supply.save.unlocked = true;
 			}
@@ -432,10 +439,16 @@ function App() {
 				});
 			}
 		}
-		var allBasicSuppliesPurchased = allBasicSuppliesPurchased(newSupply);
+		var allBasicPurchased = allBasicSuppliesPurchased(newSupply);
+		var totalSupplies = Object.entries(newSupply).filter((item) => {
+			return !item[1].extra; //ignore extra ones
+		});
+		var allPurchased = totalSupplies.filter((item) => {
+			return item[1].save.purchased;
+		});
 		toggleTooltip(false);
 
-		if (allBasicSuppliesPurchased) {
+		if (allBasicPurchased) {
 			eventsToEmit.push({
 				id: "supply-finished",
 			});

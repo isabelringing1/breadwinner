@@ -36,16 +36,12 @@ function Oven(props) {
 		if (queue.length < 16) {
 			return false;
 		}
-		var allEmpty = true;
 		for (var i = 0; i < queue.length; i++) {
-			if (queue[i] != null) {
-				allEmpty = false;
-				if (queue[i].end_time > Date.now()) {
-					return false;
-				}
+			if (queue[i] != null && queue[i].end_time < Date.now()) {
+				return true;
 			}
 		}
-		return !allEmpty;
+		return false;
 	};
 
 	const getSlot = (i) => {

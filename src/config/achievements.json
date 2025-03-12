@@ -569,23 +569,6 @@
             }
         },
         {
-            "disabled": true,
-            "id": "stretch_3",
-            "category": "keys",
-            "display_name": "Babel Librarian",
-            "desc": "Convert 1,000,000 keystrokes.",
-            "image_path": "/images/babel.png",
-            "amount": 1000000,
-            "reward": 1000000,
-            "timers": 80,
-            "save": {
-                "revealed": false,
-                "achieved": false,
-                "claimed": false,
-                "epilogue": true
-            }
-        },
-        {
             "id": "stretch_3",
             "category": "keys",
             "display_name": "Epicist",
@@ -635,6 +618,22 @@
             }
         },
         {
+            "id": "stretch_6",
+            "category": "ending",
+            "display_name": "One Last Challenge",
+            "desc": "Try to be happy, okay?",
+            "image_path": "/images/hand-hold.png",
+            "reward": 1,
+            "timers": 1,
+            "save": {
+                "revealed": false,
+                "achieved": false,
+                "claimed": false,
+                "epilogue": true
+            },
+            "manual": true
+        },
+        {
             "disabled": true,
             "id": "stretch_5",
             "category": "ending",
@@ -653,20 +652,21 @@
             }
         },
         {
-            "id": "stretch_6",
-            "category": "ending",
-            "display_name": "One Last Challenge",
-            "desc": "Try to be happy, okay?",
-            "image_path": "/images/hand-hold.png",
-            "reward": 1,
-            "timers": 1,
+            "disabled": true,
+            "id": "stretch_3",
+            "category": "keys",
+            "display_name": "Babel Librarian",
+            "desc": "Convert 1,000,000 keystrokes.",
+            "image_path": "/images/babel.png",
+            "amount": 1000000,
+            "reward": 1000000,
+            "timers": 80,
             "save": {
                 "revealed": false,
                 "achieved": false,
                 "claimed": false,
                 "epilogue": true
-            },
-            "manual": true
+            }
         }
     ]
 }
