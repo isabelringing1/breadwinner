@@ -1435,7 +1435,7 @@ function App() {
 				}
 			}
 			if (
-				playerData.story_state >= 2 &&
+				playerData.story_state >= 4 &&
 				!newAchievements["stretch"][5].save.revealed
 			) {
 				newAchievements["stretch"][5].save.revealed = true;
