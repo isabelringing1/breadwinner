@@ -56,7 +56,8 @@
 }
 
 #convert-clicks:disabled{
-    filter: grayscale(100%)
+    filter: grayscale(100%);
+    pointer-events: none;
 }
 
 #convert-clicks:disabled:after{
