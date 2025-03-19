@@ -282,6 +282,7 @@ function OrderBoard(props) {
 		setOrderBoardOrders(newOrderBoardOrders);
 		calculateNotifs(newOrderBoardOrders, dailyOrderObject);
 		setTimers(timers - getGenerateOrderTimerCost());
+		setOrderBoardLastRefreshTime(Date.now());
 		//animateReward(-getGenerateOrderTimerCost(), "generate-order-button");
 	};
 
