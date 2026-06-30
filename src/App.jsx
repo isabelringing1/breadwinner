@@ -1440,6 +1440,25 @@ function App() {
 			) {
 				newAchievements["stretch"][5].save.revealed = true;
 			}
+			var miracleWorker = newAchievements["stretch"][4];
+			var legacyMiracleWorker = newAchievements["loaves"][3];
+			if (
+				!miracleWorker.save.achieved &&
+				(playerData.bread_baked >= miracleWorker.amount ||
+					legacyMiracleWorker.save.achieved ||
+					legacyMiracleWorker.save.claimed)
+			) {
+				miracleWorker.save.achieved = true;
+				miracleWorker.save.revealed = true;
+				miracleWorker.save.progress = playerData.bread_baked;
+				if (legacyMiracleWorker.save.claimed) {
+					miracleWorker.save.claimed = true;
+					if (legacyMiracleWorker.save.claim_time) {
+						miracleWorker.save.claim_time =
+							legacyMiracleWorker.save.claim_time;
+					}
+				}
+			}
 			setAchievementsObject(newAchievements);
 		} else {
 			setPlayerId(self.crypto.randomUUID());

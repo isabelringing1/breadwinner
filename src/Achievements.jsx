@@ -179,9 +179,9 @@ function Achievements(props) {
 							peek_in();
 						}
 					});
-					newAchievements["stretch"][5].save.progress = event.amount;
-					if (event.amount >= newAchievements["stretch"][5].amount) {
-						achieve("stretch", 5, newAchievements);
+					newAchievements["stretch"][4].save.progress = event.amount;
+					if (event.amount >= newAchievements["stretch"][4].amount) {
+						achieve("stretch", 4, newAchievements);
 					}
 					break;
 				case "current-balance":
